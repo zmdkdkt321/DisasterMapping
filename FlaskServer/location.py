@@ -1,7 +1,11 @@
 import csv
 import pymysql
+import json
 
-conn = pymysql.connect(host='127.0.0.1', user='dws', password='dws', db='dws', charset='utf8')
+with open("FlaskServer/config.json", 'r') as f:
+    config = json.load(f)
+
+conn = pymysql.connect(host=config["db"]["HOST"], user=config["db"]["user"], password=config["db"]["password"], db='dws', charset='utf8')
 cur = conn.cursor()
 
 cur.execute("INSERT IGNORE INTO LOCATION VALUES("+str(0)+",'"+"전국"+"',"+str(0)+",NULL,NULL)")

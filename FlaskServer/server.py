@@ -5,7 +5,10 @@ import sys
 import pymysql
 import time
 
-conn = pymysql.connect(host='127.0.0.1', user='dws', password='dws', db='dws', charset='utf8')
+with open("FlaskServer/config.json", 'r') as f:
+    config = json.load(f)
+
+conn = pymysql.connect(host=config["db"]["HOST"], user=config["db"]["user"], password=config["db"]["password"], db='dws', charset='utf8')
 cur = conn.cursor()
 
 # 플라스크 서버의 URL
@@ -72,6 +75,6 @@ while True:
     writePageNo(pageNo)
     conn.commit()
     print("wait")
-    time.sleep(120)  # 120초(2분) 동안 대기
+    time.sleep(60)  # 120초(2분) 동안 대기
 
 conn.close()
