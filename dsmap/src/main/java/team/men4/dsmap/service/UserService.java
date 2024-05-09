@@ -9,6 +9,9 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import team.men4.dsmap.model.User;
 import team.men4.dsmap.mybatis.TestMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class UserService {
@@ -17,6 +20,20 @@ public class UserService {
 
     @Autowired
     PlatformTransactionManager manager;
+
+    public List<User> selectAll(){
+        List<User> users = new ArrayList<>();
+
+        TransactionStatus status =
+                manager.getTransaction(new DefaultTransactionDefinition());
+        User user = new User();
+        try{
+            users = testMapper.selectAll();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return users;
+    }
 
     public User select(){
         TransactionStatus status =
@@ -28,5 +45,35 @@ public class UserService {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public void insert(User user){
+        TransactionStatus status =
+                manager.getTransaction(new DefaultTransactionDefinition());
+        try{
+            testMapper.insert(user);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void update(User user){
+        TransactionStatus status =
+                manager.getTransaction(new DefaultTransactionDefinition());
+        try{
+            testMapper.update(user);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(long id){
+        TransactionStatus status =
+                manager.getTransaction(new DefaultTransactionDefinition());
+        try{
+            testMapper.delete(id);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
