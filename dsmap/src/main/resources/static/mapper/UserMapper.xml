@@ -1,0 +1,29 @@
+<!-- UserMapper.xml -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.men4.dsmap.mybatis.TestMapper">
+
+    <!-- 사용자 조회 쿼리 매핑 -->
+    <select id="select" resultType="team.men4.dsmap.model.User">
+        SELECT * FROM dsm_db.user WHERE id = 1;
+    </select>
+
+<!--    &lt;!&ndash; 사용자 추가 쿼리 매핑 &ndash;&gt;-->
+<!--    <insert id="addUser" parameterType="com.example.User">-->
+<!--        INSERT INTO users (username, email) VALUES (#{username}, #{email})-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash; 사용자 수정 쿼리 매핑 &ndash;&gt;-->
+<!--    <update id="updateUser" parameterType="com.example.User">-->
+<!--        UPDATE users SET username = #{username}, email = #{email} WHERE id = #{id}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash; 사용자 삭제 쿼리 매핑 &ndash;&gt;-->
+<!--    <delete id="deleteUserById">-->
+<!--        DELETE FROM users WHERE id = #{id}-->
+<!--    </delete>-->
+
+</mapper>
