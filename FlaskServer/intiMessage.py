@@ -1,6 +1,5 @@
 import requests
 import json
-import os
 import pymysql
 
 with open("FlaskServer/config.json", 'r') as f:
@@ -25,13 +24,14 @@ def writePageNo(pageNo):
         json.dump(data, f)
 
 def getMessageByPage(pageNo):
-    params = {
-        'serviceKey': config["api"]["serviceKey"],
-        'pageNo': pageNo,
-        'numOfRows': '100',
-        'type':'JSON'
-    }
-    response = requests.get(url, params=params)
+    url = config["api"]["url"]
+    url=url+'?ServiceKey='+config["api"]["serviceKey"]
+    url=url+'&pageNo='+str(pageNo)
+    url=url+'&numOfRows=100'
+    url=url+'&type=json'
+    print(url)
+    response = requests.get(url)
+    print(response.url)
     if response.status_code == 200:
         print(response.text)
         data = json.loads(response.text)
@@ -39,27 +39,27 @@ def getMessageByPage(pageNo):
         print("에러 발생:", response.status_code)
     return [len(data["DisasterMsg"][1]["row"]),data["DisasterMsg"][1]["row"]]
 
-print((getMessageByPage(6)[1]))
-
 pageNo = 1
 
 while True:
-    pageCount,data = getMessageByPage(pageNo)
     print(pageNo)
+    pageCount,data = getMessageByPage(pageNo)
     for message in data:
 
-        print("INSERT IGNORE INTO MESSAGE VALUES("+str(message['md101_sn'])+","+
-                    message['msg']+",'"+
-                    "STR_TO_DATE("+message['create_date']+"','%Y/%m/%d %H:%i:%s')")
-        cur.execute("INSERT IGNORE INTO MESSAGE VALUES("+str(message['md101_sn'])+","+
-                    message['msg']+",'"+
-                    "STR_TO_DATE("+message['create_date']+"','%Y/%m/%d %H:%i:%s')")
+        print("INSERT IGNORE INTO MESSAGE VALUES("+str(message['md101_sn'])+",'"+
+                    message['msg'].replace("\'","")+"',"+
+                    "date_format('"+message['create_date']+"','%Y/%m/%d %H:%i:%s'))")
+        cur.execute("INSERT IGNORE INTO MESSAGE VALUES("+str(message['md101_sn'])+",'"+
+                    message['msg'].replace("\'","")+"',"+
+                    "date_format('"+message['create_date']+"','%Y/%m/%d %H:%i:%s'))")
         for locationID in message['location_id'].split(","):
             print("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
             cur.execute("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
-    if(pageCount < 100): break
+    print(pageCount)
+    if(pageNo == 20): break
     pageNo+=1
-writePageNo(pageNo)
+    
+print(pageNo)
 
 conn.commit()
 conn.close()
