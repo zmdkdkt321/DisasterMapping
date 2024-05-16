@@ -44,8 +44,8 @@ while True:
                         message['msg']+"','"+
                         message['create_date']+"')")
             for locationID in message['location_id'].split(","):
-                print("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+message['md101_sn']+",'"+message['DST_SE_NM']+"')")
-                cur.execute("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+message['md101_sn']+",'"+message['DST_SE_NM']+"')")
+                print("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
+                cur.execute("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
         pageNo+=1
         conn.commit()
     print("wait")
