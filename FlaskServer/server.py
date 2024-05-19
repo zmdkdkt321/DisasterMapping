@@ -8,7 +8,7 @@ import time
 with open("FlaskServer/config.json", 'r') as f:
     config = json.load(f)
 
-conn = pymysql.connect(host=config["db"]["HOST"], user=config["db"]["user"], password=config["db"]["password"], db='dws', charset='utf8')
+conn = pymysql.connect(host=config["db"]["HOST"], user=config["db"]["user"], password=config["db"]["password"], db=config["db"]["db"], charset='utf8')
 cur = conn.cursor()
 
 def getMessageByPage(pageNo):
@@ -44,8 +44,8 @@ while True:
                         message['msg']+"','"+
                         message['create_date']+"')")
             for locationID in message['location_id'].split(","):
-                print("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
-                cur.execute("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
+                print("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
+                cur.execute("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
         pageNo+=1
         conn.commit()
     print("wait")

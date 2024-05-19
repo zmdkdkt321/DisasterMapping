@@ -5,7 +5,7 @@ import pymysql
 with open("FlaskServer/config.json", 'r') as f:
     config = json.load(f)
 
-conn = pymysql.connect(host=config["db"]["HOST"], user=config["db"]["user"], password=config["db"]["password"], db='dws', charset='utf8')
+conn = pymysql.connect(host=config["db"]["HOST"], user=config["db"]["user"], password=config["db"]["password"], db=config["db"]["db"], charset='utf8')
 cur = conn.cursor()
 
 # 플라스크 서버의 URL
@@ -53,10 +53,10 @@ while True:
                     message['msg'].replace("\'","")+"',"+
                     "date_format('"+message['create_date']+"','%Y/%m/%d %H:%i:%s'))")
         for locationID in message['location_id'].split(","):
-            print("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
-            cur.execute("INSERT IGNORE INTO MESSAGE_LOCATION VALUES("+locationID+",'"+message['md101_sn']+"')")
+            print("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
+            cur.execute("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
     print(pageCount)
-    if(pageNo == 20): break
+    if(pageNo == 2): break
     pageNo+=1
     
 print(pageNo)
