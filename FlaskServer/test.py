@@ -39,8 +39,28 @@ def getMessageByPage(pageNo):
         print("에러 발생:", response.status_code)
     return [len(data["DisasterMsg"][1]["row"]),data["DisasterMsg"][1]["row"]]
 
+def getGPSByLocation(location):
+    url = config["kakaoAPI"]["url"]
+    url=url+'?query='+location
+    print(url)
+    headers = {
+        "Authorization" : config["kakaoAPI"]["serviceKey"]
+    }
+    print(config["kakaoAPI"]["serviceKey"])
+    response = requests.get(url,headers=headers)
+    print(response.url)
+    data = ""
+    if response.status_code == 200:
+        print(response.text)
+        data = json.loads(response.text)
+    else:
+        print("에러 발생:", response.status_code)
+        print(response.text)
+    return data
+
 pageNo = 1
 
+print(getGPSByLocation("경상남도"))
 while True:
     print(pageNo)
     pageCount,data = getMessageByPage(pageNo)
@@ -57,7 +77,7 @@ while True:
             cur.execute("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
         cur.callproc('update_today_total', [message['md101_sn']])
     print(pageCount)
-    if(pageNo == 50): break
+    if(pageNo == 20): break
     pageNo+=1
     
 print(pageNo)

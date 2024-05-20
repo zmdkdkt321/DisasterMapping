@@ -30,10 +30,11 @@ CREATE TABLE message_region
 
 CREATE TABLE today_total (
     region_id INT PRIMARY KEY,
-    region_name VARCHAR(50),
     count INT,
     FOREIGN KEY (region_id) REFERENCES region(id)
 );
+
+INSERT INTO today_total SELECT id,0 FROM region WHERE level = 1;
 
 
 CREATE VIEW region_lv1_lv2 AS 
@@ -49,7 +50,6 @@ CREATE VIEW region_lv1_lv2 AS
         (SELECT id, name, high_id FROM region WHERE level = 2) AS region_lv2
     ON region_lv1.id = region_lv2.high_id
 );
-
 
 
 CREATE VIEW region_lv1_lv3 AS 
@@ -68,8 +68,6 @@ CREATE VIEW region_lv1_lv3 AS
         (SELECT id, name, high_id FROM region WHERE level = 3) AS region_lv3    
     ON region_lv2.id = region_lv3.high_id
 );
-
-
 
 DELIMITER // 
 CREATE PROCEDURE protest(IN msg_id INT)
@@ -97,14 +95,8 @@ BEGIN
 END //
 DELIMITER ;
 
-
-
 CREATE EVENT init_total
 ON SCHEDULE EVERY 1 DAY
     STARTS '2024-05-18 00:00:00'
 DO 
 update total set count =0 where 1=1;
-
-select * from today_total;
-select * from message order by id desc;
-

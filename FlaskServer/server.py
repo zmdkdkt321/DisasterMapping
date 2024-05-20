@@ -46,6 +46,7 @@ while True:
             for locationID in message['location_id'].split(","):
                 print("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
                 cur.execute("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
+            cur.callproc('update_today_total', [message['md101_sn']])
         pageNo+=1
         conn.commit()
     print("wait")
