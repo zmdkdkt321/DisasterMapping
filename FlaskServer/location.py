@@ -43,4 +43,7 @@ for line in rdr:
 f.close()
 
 conn.commit()
+
+
+
 conn.close()
