@@ -1,0 +1,65 @@
+<!-- UserMapper.xml -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.men4.dsmap.mybatis.MessageMapper">
+
+    <resultMap id="messageResultMap" type="team.men4.dsmap.model.entity.Message">
+        <result property="content" column="content"/>
+        <result property="date" column="date"/>
+        <association property="region" javaType="team.men4.dsmap.model.entity.Region">
+            <result property="lv1Name" column="lv1_name"/>
+            <result property="lv2Name" column="lv2_name"/>
+            <result property="lv3Name" column="lv3_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectMsg3" parameterType="map" resultMap="messageResultMap">
+        <![CDATA[
+    select m.content, m.date ,lv1_name, lv2_name, lv3_name
+    from message m
+    join message_region mr on m.id = mr.msg_id
+    join region r on r.id = mr.region_id
+    where
+    date > #{d1} AND date < #{d2}
+    AND
+    lv1_name LIKE #{q1}
+    AND
+    (
+    lv2_name = "None"
+    OR
+    lv2_name LIKE #{q2}
+    AND
+    (lv3_name = "None" OR lv3_name LIKE #{q3})
+    );
+    ]]>
+    </select>
+
+    <select id="selectMsg1" parameterType="map" resultMap="messageResultMap">
+        <![CDATA[
+         select m.content, m.date ,lv1_name, lv2_name, lv3_name
+         from message m
+        join message_region mr on m.id = mr.msg_id
+        join region r on r.id = mr.region_id
+        where date > #{d1} AND date < #{d2}
+        and lv1_name like #{q1};
+    ]]>
+    </select>
+
+    <select id="selectMsg2" parameterType="map" resultMap="messageResultMap">
+        <![CDATA[
+            select m.content, m.date ,lv1_name, lv2_name, lv3_name
+            from message m
+            join message_region mr on m.id = mr.msg_id
+            join region r on r.id = mr.region_id
+            where date > #{d1} AND date < #{d2}
+            and lv1_name like #{q1}
+            AND (lv2_name like #{q2} OR lv2_name like "None");
+    ]]>
+    </select>
+
+
+
+</mapper>
