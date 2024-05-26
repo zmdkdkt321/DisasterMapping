@@ -14,14 +14,14 @@
         <result property="y" column="loc_y" javaType="double" />
     </resultMap>
 
-    <select id="selectCorLv1" parameterType="java.lang.String" resultType="team.men4.dsmap.model.entity.Region">
-        select *
+    <select id="selectCorLv1" parameterType="java.lang.String" resultMap="regionResultMap">
+        select lv1_name, lv2_name, lv3_name, loc_x, loc_y
         from region
         where lv1_name like #{q1}
         and lv3_name = 'None';
     </select>
 
-    <select id="selectCorLv2" parameterType="map" resultType="team.men4.dsmap.model.entity.Region">
+    <select id="selectCorLv2" parameterType="map" resultMap="regionResultMap">
         select *
         from region
         where lv1_name like #{q1}
