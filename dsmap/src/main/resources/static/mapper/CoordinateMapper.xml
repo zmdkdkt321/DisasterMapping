@@ -1,0 +1,32 @@
+<!-- UserMapper.xml -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.men4.dsmap.mybatis.CoordinateMapper">
+
+    <resultMap id="regionResultMap" type="team.men4.dsmap.model.entity.Region">
+        <result property="lv1Name" column="lv1_name" javaType="java.lang.String" />
+        <result property="lv2Name" column="lv2_name" javaType="java.lang.String" />
+        <result property="lv3Name" column="lv3_name" javaType="java.lang.String" />
+        <result property="x" column="loc_x" javaType="double" />
+        <result property="y" column="loc_y" javaType="double" />
+    </resultMap>
+
+    <select id="selectCorLv1" parameterType="java.lang.String" resultMap="regionResultMap">
+        select lv1_name, lv2_name, lv3_name, loc_x, loc_y
+        from region
+        where lv1_name like #{q1}
+        and lv3_name = 'None';
+    </select>
+
+    <select id="selectCorLv2" parameterType="map" resultMap="regionResultMap">
+        select *
+        from region
+        where lv1_name like #{q1}
+        and lv2_name like #{q2};
+    </select>
+
+
+</mapper>

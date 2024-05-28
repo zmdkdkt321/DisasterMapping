@@ -13,16 +13,6 @@ public class ConnTestController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/selectAll")
-    public List<User> selectAll(){
-        return userService.selectAll();
-    }
-
-    @GetMapping("/select")
-    public User select(){
-        return userService.select();
-    }
-
     @GetMapping("/insert")
     public void insert(@ModelAttribute User user){ userService.insert(user); }
 
