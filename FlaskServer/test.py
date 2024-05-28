@@ -75,9 +75,9 @@ while True:
         for locationID in message['location_id'].split(","):
             print("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
             cur.execute("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
-        cur.callproc('update_today_total', [message['md101_sn']])
+        cur.callproc('protest', [message['md101_sn']])
     print(pageCount)
-    if(pageNo == 20): break
+    if(pageNo == 1 ): break
     pageNo+=1
     
 print(pageNo)
