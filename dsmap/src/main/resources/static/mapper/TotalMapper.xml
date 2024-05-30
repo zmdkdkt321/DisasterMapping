@@ -1,4 +1,4 @@
-<!-- UserMapper.xml -->
+
 
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -16,18 +16,20 @@
     </select>
 
     <select id="selectTotalByRegion" parameterType="map" resultType="java.lang.Integer">
-    SELECT COUNT(*)
-    FROM message m
-    JOIN message_region mr ON m.id = mr.msg_id
-    JOIN region r ON r.id = mr.region_id
-    WHERE r.lv1_name LIKE #{q1}
-        AND DATE(date) = CURDATE()
-    AND (
-    r.lv2_name = 'None'
-    OR r.lv2_name LIKE #{q2}
-    AND (r.lv3_name = 'None' OR r.lv3_name LIKE #{q3})
-    ) GROUP BY r.lv1_name, r.lv2_name, r.lv3_name;
+        SELECT COUNT(*)
+        FROM message m
+        JOIN message_region mr ON m.id = mr.msg_id
+        JOIN region r ON r.id = mr.region_id
+        WHERE
+            r.lv1_name LIKE #{q1}
+        AND
+            DATE(date) = CURDATE()
+        AND (
+            (r.lv2_name = 'None' OR r.lv2_name LIKE #{q2})
+            AND
+            (r.lv3_name = 'None' OR r.lv3_name LIKE #{q3})
+            )
+        GROUP BY r.lv1_name, r.lv2_name, r.lv3_name;
     </select>
-
 
 </mapper>

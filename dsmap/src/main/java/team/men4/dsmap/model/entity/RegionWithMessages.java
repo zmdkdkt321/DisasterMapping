@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Region {
+@ToString
+public class RegionWithMessages {
     private int id;
     private String lv1Name;
     private String lv2Name;
@@ -16,4 +18,8 @@ public class Region {
     private double x;
     private double y;
 
+    private List<Message> messages;
+
+    public RegionWithMessages() {
+    }
 }

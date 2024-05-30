@@ -28,5 +28,4 @@
         and lv2_name like #{q2};
     </select>
 
-
 </mapper>
