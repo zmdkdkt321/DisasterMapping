@@ -1,18 +1,11 @@
 package team.men4.dsmap.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-import team.men4.dsmap.model.User;
 import team.men4.dsmap.model.entity.Region;
 import team.men4.dsmap.model.entity.Total;
-import team.men4.dsmap.mybatis.TestMapper;
 import team.men4.dsmap.mybatis.TotalMapper;
 
 import java.util.ArrayList;
