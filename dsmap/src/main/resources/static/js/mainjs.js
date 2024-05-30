@@ -2,7 +2,7 @@ function loadMain() { //main에 main body 부분 비동기 연결
     const config = {
         method: "get"
     };
-    fetch("indexContext.html", config)
+    fetch("/indexContext", config)
         .then(response => response.text())
         .then(data => {
             // map-container라는 id를 가진 div 요소를 선택
@@ -17,7 +17,7 @@ function loadMap() { //main에 지도 페이지 비동기 연결
     const config = {
         method: "get"
     };
-    fetch("map.html", config)
+    fetch("/map", config)
         .then(response => response.text())
         .then(data => {
             // map-container라는 id를 가진 div 요소를 선택
@@ -32,7 +32,7 @@ function loadMsgList() { //main에 통계 페이지 비동기 연결
     const config = {
         method: "get"
     };
-    fetch("msgList.html", config)
+    fetch("/msgList", config)
         .then(response => response.text())
         .then(data => {
             // map-container라는 id를 가진 div 요소를 선택

@@ -31,9 +31,9 @@ public class MessageService {
 
         int num =0;
         for(RegionWithMessages  m : list){
-            log.info("lv1 tuple: {}", m.getMessages());
+            num += m.getMessages().size();
         }
-
+        log.info("lv1 tuple: {}", num);
 
 
         List<RegionWithMessagesDTO> dtoList = new ArrayList<>();
@@ -45,22 +45,24 @@ public class MessageService {
             if(!name.equals(entity.getLv2Name())){
 
                 if(!entity.getLv2Name().equals("None")){
-                    name += entity.getLv2Name();}
+                    name += " "+entity.getLv2Name();}
             }
             if(!entity.getLv3Name().equals("None")){
-                name += entity.getLv3Name();
+                name += " "+entity.getLv3Name();
             }
+            log.info("{} {} {} {} ",entity.getId(), name, entity.getX(), entity.getY());
 
             RegionWithMessagesDTO dto = new RegionWithMessagesDTO(
                     entity.getId(),
                     name,
                     entity.getX(),
                     entity.getY(),
+                    entity.getMessages().size(),
                     entity.getMessages());
+            dtoList.add(dto);
         }
-        for(RegionWithMessagesDTO dto: dtoList){
-            log.info(dto.toString());
-        }
+
+
         return dtoList;
     }
 

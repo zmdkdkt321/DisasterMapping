@@ -21,10 +21,10 @@ public class TotalController {
         return totalService.selectTotal();
     }
 
-//    @GetMapping("/2")
-//    public Total select(){
-//        Region region = new Region("경상남도", "진주시", "호탄동");
-//        return totalService.selectTotalByRegion(region);
-//    }
+    @GetMapping("/2")
+    public Total select(){
+        Region region = new Region("경상남도", "진주시", "호탄동");
+        return totalService.selectTotalByRegion(region);
+    }
 
 }
