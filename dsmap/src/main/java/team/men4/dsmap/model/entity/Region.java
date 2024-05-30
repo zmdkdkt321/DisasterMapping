@@ -16,4 +16,9 @@ public class Region {
     private double x;
     private double y;
 
+    public Region(String lv1Name, String lv2Name, String lv3Name) {
+        this.lv1Name = lv1Name;
+        this.lv2Name = lv2Name;
+        this.lv3Name = lv3Name;
+    }
 }

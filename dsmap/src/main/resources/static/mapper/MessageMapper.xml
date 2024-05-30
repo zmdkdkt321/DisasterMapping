@@ -7,7 +7,7 @@
 <mapper namespace="team.men4.dsmap.mybatis.MessageMapper">
 
     <resultMap id="regionWithMessages" type="team.men4.dsmap.model.entity.RegionWithMessages">
-        <id property="id" column="id"/>
+        <result property="id" column="region_id"/>
         <result property="lv1Name" column="lv1_name"/>
         <result property="lv2Name" column="lv2_name"/>
         <result property="lv3Name" column="lv3_name"/>
@@ -15,7 +15,7 @@
         <result property="y" column="loc_y"/>
 
         <collection property="messages" ofType="team.men4.dsmap.model.entity.Message">
-            <id property="id" column="id"/>
+            <id property="id" column="msg_id"/>
             <result property="content" column="content"/>
             <result property="date" column="date"/>
         </collection>
@@ -24,14 +24,14 @@
 
     <select id="selectMsgAll" resultMap="regionWithMessages">
         <![CDATA[
-            SELECT m.id, m.content, m.date, r.id, lv1_name, lv2_name, lv3_name, loc_x, loc_y
+            SELECT m.id as msg_id, m.content, m.date, r.id as region_id, lv1_name, lv2_name, lv3_name, loc_x, loc_y
             FROM message m
             JOIN message_region mr ON m.id = mr.msg_id
             JOIN region r ON r.id = mr.region_id
             where
-	            date > "2024-5-20 00:00:00"
+	            date > "2024-02-22 00:00:00"
             AND
-	            date <"2024-05-25 00:00:00"
+	            date <"2024-02-22 11:00:00"
         ]]>
     </select>
 

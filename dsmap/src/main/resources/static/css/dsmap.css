@@ -1,0 +1,41 @@
+.head{
+    border: 1px solid blue;
+    width: auto;
+    margin-bottom: 1%;
+}
+
+.content{
+    width: auto;
+    display: flex;
+}
+
+.summery{
+    border: 1px solid chartreuse;
+    width: auto;
+    margin-top: 1%;
+}
+
+.contentLeft{
+    border: 1px solid red;
+    flex: 1;
+    width: 15%;
+}
+
+.contentCenter{
+    border: 1px solid aqua;
+    flex: 1;
+    width: 70%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.contentRight{
+    border: 1px solid red;
+    flex: 1;
+    width: 15%;
+}
+
+.p-hvr:hover {
+    background-color: white; /* 호버 시 배경색 */
+    transform: scale(1.1); /* 호버 시 확대 효과 1.1배 확대 */
+}

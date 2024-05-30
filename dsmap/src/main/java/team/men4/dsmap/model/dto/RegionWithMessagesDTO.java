@@ -16,5 +16,6 @@ public class RegionWithMessagesDTO {
     private double x;
     private double y;
 
+    private int message_num;
     List<Message> messages;
 }
