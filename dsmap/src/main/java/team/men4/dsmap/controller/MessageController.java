@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import team.men4.dsmap.model.dto.RegionWithMessagesDTO;
 import team.men4.dsmap.model.entity.Message;
+import team.men4.dsmap.model.entity.RegionWithMessages;
 import team.men4.dsmap.service.MessageService;
 
 import java.util.List;
@@ -15,21 +17,11 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @GetMapping("/1")
-    public List<Message> select3(){
-        return messageService.selectMsg3();
+    @GetMapping
+    public List<RegionWithMessages> select(){
+        return messageService.selectMsg();
     }
 
-    @GetMapping("/2")
-    public List<Message> select2(){
-        return messageService.selectMsg3();
-    }
-
-    @GetMapping("/3")
-    public List<Message> select1(){
-        return messageService.selectMsg3();
-    }
-
-
-
+    @GetMapping("/all")
+    public List<RegionWithMessagesDTO> selectAll(){return messageService.selectMsgAll();}
 }

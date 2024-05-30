@@ -12,5 +12,8 @@ import java.util.List;
 public interface TotalMapper {
     public List<Total> selectTotal();
 
-    public List<Integer> selectTotalByRegion(@Param("q1")String s1, @Param("q2")String s2, @Param("q3")String s3);
+    public List<Integer> selectTotalByRegion(
+            @Param("q1")String s1,
+            @Param("q2")String s2,
+            @Param("q3")String s3);
 }
