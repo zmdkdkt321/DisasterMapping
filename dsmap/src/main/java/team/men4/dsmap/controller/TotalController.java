@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.men4.dsmap.model.entity.Region;
 import team.men4.dsmap.model.entity.Total;
+import team.men4.dsmap.service.SseService;
 import team.men4.dsmap.service.TotalService;
 
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
 public class TotalController {
     @Autowired
     private TotalService totalService;
+
+
 
     @GetMapping("/1")
     public List<Total> selectAll(){

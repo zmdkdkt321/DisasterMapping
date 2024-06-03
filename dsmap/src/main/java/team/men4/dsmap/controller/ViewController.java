@@ -2,6 +2,7 @@ package team.men4.dsmap.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -35,5 +36,10 @@ public class ViewController {
     public String main(){
         log.info("list");
         return "msgList.html";
+    }
+
+    @GetMapping("/comment")
+    public String index(){
+        return "cindex";
     }
 }
