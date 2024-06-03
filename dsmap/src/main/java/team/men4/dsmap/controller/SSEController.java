@@ -17,22 +17,20 @@ public class SSEController {
 
     private final SseService sseService;
 
-
     @Autowired
     public SSEController(SseService sseService) {
         this.sseService = sseService;
     }
-
 
     @GetMapping( produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter handleSseRequest() {
         return sseService.createEmitter();
     }
 
-
     @GetMapping("/call")
     public String call(@RequestParam  String name){
         log.info("catch call controller");
+        sseService.sendUpdateEvent(name);
         return "ok";
     }
 }
