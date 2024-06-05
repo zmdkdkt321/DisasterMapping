@@ -4,7 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.men4.dsmap.model.dto.RegionWithMessagesDTO;
+import team.men4.dsmap.model.dto.MessageDto;
+import team.men4.dsmap.model.dto.RegionWithMessagesDto;
 import team.men4.dsmap.model.entity.Message;
 import team.men4.dsmap.model.entity.RegionWithMessages;
 import team.men4.dsmap.mybatis.MessageMapper;
@@ -21,7 +22,7 @@ public class MessageService {
     MessageMapper messageMapper;
 
 
-    public List<RegionWithMessagesDTO> selectMsgAll() {
+    public List<RegionWithMessagesDto> selectMsgAll() {
         List<RegionWithMessages> list = new ArrayList<>();
         try{
             list = messageMapper.selectMsgAll();
@@ -36,7 +37,7 @@ public class MessageService {
         log.info("lv1 tuple: {}", num);
 
 
-        List<RegionWithMessagesDTO> dtoList = new ArrayList<>();
+        List<RegionWithMessagesDto> dtoList = new ArrayList<>();
 
         for(RegionWithMessages entity : list){
 
@@ -52,13 +53,23 @@ public class MessageService {
             }
             log.info("{} {} {} {} ",entity.getId(), name, entity.getX(), entity.getY());
 
-            RegionWithMessagesDTO dto = new RegionWithMessagesDTO(
+            List<MessageDto> messages = new ArrayList<>();
+
+            for(Message m : entity.getMessages()){
+                String d = m.getDate().toString();
+                String[] srr = d.split("T");
+
+                MessageDto messageDto = new MessageDto(m.getId(), m.getContent(), srr[0], srr[1]);
+                messages.add(messageDto);
+            }
+
+            RegionWithMessagesDto dto = new RegionWithMessagesDto(
                     entity.getId(),
                     name,
                     entity.getX(),
                     entity.getY(),
                     entity.getMessages().size(),
-                    entity.getMessages());
+                    messages);
             dtoList.add(dto);
         }
 

@@ -9,5 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class Region {
     private String name;
-    private List<Message> messageList;
+    private List<MessageDto> messageList;
 }
