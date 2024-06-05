@@ -10,12 +10,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegionWithMessagesDTO {
+public class RegionWithMessagesDto {
     private int id;
     private String name;
     private double x;
     private double y;
 
     private int message_num;
-    List<Message> messages;
+    List<MessageDto> messages;
 }
