@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class ViewController {
 
+    @RequestMapping("/main")
+    public String main2(){
+        return "main.html";
+    }
     @RequestMapping("/view")
     public String viewPage(){
         return "view";
