@@ -51,14 +51,20 @@ while True:
         print("INSERT IGNORE INTO MESSAGE VALUES("+str(message['md101_sn'])+",'"+
                     message['msg'].replace("\'","")+"',"+
                     "date_format('"+message['create_date']+"','%Y/%m/%d %H:%i:%s'))")
+
         cur.execute("INSERT IGNORE INTO MESSAGE VALUES("+str(message['md101_sn'])+",'"+
                     message['msg'].replace("\'","")+"',"+
                     "date_format('"+message['create_date']+"','%Y/%m/%d %H:%i:%s'))")
+
         for locationID in message['location_id'].split(","):
             print("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
+
             cur.execute("INSERT IGNORE INTO MESSAGE_REGION VALUES("+locationID+",'"+message['md101_sn']+"')")
+
         cur.callproc('protest', [message['md101_sn']])
+
     print(pageCount)
+
     if(pageNo == 20): break
     pageNo+=1
     

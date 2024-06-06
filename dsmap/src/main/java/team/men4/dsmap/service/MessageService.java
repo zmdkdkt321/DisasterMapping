@@ -4,7 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.men4.dsmap.model.dto.RegionWithMessagesDTO;
+import team.men4.dsmap.model.dto.MessageDto;
+import team.men4.dsmap.model.dto.RegionWithMessagesDto;
 import team.men4.dsmap.model.entity.Message;
 import team.men4.dsmap.model.entity.RegionWithMessages;
 import team.men4.dsmap.mybatis.MessageMapper;
@@ -21,7 +22,7 @@ public class MessageService {
     MessageMapper messageMapper;
 
 
-    public List<RegionWithMessagesDTO> selectMsgAll() {
+    public List<RegionWithMessagesDto> selectMsgAll() {
         List<RegionWithMessages> list = new ArrayList<>();
         try{
             list = messageMapper.selectMsgAll();
@@ -31,12 +32,12 @@ public class MessageService {
 
         int num =0;
         for(RegionWithMessages  m : list){
-            log.info("lv1 tuple: {}", m.getMessages());
+            num += m.getMessages().size();
         }
+        log.info("lv1 tuple: {}", num);
 
 
-
-        List<RegionWithMessagesDTO> dtoList = new ArrayList<>();
+        List<RegionWithMessagesDto> dtoList = new ArrayList<>();
 
         for(RegionWithMessages entity : list){
 
@@ -45,22 +46,34 @@ public class MessageService {
             if(!name.equals(entity.getLv2Name())){
 
                 if(!entity.getLv2Name().equals("None")){
-                    name += entity.getLv2Name();}
+                    name += " "+entity.getLv2Name();}
             }
             if(!entity.getLv3Name().equals("None")){
-                name += entity.getLv3Name();
+                name += " "+entity.getLv3Name();
+            }
+            log.info("{} {} {} {} ",entity.getId(), name, entity.getX(), entity.getY());
+
+            List<MessageDto> messages = new ArrayList<>();
+
+            for(Message m : entity.getMessages()){
+                String d = m.getDate().toString();
+                String[] srr = d.split("T");
+
+                MessageDto messageDto = new MessageDto(m.getId(), m.getContent(), srr[0], srr[1]);
+                messages.add(messageDto);
             }
 
-            RegionWithMessagesDTO dto = new RegionWithMessagesDTO(
+            RegionWithMessagesDto dto = new RegionWithMessagesDto(
                     entity.getId(),
                     name,
                     entity.getX(),
                     entity.getY(),
-                    entity.getMessages());
+                    entity.getMessages().size(),
+                    messages);
+            dtoList.add(dto);
         }
-        for(RegionWithMessagesDTO dto: dtoList){
-            log.info(dto.toString());
-        }
+
+
         return dtoList;
     }
 

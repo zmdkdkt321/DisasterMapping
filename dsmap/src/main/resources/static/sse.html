@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Client</title>
+</head>
+<body>
+<h1>SSE Client</h1>
+<div id="sseData"></div>
+
+<script>
+    const sseUrl = '/events';
+
+    function establishSseConnection() {
+        const sseSource = new EventSource(sseUrl);
+
+        sseSource.onmessage = function(event) {
+            const eventData = event.data;
+            console.log(eventData);
+            const sseDataElement = document.getElementById('sseData');
+
+            sseDataElement.innerHTML += '<br>Received data: ' + eventData;
+        };
+
+        sseSource.onerror = function(event) {
+            console.error('SSE connection error! Reconnecting...');
+            sseSource.close(); // 기존 SSE 연결 닫기
+            establishSseConnection(); // 다시 연결
+        };
+    }
+
+    establishSseConnection();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<div class="container-fluid m-0 p-0">
+    <div class="mx-auto" style="width: 60%;">
+        <div class="container-fluid">
+            <p class="h2 m-0">재난 문자</p>
+        </div>
+        <div class="justify-content-center mt-3">
+            <div class="container-fluid bg-light m-0 py-3 row align-items-start">
+                <div class="ms-0 me-auto" style="width:90%">
+                    <ul class="m-0 p-0" style="list-style-type: none;">
+                        <li>
+                            <label for="sbLawAea1">대상지역 : </label>
+                            <select id="sbLawAea1" onchange="sbLawArea1_onchange()">
+                                <option value="A00">시도선택</option>
+                                <option value="전국">전국</option>
+                                <option value="서울특별시">서울특별시</option>
+                                <option value="부산광역시">부산광역시</option>
+                                <option value="대구광역시">대구광역시</option>
+                                <option value="인천광역시">인천광역시</option>
+                                <option value="광주광역시">광주광역시</option>
+                                <option value="대전광역시">대전광역시</option>
+                                <option value="울산광역시">울산광역시</option>
+                                <option value="세종특별자치시">세종특별자치시</option>
+                                <option value="경기도">경기도</option>
+                                <option value="강원도특별자치시">강원도특별자치시</option>
+                                <option value="충청북도">충청북도</option>
+                                <option value="충청남도">충청남도</option>
+                                <option value="전북특별자치시">전북특별자치시</option>
+                                <option value="전라남도">전라남도</option>
+                                <option value="경상북도">경상북도</option>
+                                <option value="경상남도">경상남도</option>
+                                <option value="제주특별자치시">제주특별자치시</option>
+
+                            </select>
+                            <select id="sbLawArea2" title="시군구선택">
+                                <option value>시군구선택</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>등록일 : </label>
+                            <input type="date" id="startmsgdate" min="" max="" title="등록일검색시작일자선택">
+                            <span>~</span>
+                            <input type="date" id="endmsgdate" min="" max="" title="등록일검색종료일자선택">
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-auto ms-auto me-0 mb-0" style="width: 10;">
+                    <a class="bg-info text-reset m-1 p-1" onclick="#">검색</a>
+                </div>
+            </div>
+            <div class="container-fluid m-0 mt-1 p-0">
+                <span>전체</span>
+                <span class="text-info">함수</span>
+                <span>건</span>
+            </div>
+            <div class="container-fluid mt-2 p-0">
+                <div class="table-responsive-lg m-0 p-0">
+                    <table class="table table-bordered table-sm align-middle" style="table-layout:fixed">
+                        <thead class="border-top-primary">
+                        <colgroup>
+                            <col width="50px" >
+                            <col width="200px">
+                            <col width="50px">
+                        </colgroup>
+                        <tr class="clickable-row">
+                            <th scope="col-3">
+                                <span>주소</span>
+                            </th>
+                            <th class="border-x" scope="col-5">
+                                <span>재난문자</span>
+                            </th>
+                            <th style="width:20px" scope="col-4">
+                                <span>등록일</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-hover" id="mapList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

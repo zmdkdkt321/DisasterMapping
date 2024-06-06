@@ -2,7 +2,7 @@ function loadMain() { //main에 main body 부분 비동기 연결
     const config = {
         method: "get"
     };
-    fetch("indexContext.html", config)
+    fetch("/indexContext", config)
         .then(response => response.text())
         .then(data => {
             // map-container라는 id를 가진 div 요소를 선택
@@ -17,13 +17,16 @@ function loadMap() { //main에 지도 페이지 비동기 연결
     const config = {
         method: "get"
     };
-    fetch("map.html", config)
+    fetch("/map", config)
         .then(response => response.text())
         .then(data => {
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
+//            mapMsgListJson(); //초기 리스트 생성
+//            mapMake()//카카오맵 생성 및 클러스트, 마커 생성
+            //loadmapmarker();
         })
         .catch(error => console.log("fetch 에러!"));
 }
@@ -32,13 +35,14 @@ function loadMsgList() { //main에 통계 페이지 비동기 연결
     const config = {
         method: "get"
     };
-    fetch("msgList.html", config)
+    fetch("/msgList", config)
         .then(response => response.text())
         .then(data => {
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
+            mapMsgListJson(); //초기 리스트 생성
         })
         .catch(error => console.log("fetch 에러!"));
 }
@@ -67,6 +71,7 @@ window.onbeforeunload = function() {
 window.onload = function() {
     // 각 섹션의 상태를 복원합니다.
     restoreSectionState('section1');
+
 }
 
 // 페이지를 떠날 때 실행되는 함수
@@ -133,26 +138,57 @@ function fetch_region() { //검색에서 시군구 select option 검색
             .catch(error => console.log("fetch 에러!"));
 }
 
-function mapMsgListJson() {
-//    fetch("json/maplist.json")
-//        .then(response => response.json())
-//        .then(data => {
-            const data = [
-                ["경상남도", "폭우주의보", "2024-00-00"],
-                ["진주시", "폭우주의보", "2024-00-00"],
-                ["진주시", "폭우특보", "2024-00-00"]
-            ];
+function mapMsgListJson() { //메세지리스트 생성
+    fetch("json/dummy.json")
+        .then(response => response.json())
+        .then(data => {
             const tbody = document.getElementById('mapList');
             data.forEach(rowData => {
-                const tr = document.createElement('tr');
-                rowData.forEach(cellData => {
-                    const td = document.createElement('td');
-                    td.textContent = cellData;
-                    tr.appendChild(td);
+                let msgs = rowData.messages;
+                msgs.forEach(cellData => {
+                    const tr = document.createElement('tr');
+                    tr.id = cellData.id;
+//                    tr.classList.add("overflow-hidden");
+//                    tr.classList.add("clickable-row");
+//                    tr.className.add(cellData.id);
+                    tr.onclick = function() {
+                        tr_onclickheddin();
+                    };
+                    //const td = document.createElement('td');
+                    const addrtd = document.createElement('td');
+                    const contenttd = document.createElement('td');
+                    const datetd = document.createElement('td');
+//                    const addrdiv = document.createElement('div');
+//                    const contentdiv = document.createElement('div');
+//                    const datediv = document.createElement('div');
+
+//                    addrdiv.classList.add("overflow-y-hidden");
+//                    contentdiv.classList.add("overflow-y-hidden");
+//                    datediv.classList.add("overflow-y-hidden");
+//                    datetd.classList.add("overflow-y-hidden");
+
+                    addrtd.style.overflow = "hidden";
+                    addrtd.style.whiteSpace = "nowrap";
+                    contenttd.style.overflow = "hidden";
+                    contenttd.style.whiteSpace = "nowrap";
+                    datetd.style.overflow = "hidden";
+                    datetd.style.whiteSpace = "nowrap";
+
+                    addrtd.textContent = rowData.name;
+                    contenttd.textContent = cellData.content;
+                    datetd.textContent = cellData.date;
+//                    td.textContent = cellData.content;
+//                    tr.appendChild(td);
+//                    addrtd.appendChild(addrdiv);
+//                    contenttd.appendChild(contentdiv);
+//                    datetd.appendChild(datediv);
+                    tr.appendChild(addrtd);
+                    tr.appendChild(contenttd);
+                    tr.appendChild(datetd);
+                    tbody.appendChild(tr);
                 });
-                tbody.appendChild(tr);
             });
-//        });
+        });
 }
 
 /*
@@ -178,25 +214,183 @@ function optionAppendChild(value) {
 //        con.style.display = 'table-row';
 //    } else{
 //        con.style.display = 'none';
+
 //    }
 //}
 
-function tr_onclickheddin(){ //테이블 열 추가
+function tr_onclickheddin(){ //테이블 상세보기 열 추가
     const rows = document.querySelectorAll('.clickable-row');
+    // 이벤트가 발생한 요소
+    const clickedTd = event.target;
+
+    // 요소의 id를 가져옴
+    const tdId = clickedTd.id;
     rows.forEach(row => {
         row.addEventListener('click', function() {
             // 새로운 tr 요소가 이미 추가된 경우 삭제
             if (this.nextElementSibling && this.nextElementSibling.classList.contains('new-row')) {
                 this.nextElementSibling.remove();
+                this.nextElementSibling.remove();
             } else {
-                // 새로운 tr 요소 추가
-                const newRowHTML = `
-                    <tr class="new-row">
-                        <td colspan='3'><div>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div></td>
-                    </tr>
-                `;
-                this.insertAdjacentHTML('afterend', newRowHTML);
-            }
+//                fetch("json/dummy.json")
+//                    .then(response => response.json())
+//                    .then(data => {
+//                        const tbody = document.getElementById('mapList');
+//                        data.forEach(rowData => {
+//                            let msgs = rowData.messages;
+//                            msgs.forEach(cellData => {
+//                            const id = cellData.id;
+//                            if(id == tdId ){
+//                                const addr = rowData.name;
+//                                const content = rowData.content;
+//                                const date = rowData.date;
+//                                // 새로운 tr 요소 추가
+                                const newRowHTML = `
+                                    <tr class="new-row">
+
+                                          <td>주소</td>
+                                          <td>일자</td>
+                                          <td>시간</td>
+                                    </tr>
+                                    <tr class="new-row">
+
+                                          <td colspan='3'>내용</td>
+                                    </tr>
+                                `;
+                                this.insertAdjacentHTML('afterend', newRowHTML);
+                            }
+
+//                        });
+//                    });
+//                });
+//            }
         });
     });
+}
+
+function loadmapmarker() {
+    kakao.maps.load(function() {
+        var mapContainer = document.getElementById('map');
+        var mapOption = {
+            center: new kakao.maps.LatLng(35.2383, 128.6922),
+            level: 3
+        };
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+
+        var clusterer = new kakao.maps.MarkerClusterer({
+                        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+                        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+                        minLevel: 6 // 클러스터 할 최소 지도 레벨
+                    });
+
+            // x,y좌표 데이터 모음
+            var coordinates = [
+              // 위도 ,경도, count(메시지 개수)
+                { "name": "부산", "latitude": 35.1796, "longitude": 129.0756,"count" : 10 },
+                { "name": "울산", "latitude": 35.5384, "longitude": 129.3114,"count" : 20 },
+                { "name": "창원", "latitude": 35.2272, "longitude": 128.6811,"count" : 30 },
+                { "name": "진주", "latitude": 35.1798, "longitude": 128.1076,"count" : 40 },
+                { "name": "통영", "latitude": 34.8543, "longitude": 128.4286,"count" : 50 },
+                { "name": "거제", "latitude": 34.8801, "longitude": 128.6249,"count" : 60 },
+                { "name": "김해", "latitude": 35.2274, "longitude": 128.8714,"count" : 70 },
+                { "name": "양산", "latitude": 35.3381, "longitude": 129.0266,"count" : 80 },
+                { "name": "사천", "latitude": 35.0031, "longitude": 128.2590,"count" : 90 },
+                { "name": "밀양", "latitude": 35.4923, "longitude": 128.7547,"count" : 100 }
+            ];
+
+            // 인자는 x,y좌표로
+            coordinates.forEach(coord => {
+                createMarker(coord);
+                });
+    });
+}
+
+function mapMake(){
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    var infowindow = null;
+    const mapContainer = document.getElementById('map');
+    var mapOption = {
+        center: new kakao.maps.LatLng(35.2383, 128.6922), // 경상남도 중심 좌표
+        level : 8 // 지도의 초기 확대 레벨
+    };
+    // map에 카카오맵 할당
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    var clusterer = new kakao.maps.MarkerClusterer({
+                map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+                averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+                minLevel: 6 // 클러스터 할 최소 지도 레벨
+            });
+
+    // x,y좌표 데이터 모음
+    var coordinates = [
+      // 위도 ,경도, count(메시지 개수)
+        { "name": "부산", "latitude": 35.1796, "longitude": 129.0756,"count" : 10 },
+        { "name": "울산", "latitude": 35.5384, "longitude": 129.3114,"count" : 20 },
+        { "name": "창원", "latitude": 35.2272, "longitude": 128.6811,"count" : 30 },
+        { "name": "진주", "latitude": 35.1798, "longitude": 128.1076,"count" : 40 },
+        { "name": "통영", "latitude": 34.8543, "longitude": 128.4286,"count" : 50 },
+        { "name": "거제", "latitude": 34.8801, "longitude": 128.6249,"count" : 60 },
+        { "name": "김해", "latitude": 35.2274, "longitude": 128.8714,"count" : 70 },
+        { "name": "양산", "latitude": 35.3381, "longitude": 129.0266,"count" : 80 },
+        { "name": "사천", "latitude": 35.0031, "longitude": 128.2590,"count" : 90 },
+        { "name": "밀양", "latitude": 35.4923, "longitude": 128.7547,"count" : 100 }
+    ];
+
+    // 인자는 x,y좌표로
+    coordinates.forEach(coord => {
+        var id;
+        // id 변수
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(coord.latitude, coord.longitude)
+        });
+        // 이벤트 함수(마우스를 올렸을 때 해당지역정보 표시)
+        kakao.maps.event.addListener(marker, 'mouseover', function() {
+            displayAreaInfo(marker.getPosition(), coord.count,coord.name); // 마커 위치 얻어서 지역명,메시지 수 표시
+        });
+
+        // 클릭했을때 리스트 조회 하는 함수
+        kakao.maps.event.addListener(marker, 'click', function() {
+            // id 조회하는 함수하면됨
+        });
+
+
+        // 클러스터러에 마커들을 추가합니다
+        clusterer.addMarker(marker);
+        });
+}
+
+// 마커 만드는 함수
+
+
+// 지역 정보 표시
+function displayAreaInfo(coords, count, name) {
+    searchAddrFromCoords(coords, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var detailAddr = '<div>지역 명 : ' + name + '</div>'; // 지역명
+            detailAddr += '<div>메시지 수 : ' + count + '</div>'; // 메시지 수
+
+            if (infowindow) infowindow.close();
+
+            infowindow = new kakao.maps.InfoWindow({
+                position: coords,
+                content: detailAddr,
+                removable: true,
+                zIndex: 3, // 쌓임 순서를 3으로 지정
+                disableAutoPan: true
+            });
+
+            infowindow.open(map);
+        } else {
+            console.error('Failed to get address:', status);
+        }
+    });
+}
+
+//좌표를 받아서 지역명으로 던져준다.
+function searchAddrFromCoords(coords, callback) {
+    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 }

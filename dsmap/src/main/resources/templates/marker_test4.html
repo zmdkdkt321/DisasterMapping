@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>json으로 날라온 데이터를 좌표로 변환해서 지도에 마커 찍기</title>
+</head>
+<body>
+<div id="map" style="width:100%;height:700px;"></div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9c209260351fec6bb617697d6dbda1cf&libraries=services,clusterer"></script>
+<script>
+var geocoder = new kakao.maps.services.Geocoder();
+var infowindow = null;
+var mapContainer = document.getElementById('map');
+var mapOption = {
+    center: new kakao.maps.LatLng(35.2383, 128.6922), // 경상남도 중심 좌표
+    level: 8 // 지도의 초기 확대 레벨
+};
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var clusterer = new kakao.maps.MarkerClusterer({
+    map: map,
+    averageCenter: true,
+    minLevel: 6
+});
+
+// JSON 데이터를 가져와서 처리하는 함수
+function fetchDataAndPlotMarkers() {
+// 데이터 불러오는 부부
+    fetch("json/dummy.json")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let dataArray;
+            if (Array.isArray(data)) {
+                dataArray = data;
+            } else {
+                dataArray = [data];
+            }
+
+            // JSON 데이터를 받아와서 마커를 생성하고 클러스터에 추가
+            dataArray.forEach(item => {
+                var markerPosition = new kakao.maps.LatLng(parseFloat(item.x), parseFloat(item.y));
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: markerPosition
+                });
+                clusterer.addMarker(marker);
+
+                // 마커에 이벤트 리스너 등록
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    // 클릭 시 처리할 내용
+                });
+
+                // 마우스 호버 이벤트
+                kakao.maps.event.addListener(marker, 'mouseover', function() {
+                    displayAreaInfo(markerPosition, item);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+}
+
+// 지역 정보 표시 함수
+function displayAreaInfo(coords, messages) {
+    var messageContent = '';
+    messageContent += '<div>지역 명 : ' + messages.name + '</div>';
+    messageContent += '<div>메시지 수 : ' + messages.message_num + '</div>'; // 변경: 메시지 수로 표시
+
+    if (infowindow) infowindow.close();
+
+    infowindow = new kakao.maps.InfoWindow({
+        position: coords,
+        content: messageContent,
+        removable: true,
+        zIndex: 3,
+        disableAutoPan: true
+    });
+
+    infowindow.open(map);
+}
+
+// 페이지 로드 시 JSON 데이터를 가져와서 마커 표시(함수 실행)
+window.onload = fetchDataAndPlotMarkers;
+
+</script>
+</body>
+</html>
