@@ -29,25 +29,21 @@ public class TotalService {
         return  list;
     }
 
-    public Total selectTotalByRegion(Region region) {
-
-        Total totalByRegion = new Total(region.getLv2Name());
+    public int selectTotalByRegion(Region region) {
+        int num =0;
         try{
             List<Integer> list= totalMapper.selectTotalByRegion(region.getLv1Name(), region.getLv2Name(), region.getLv3Name());
 
             if(!list.isEmpty()){
                 log.info(list.toString());
-            }else{
-                log.info("empty");
+
+                for(int n : list){
+                    num +=n;
+                }
             }
         }catch(Exception e){
             e.printStackTrace();
         }
-
-
-        if(totalByRegion == null){
-            log.info("null ");
-        }
-        return totalByRegion;
+        return num;
     }
 }

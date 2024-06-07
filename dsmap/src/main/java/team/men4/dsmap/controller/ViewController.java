@@ -42,8 +42,8 @@ public class ViewController {
         return "msgList.html";
     }
 
-    @GetMapping("/comment")
+    @GetMapping("/main")
     public String index(){
-        return "cindex";
+        return "main.html";
     }
 }

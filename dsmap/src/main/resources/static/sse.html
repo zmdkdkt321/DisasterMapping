@@ -7,18 +7,20 @@
 </head>
 <body>
 <h1>SSE Client</h1>
-<div id="sseData"></div>
+<div id="sseData1"></div>
+<div id="sseData2"></div>
 
 <script>
-    const sseUrl = '/events';
+    const sseUrl1 = '/events/1';
+    const sseUrl2 = '/events/2';
 
-    function establishSseConnection() {
-        const sseSource = new EventSource(sseUrl);
+    function sseConn1() {
+        const sseSource = new EventSource(sseUrl1);
 
         sseSource.onmessage = function(event) {
             const eventData = event.data;
             console.log(eventData);
-            const sseDataElement = document.getElementById('sseData');
+            const sseDataElement = document.getElementById('sseData1');
 
             sseDataElement.innerHTML += '<br>Received data: ' + eventData;
         };
@@ -26,11 +28,31 @@
         sseSource.onerror = function(event) {
             console.error('SSE connection error! Reconnecting...');
             sseSource.close(); // 기존 SSE 연결 닫기
-            establishSseConnection(); // 다시 연결
+            sseConn1(); // 다시 연결
         };
     }
 
-    establishSseConnection();
+    function sseConn2() {
+        const sseSource = new EventSource(sseUrl2);
+
+        sseSource.onmessage = function(event) {
+            const eventData = event.data;
+            console.log(eventData);
+            const sseDataElement = document.getElementById('sseData2');
+
+            sseDataElement.innerHTML += '<br>Received data: ' + eventData;
+        };
+
+        sseSource.onerror = function(event) {
+            console.error('SSE connection error! Reconnecting...');
+            sseSource.close(); // 기존 SSE 연결 닫기
+            sseConn2(); // 다시 연결
+        };
+    }
+
+    sseConn1();
+    sseConn2();
+     console.log("hello");
 </script>
 
 </body>
