@@ -41,9 +41,5 @@ public class ViewController {
         log.info("list");
         return "msgList.html";
     }
-
-    @GetMapping("/main")
-    public String index(){
-        return "main.html";
-    }
+    
 }

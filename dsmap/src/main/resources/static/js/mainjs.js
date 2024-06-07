@@ -1,3 +1,9 @@
+
+
+// TODO [javascript] 비동기에서 reject 처리 추가
+// TODO [javascript] 기능 함수로 분리하여 리팩토링
+// TODO [javascript] log 생성 및 관리
+
 function loadMain() { //main에 main body 부분 비동기 연결
     const config = {
         method: "get"
