@@ -48,7 +48,7 @@ function loadMain() { //main에 main body 부분 비동기 연결
             ).catch(error => console.log("오늘거 못가져왔네!!"));
 
             //오늘 통계
-            fetch("/total/all", config)
+            fetch("/total", config)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
