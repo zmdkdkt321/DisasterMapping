@@ -23,7 +23,7 @@ public class TotalController {
     @Autowired
     private TotalService totalService;
 
-    @GetMapping("/all")
+    @GetMapping
     public List<TotalDto> selectAll(){
         return totalService.selectTotal();
     }

@@ -584,6 +584,7 @@ function drawChart(jsonData) {
 
         sseSource.onmessage = function(event) {
             // TODO [javascript] 이벤트 응답시 fetch 수행
+            // TODO [javascript] 포커스 페이지 확인
             console.log("event 발생");
         };
 
