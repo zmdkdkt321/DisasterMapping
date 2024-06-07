@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class TotalDto {
     private String name;
-    private int num;
+    private int count;
 }
