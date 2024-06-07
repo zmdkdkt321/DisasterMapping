@@ -13,7 +13,7 @@ public class OrderedEventListener {
     @EventListener
     public void sendPush(OrderedEvent event) throws InterruptedException{
         Thread.sleep(1500);
-        log.info(String.format("푸시 메세지 발송 [사품명 : %s]", event.getProductName()));
+        log.info(String.format("푸시 메세지 발송 [사 품명 : %s]", event.getProductName()));
     }
 
     @Async
