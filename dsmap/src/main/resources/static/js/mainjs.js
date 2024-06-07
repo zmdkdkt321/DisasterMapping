@@ -9,8 +9,44 @@ function loadMain() { //main에 main body 부분 비동기 연결
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
+
+            //주소 위지 찍는거
+            const addressElement = document.getElementById('addressName');
+            if (addressElement) {
+                addressElement.innerText = localStorage.getItem('region_lv1_name')+" "+localStorage.getItem('region_lv2_name')+" "+localStorage.getItem('region_lv3_name');
+            } else {
+                console.log("Element with id 'addressName' not found.");
+            }
+
+            const config = {
+                method: "get"
+            };
+
+            //자시 위치에 메시지 몇 건왔는지
+            fetch("/total/"+localStorage.getItem('region_lv1_name')+"/"+localStorage.getItem('region_lv2_name')+"/"+localStorage.getItem('region_lv3_name'),{
+                method: "get"
+            })
+                .then(response => response.text())
+                .then(data => {
+                    const countElement = document.getElementById('myAddressCount');
+                    if (countElement) {
+                        countElement.innerText = data;
+                    } else {
+                        console.log("Element with id 'myAddressCount' not found.");
+                    }
+                }
+            ).catch(error => console.log("오늘거 못가져왔네!!"));
+
+            //오늘 통계
+            fetch("/total/all", config)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    drawChart(data)
+                })
+                .catch(error => console.log(error));
         })
-        .catch(error => console.log("fetch 에러!"));
+        .catch(error => console.log("fetch indexContext 에러!"));
 }
 
 function loadMap() { //main에 지도 페이지 비동기 연결
@@ -47,17 +83,27 @@ function loadMsgList() { //main에 통계 페이지 비동기 연결
         .catch(error => console.log("fetch 에러!"));
 }
 
-window.onload = loadMain(); //페이지가 로드될 때 indexContext를 화면에 출력
-
 // 페이지가 로드될 때 실행되는 함수
 window.onload = function() {
-    // 로컬 저장소에서 상태를 가져옵니다.
-    var savedState = localStorage.getItem('pageState');
-
-    // 로컬 저장소에 상태가 있다면 상태를 복원합니다.
-    if (savedState) {
-        document.getElementById('content').value = savedState;
-    }
+    //자기 위치 가져와서
+    getLocation()
+        .then(position => {
+            //그걸로 행정구역 이름 lv1, lv2, lv3 가져오고
+            const { latitude, longitude } = position.coords;
+            return getAddressFromCoords(latitude, longitude);
+        })
+        .then(result => {
+            //로컬 저장소에 저장한다음
+            console.log(result);
+            localStorage.setItem('region_lv1_name',result.documents[0].address.region_1depth_name);
+            localStorage.setItem('region_lv2_name',result.documents[0].address.region_2depth_name);
+            localStorage.setItem('region_lv3_name',result.documents[0].address.region_3depth_name);
+            //메인페이지 로드
+            loadMain();
+        })
+        .catch(error => {
+        console.error(error.message);
+    });
 }
 
 // 페이지를 떠날 때 실행되는 함수
@@ -65,13 +111,6 @@ window.onbeforeunload = function() {
     // 현재 상태를 로컬 저장소에 저장합니다.
     var currentState = document.getElementById('content').value;
     localStorage.setItem('pageState', currentState);
-}
-
-// 페이지가 로드될 때 실행되는 함수
-window.onload = function() {
-    // 각 섹션의 상태를 복원합니다.
-    restoreSectionState('section1');
-
 }
 
 // 페이지를 떠날 때 실행되는 함수
@@ -393,4 +432,137 @@ function displayAreaInfo(coords, count, name) {
 //좌표를 받아서 지역명으로 던져준다.
 function searchAddrFromCoords(coords, callback) {
     geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+}
+
+function getLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        } else {
+            reject(new Error("Geolocation is not supported by this browser."));
+        }
+    });
+}
+
+function getAddressFromCoords(latitude, longitude) {
+    const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`;
+    const headers = {
+        'Authorization': `KakaoAK f79bf08e7d9f87c71463ed7a992aa26d`
+    };
+
+    return fetch(url, { headers })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch address");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.documents && data.documents.length > 0) {
+                return data;
+            } else {
+                throw new Error("No address found for the given coordinates");
+            }
+        });
+}
+
+// JSON 데이터를 함수로 받아 그래프를 그리는 함수
+function drawChart(jsonData) {
+    // JSON 데이터를 파싱하여 지역명과 재난 문자 개수 추출
+    const labels = jsonData.map(item => item.name);
+    const data = jsonData.map(item => item.count);
+
+    // 색상 팔레트 정의
+    const colorPalette = [
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(199, 199, 199, 0.2)',
+        'rgba(83, 102, 255, 0.2)',
+        'rgba(60, 179, 113, 0.2)',
+        'rgba(255, 140, 0, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(199, 199, 199, 0.2)'
+    ];
+
+    const borderColorPalette = colorPalette.map(color => color.replace('0.2', '1'));
+
+    // 각 데이터 항목에 대해 색상을 순환하여 적용
+    const backgroundColors = data.map((_, index) => colorPalette[index % colorPalette.length]);
+    const borderColors = data.map((_, index) => borderColorPalette[index % borderColorPalette.length]);
+
+    // 그래프를 그릴 캔버스 요소 선택
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Chart.js를 사용하여 그래프 생성
+    new Chart(ctx, {
+        type: 'bar', // 수직 막대 그래프
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '', // 빈 문자열로 설정하여 라벨을 숨김
+                data: data,
+                backgroundColor: backgroundColors, // 각 지역별로 다른 색상 적용
+                borderColor: borderColors, // 각 지역별로 다른 테두리 색상 적용
+                borderWidth: 1 // 막대 그래프 테두리 두께
+            }]
+        },
+        options: {
+            indexAxis: 'x', // x축을 기준으로 막대를 수직으로 설정
+            responsive: true,
+            maintainAspectRatio: false, // 비율 유지를 해제
+            scales: {
+                y: {
+                    beginAtZero: true, // y축의 시작을 0으로 설정
+                    title: {
+                        display: true,
+                        text: '메시지 수', // y축 라벨 추가
+                        font: {
+                            size: 16 // y축 라벨 텍스트 크기 조정
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: '지역', // x축 라벨 추가
+                        font: {
+                            size: 16 // x축 라벨 텍스트 크기 조정
+                        }
+                    },
+                    ticks: {
+                        autoSkip: false, // 모든 라벨 표시
+                        maxRotation: 0, // 최대 회전 각도
+                        minRotation: 0 // 최소 회전 각도
+                    },
+                    grid: {
+                        display: false // x축 그리드 숨기기
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.raw} messages`; // 툴팁에서 지역명을 제외한 메시지 수만 표시
+                        }
+                    }
+                },
+                legend: {
+                    display: false // 범례 숨기기
+                }
+            },
+            // 막대 너비 조정
+            barPercentage: 0.5, // 막대 너비를 50%로 설정
+            categoryPercentage: 0.8 // 카테고리 너비를 80%로 설정
+        }
+    });
 }
