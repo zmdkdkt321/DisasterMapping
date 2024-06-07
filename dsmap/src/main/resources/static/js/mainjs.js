@@ -11,9 +11,11 @@ function loadMain() { //main에 main body 부분 비동기 연결
             container.innerHTML = data;
 
             //주소 위지 찍는거
-            const addressElement = document.getElementById('addressName');
+            const addressElement = document.getElementsByClassName('addressName');
             if (addressElement) {
-                addressElement.innerText = localStorage.getItem('region_lv1_name')+" "+localStorage.getItem('region_lv2_name')+" "+localStorage.getItem('region_lv3_name');
+                for(var i = 0; i < addressElement.length; i++) {
+                    addressElement[i].innerText = localStorage.getItem('region_lv1_name')+" "+localStorage.getItem('region_lv2_name')+" "+localStorage.getItem('region_lv3_name');
+                }
             } else {
                 console.log("Element with id 'addressName' not found.");
             }
@@ -28,9 +30,11 @@ function loadMain() { //main에 main body 부분 비동기 연결
             })
                 .then(response => response.text())
                 .then(data => {
-                    const countElement = document.getElementById('myAddressCount');
+                    const countElement = document.getElementsByClassName('myAddressCount');
                     if (countElement) {
-                        countElement.innerText = data;
+                        for(var i = 0; i < countElement.length; i++){
+                            countElement[i].innerText = data;
+                        }
                     } else {
                         console.log("Element with id 'myAddressCount' not found.");
                     }
