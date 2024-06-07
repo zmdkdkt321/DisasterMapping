@@ -12,5 +12,4 @@ public class MessageTotal {
     private Integer total;
     private Map<String, Integer> TodayStatics;
 
-
 }
