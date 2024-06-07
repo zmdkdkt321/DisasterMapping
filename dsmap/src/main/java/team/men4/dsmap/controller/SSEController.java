@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -23,6 +24,18 @@ public class SSEController {
         this.sseService = sseService;
     }
 
+    @PostMapping("publish")
+    public String publish(){
+
+        sseService.sendUpdateEvent("call");
+        return "ok";
+    }
+
+
+    @GetMapping(path="/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter handleSseRequest() {
+        return sseService.createEmitter();
+    }
     @GetMapping(path="/1", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter handleSseRequest1() {
         return sseService.createEmitter();

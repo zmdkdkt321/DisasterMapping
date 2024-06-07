@@ -576,3 +576,22 @@ function drawChart(jsonData) {
         }
     });
 }
+
+ const sseUrl = '/events/sse';
+
+    function sseConn() {
+        const sseSource = new EventSource(sseUrl);
+
+        sseSource.onmessage = function(event) {
+            // TODO [javascript] 이벤트 응답시 fetch 수행
+            console.log("event 발생");
+        };
+
+        sseSource.onerror = function(event) {
+            console.error('SSE connection error! Reconnecting...');
+            sseSource.close(); // 기존 SSE 연결 닫기
+            sseConn(); // 다시 연결
+        };
+    }
+
+ sseConn();

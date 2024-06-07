@@ -21,7 +21,6 @@ public class TotalController {
     private TotalService totalService;
 
 
-
     @GetMapping("/all")
     public List<Total> selectAll(){
         return totalService.selectTotal();
