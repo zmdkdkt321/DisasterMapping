@@ -10,53 +10,57 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="/js/mainjs.js" defer></script>
-    <style>
-        #chartContainer {
-            height: 500px;
-            width: 500px; /* 차트 컨테이너의 너비를 줄임 */
-            max-width: 600px; /* 최대 너비를 설정 */
-            margin: auto; /* 가운데 정렬 */
-        }
-    </style>
     <title>Document</title>
 </head>
 
 <body>
-<div class="container-fluid m-0 p-0" id="top_head">
-    <div class="d-flex justify-content-center">
-        <p class="h1 text-info text-conter d-lg-none"><a class="nav-link a-hvr d-lg-none text-reset" onclick="loadMain()">DSMAP</a></p>
+<div class="container-fluid row m-0 p-0">
+    <div class="col-sm-5 mt-auto mb-5 pb-5" style="height:100%;">
+        <div class="container-fluid m-0 p-0" id="top_head">
+            <div class="d-flex mx-5">
+                <p class="h1 text-info text-conter d-lg-none m-0"><a class="nav-link a-hvr d-lg-none text-reset p-0" onclick="loadMain()">DSMAP</a></p>
+            </div>
+            <div class="d-flex mx-5">
+                <p class="h1 text-info text-conter d-none d-lg-block m-0"><a class="nav-link a-hvr d-none d-lg-block text-reset p-0" onclick="loadMain()">D<small>isaster</small>S<small>afety</small>M<small>ap</small></a></p>
+            </div>
+        </div>
+        <div class="d-flex mx-5 mt-2 d-lg-none">
+            <p class="text-info d-lg-none p-0"><small class="addressName"></small> <span class="fw-bold text-danger myAddressCount"></span> <small>건</small></p>
+        </div>
+        <div class="d-flex mx-5 mt-2 d-none d-lg-block">
+            <p class="text-info d-none d-lg-block p-0"><small>현재 위치</small> : <small class="addressName"></small> <span class="fw-bold text-danger myAddressCount"></span> <small>건</small></p>
+        </div>
+        <!--        <nav class="navber navbar-expand-sm">-->
+        <div class="container-fluid w-75 m-0 p-0 mb-5">
+            <!--                <ul class="navbar-nav justify-content-center nav-pills nav-fill" id="navbarSupportedContent">-->
+            <ul class="list-group nav-pills nav-fill mx-5" id="navbarSupportedContent">
+                <li class="list-group text-size">
+                    <!-- <a class="nav-link" href="#">홈 <span class="sr-only">(current)</span></a> -->
+                    <!-- <button class="list-group-item m-0 p-0 bg-light"  style="border: none;" onclick="loadMain()">홈</button> -->
+                    <p class="d-flex text-info p-hvr"><a class="nav-link text-reset p-0" onclick="loadMain()">홈</a></p>
+                </li>
+                <li class="list-group">
+                    <!--<button class="list-group-item m-0 p-0 bg-light"  style="border: none;" onclick="loadMap()">지도</button> -->
+                    <p class="d-flex text-info p-hvr"><a class="nav-link text-reset p-0" onclick="loadMap()">지도</a></p>
+                </li>
+                <li class="list-group">
+                    <!-- <button class="list-group-item m-0 p-0 bg-light"  style="border: none;" onclick="loadMsgList()">통계</button> -->
+                    <p class="d-flex text-info p-hvr"><a class="nav-link text-reset p-0" onclick="loadMsgList()">통계</a></p>
+                </li>
+            </ul>
+        </div>
+        </nav>
     </div>
-    <div class="d-flex justify-content-center">
-        <p class="h1 text-info text-conter d-none d-lg-block "><a class="nav-link a-hvr d-none d-lg-block text-reset" onclick="loadMain()">D<small>isaster</small>S<small>afety</small>M<small>ap</small></a></p>
+    <div class="col-sm-7 m-0 p-0">
+        <section id="section1">
+            <div id="content" class="container-fluid m-0 p-0">
+
+            </div>
+        </section>
     </div>
+
 </div>
 
-<nav class="navber navbar-expand-sm">
-    <div class="container-fluid list-group w-75">
-        <ul class="navbar-nav justify-content-center nav-pills nav-fill" id="navbarSupportedContent">
-            <li class="nav-item text-size">
-                <!-- <a class="nav-link" href="#">홈 <span class="sr-only">(current)</span></a> -->
-                <!-- <button class="list-group-item m-0 p-0 bg-light"  style="border: none;" onclick="loadMain()">홈</button> -->
-                <p class="text-black p-hvr"><a class="nav-link text-reset" onclick="loadMain()">홈</a></p>
-            </li>
-            <li class="nav-item">
-                <!--<button class="list-group-item m-0 p-0 bg-light"  style="border: none;" onclick="loadMap()">지도</button> -->
-                <p class="text-black p-hvr"><a class="nav-link text-reset" onclick="loadMap()">지도</a></p>
-            </li>
-            <li class="nav-item">
-                <!-- <button class="list-group-item m-0 p-0 bg-light"  style="border: none;" onclick="loadMsgList()">통계</button> -->
-                <p class="text-black p-hvr"><a class="nav-link text-reset" onclick="loadMsgList()">통계</a></p>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-
-<section id="section1">
-    <div id="content" class="container-fluid m-0 p-2">
-
-    </div>
-</section>
 
 
 <!--<div class="summery">-->
