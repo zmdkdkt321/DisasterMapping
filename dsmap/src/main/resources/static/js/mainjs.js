@@ -55,6 +55,14 @@ function loadMain() { //main에 main body 부분 비동기 연결
                     drawChart(data)
                 })
                 .catch(error => console.log(error));
+
+            const clickedmain = document.getElementById("mainlist");
+            const clickedmap = document.getElementById("maplist");
+            const clickedlist = document.getElementById("listlist");
+
+            clickedmain.classList.add('gradient-menubackground');
+            clickedmap.classList.remove('gradient-menubackground');
+            clickedlist.classList.remove('gradient-menubackground');
         })
         .catch(error => console.log("fetch indexContext 에러!"));
 }
@@ -75,6 +83,13 @@ function loadMap() { //main에 지도 페이지 비동기 연결
             //loadmapmarker();
         })
         .catch(error => console.log("fetch 에러!"));
+    const clickedmain = document.getElementById("mainlist");
+    const clickedmap = document.getElementById("maplist");
+    const clickedlist = document.getElementById("listlist");
+
+    clickedmap.classList.add('gradient-menubackground');
+    clickedmain.classList.remove('gradient-menubackground');
+    clickedlist.classList.remove('gradient-menubackground');
 }
 
 function loadMsgList() { //main에 통계 페이지 비동기 연결
@@ -91,6 +106,13 @@ function loadMsgList() { //main에 통계 페이지 비동기 연결
             mapMsgListJson(); //초기 리스트 생성
         })
         .catch(error => console.log("fetch 에러!"));
+    const clickedmain = document.getElementById("mainlist");
+    const clickedmap = document.getElementById("maplist");
+    const clickedlist = document.getElementById("listlist");
+
+    clickedlist.classList.add('gradient-menubackground');
+    clickedmain.classList.remove('gradient-menubackground');
+    clickedmap.classList.remove('gradient-menubackground');
 }
 
 // 페이지가 로드될 때 실행되는 함수
@@ -114,39 +136,6 @@ window.onload = function() {
         .catch(error => {
         console.error(error.message);
     });
-}
-
-// 페이지를 떠날 때 실행되는 함수
-window.onbeforeunload = function() {
-    // 현재 상태를 로컬 저장소에 저장합니다.
-    var currentState = document.getElementById('content').value;
-    localStorage.setItem('pageState', currentState);
-}
-
-// 페이지를 떠날 때 실행되는 함수
-window.onbeforeunload = function() {
-    // 각 섹션의 상태를 저장합니다.
-    saveSectionState('section1');
-}
-
-// 특정 섹션의 상태를 저장하는 함수
-function saveSectionState(sectionId) {
-    var sectionInput = document.querySelector(`#${sectionId} .section-input`);
-    if (sectionInput) {
-        var sectionState = sectionInput.value;
-        localStorage.setItem(sectionId, sectionState);
-    }
-}
-
-// 특정 섹션의 상태를 복원하는 함수
-function restoreSectionState(sectionId) {
-    var sectionInput = document.querySelector(`#${sectionId} .section-input`);
-    if (sectionInput) {
-        var sectionState = localStorage.getItem(sectionId);
-        if (sectionState) {
-            sectionInput.value = sectionState;
-        }
-    }
 }
 
 function sbLawArea1_st() {
