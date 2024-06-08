@@ -14,9 +14,10 @@ body {
 }
 
 .summery{
-    border: 1px solid chartreuse;
-    width: auto;
-    margin-top: 1%;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background: rgb(0.1);
 }
 
 .contentLeft{
