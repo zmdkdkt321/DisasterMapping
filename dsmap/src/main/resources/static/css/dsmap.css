@@ -54,7 +54,7 @@ body {
     position: absolute;
     height: 100%;
     width: 100%;
-    background: blue;
+    background: linear-gradient(to right, blue 20%, white 80%);
     top: 0;
     left: -120%;
     transition: all 0.4s;
