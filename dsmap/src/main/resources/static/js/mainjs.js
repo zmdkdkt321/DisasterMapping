@@ -569,10 +569,11 @@ function drawChart(jsonData) {
     });
 }
 
- const sseUrl = '/events/sse';
+const sseUrl = '/events/sse';
+let sseSource = null;
 
-    function sseConn() {
-        const sseSource = new EventSource(sseUrl);
+        function sseConn() {
+            sseSource = new EventSource(sseUrl);
 
         sseSource.onmessage = function(event) {
             // TODO [javascript] 이벤트 응답시 fetch 수행
@@ -581,11 +582,20 @@ function drawChart(jsonData) {
             updateMainDate()
         };
 
-        sseSource.onerror = function(event) {
-            console.error('SSE connection error! Reconnecting...');
-            sseSource.close(); // 기존 SSE 연결 닫기
-            sseConn(); // 다시 연결
-        };
-    }
+            sseSource.onerror = function(event) {
+                console.error('SSE connection error! Reconnecting...');
+                sseSource.close(); // 기존 SSE 연결 닫기
+            };
+        }
 
  sseConn();
+
+window.addEventListener('beforeunload', function (e) {
+   closeSSE();
+});
+
+function closeSSE() {
+    if (sseSource) {
+        sseSource.close();
+    }
+}

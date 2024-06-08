@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Close SSE Example</title>
+</head>
+<body>
+<!-- 버튼 추가 -->
+<button id="closeButton" onclick="closeSSE()">SSE 연결 닫기</button>
+
+<!-- readyState 값을 표시할 div 추가 -->
+<div id="readyStateDisplay"></div>
+
+<script>
+    const sseUrl = '/sse/sub';
+    let sseSource = null;
+
+    function sseConn() {
+        sseSource = new EventSource(sseUrl);
+        console.log("connect");
+        console.log(sseSource);
+        sseSource.onmessage = function(event) {
+            console.log("event 발생");
+        };
+
+        sseSource.onerror = function(event) {
+            console.error('SSE connection error! Reconnecting...');
+            sseSource.close(); // 기존 SSE 연결 닫기
+        };
+    }
+
+    function closeSSE() {
+        if (sseSource) {
+            sseSource.close();
+            console.log(sseSource);
+        }
+    }
+
+    // readyState 값을 주기적으로 확인하고 div에 표시하는 함수 추가
+    function updateReadyStateDisplay() {
+        // readyState 값을 가져와서 div에 표시
+        document.getElementById('readyStateDisplay').innerText = `ReadyState: ${sseSource.readyState}`;
+    }
+
+    // 1초마다 updateReadyStateDisplay 함수 호출
+    setInterval(updateReadyStateDisplay, 1000);
+
+    sseConn();
+</script>
+</body>
+</html>
