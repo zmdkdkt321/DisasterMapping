@@ -1,4 +1,4 @@
-package team.men4.dsmap.service.model.dto;
+package team.men4.dsmap.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

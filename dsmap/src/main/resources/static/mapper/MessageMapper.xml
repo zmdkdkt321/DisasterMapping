@@ -6,7 +6,7 @@
 
 <mapper namespace="team.men4.dsmap.mybatis.MessageMapper">
 
-    <resultMap id="regionWithMessages" type="team.men4.dsmap.service.model.entity.RegionWithMessages">
+    <resultMap id="regionWithMessages" type="team.men4.dsmap.model.entity.RegionWithMessages">
         <result property="id" column="region_id"/>
         <result property="lv1Name" column="lv1_name"/>
         <result property="lv2Name" column="lv2_name"/>
@@ -14,7 +14,7 @@
         <result property="x" column="loc_x"/>
         <result property="y" column="loc_y"/>
 
-        <collection property="messages" ofType="team.men4.dsmap.service.model.entity.Message">
+        <collection property="messages" ofType="team.men4.dsmap.model.entity.Message">
             <id property="id" column="msg_id"/>
             <result property="content" column="content"/>
             <result property="date" column="date"/>

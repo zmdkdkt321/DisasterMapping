@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.men4.dsmap.service.model.dto.RegionWithMessagesDto;
-import team.men4.dsmap.service.model.entity.RegionWithMessages;
+import team.men4.dsmap.model.dto.RegionWithMessagesDto;
+import team.men4.dsmap.model.entity.RegionWithMessages;
 import team.men4.dsmap.service.MessageService;
 
 import java.util.List;

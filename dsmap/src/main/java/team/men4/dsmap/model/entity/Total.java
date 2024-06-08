@@ -1,4 +1,4 @@
-package team.men4.dsmap.service.model.entity;
+package team.men4.dsmap.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
