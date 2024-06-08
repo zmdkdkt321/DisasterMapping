@@ -26,35 +26,7 @@ function loadMain() { //main에 main body 부분 비동기 연결
                 console.log("Element with id 'addressName' not found.");
             }
 
-            const config = {
-                method: "get"
-            };
-
-            //자시 위치에 메시지 몇 건왔는지
-            fetch("/total/"+localStorage.getItem('region_lv1_name')+"/"+localStorage.getItem('region_lv2_name')+"/"+localStorage.getItem('region_lv3_name'),{
-                method: "get"
-            })
-                .then(response => response.text())
-                .then(data => {
-                    const countElement = document.getElementsByClassName('myAddressCount');
-                    if (countElement) {
-                        for(var i = 0; i < countElement.length; i++){
-                            countElement[i].innerText = data;
-                        }
-                    } else {
-                        console.log("Element with id 'myAddressCount' not found.");
-                    }
-                }
-            ).catch(error => console.log("오늘거 못가져왔네!!"));
-
-            //오늘 통계
-            fetch("/total", config)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    drawChart(data)
-                })
-                .catch(error => console.log(error));
+            updateMainDate();
 
             const clickedmain = document.getElementById("mainlist");
             const clickedmap = document.getElementById("maplist");
@@ -65,6 +37,34 @@ function loadMain() { //main에 main body 부분 비동기 연결
             clickedlist.classList.remove('gradient-menubackground');
         })
         .catch(error => console.log("fetch indexContext 에러!"));
+}
+
+function updateMainDate(){
+    fetch("/total/"+localStorage.getItem('region_lv1_name')+"/"
+        +localStorage.getItem('region_lv2_name')+"/"
+        +localStorage.getItem('region_lv3_name')
+        ,{method: "get"})
+        .then(response => response.text())
+        .then(data => {
+            const countElement = document.getElementsByClassName('myAddressCount');
+            if (countElement) {
+                for(var i = 0; i < countElement.length; i++){
+                    countElement[i].innerText = data;
+                }
+            } else {
+                console.log("Element with id 'myAddressCount' not found.");
+            }
+        }
+    ).catch(error => console.log("오늘거 못가져왔네!!"));
+
+    //오늘 통계
+    fetch("/total", {method: "get"})
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            drawChart(data)
+        })
+        .catch(error => console.log(error));
 }
 
 function loadMap() { //main에 지도 페이지 비동기 연결
@@ -491,13 +491,16 @@ function drawChart(jsonData) {
         'rgba(255, 159, 64, 0.2)',
         'rgba(199, 199, 199, 0.2)'
     ];
-
     const borderColorPalette = colorPalette.map(color => color.replace('0.2', '1'));
 
     // 각 데이터 항목에 대해 색상을 순환하여 적용
     const backgroundColors = data.map((_, index) => colorPalette[index % colorPalette.length]);
     const borderColors = data.map((_, index) => borderColorPalette[index % borderColorPalette.length]);
 
+    let chartStatus = Chart.getChart('myChart');
+    if (chartStatus !== undefined) {
+        chartStatus.destroy();
+    }
     // 그래프를 그릴 캔버스 요소 선택
     const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -575,6 +578,7 @@ function drawChart(jsonData) {
             // TODO [javascript] 이벤트 응답시 fetch 수행
             // TODO [javascript] 포커스 페이지 확인
             console.log("event 발생");
+            updateMainDate()
         };
 
         sseSource.onerror = function(event) {
