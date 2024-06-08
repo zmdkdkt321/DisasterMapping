@@ -447,16 +447,18 @@ function drawChart(jsonData) {
 
 const sseUrl = '/sse/sub';
 let sseSource = null;
-
+            // TODO [javascript] 이벤트 응답시 fetch 수행
+            // TODO [javascript] 포커스 페이지 확인
         function sseConn() {
             sseSource = new EventSource(sseUrl);
 
-        sseSource.onmessage = function(event) {
-            // TODO [javascript] 이벤트 응답시 fetch 수행
-            // TODO [javascript] 포커스 페이지 확인
-            console.log("event 발생");
-            updateMainDate();
-        };
+            sseSource.addEventListener('event', (e) => {
+            	const { data: uptTime } = e;
+            	document.getElementById('time').innerHTML = '<small> 안전재난문자 업데이트 시간 : ' + uptTime + '</small>';
+            	console.log(uptTime);
+            	updateMainDate();
+            });
+
 
             sseSource.onerror = function(event) {
                 console.error('SSE connection error! Reconnecting...');

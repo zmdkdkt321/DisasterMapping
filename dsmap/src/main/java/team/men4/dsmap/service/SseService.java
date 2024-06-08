@@ -43,7 +43,7 @@ public class SseService {
 
         SseEventBuilder sseEventBuilder = event()
                 .name("event")
-                .data("connected")
+                .data(storage.getUptTime())
                 .reconnectTime(RECONNECT_TIME);
         try {
             sseEmitter.send(sseEventBuilder);
