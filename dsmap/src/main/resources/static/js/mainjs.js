@@ -26,45 +26,45 @@ function loadMain() { //main에 main body 부분 비동기 연결
                 console.log("Element with id 'addressName' not found.");
             }
 
-            const config = {
-                method: "get"
-            };
+            updateMainDate();
 
-            //자시 위치에 메시지 몇 건왔는지
-            fetch("/total/"+localStorage.getItem('region_lv1_name')+"/"+localStorage.getItem('region_lv2_name')+"/"+localStorage.getItem('region_lv3_name'),{
-                method: "get"
-            })
-                .then(response => response.text())
-                .then(data => {
-                    const countElement = document.getElementsByClassName('myAddressCount');
-                    if (countElement) {
-                        for(var i = 0; i < countElement.length; i++){
-                            countElement[i].innerText = data;
-                        }
-                    } else {
-                        console.log("Element with id 'myAddressCount' not found.");
-                    }
-                }
-            ).catch(error => console.log("오늘거 못가져왔네!!"));
-
-            //오늘 통계
-            fetch("/total", config)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    drawChart(data)
-                })
-                .catch(error => console.log(error));
-
-            const clickedmain = document.getElementById("mainlist");
-            const clickedmap = document.getElementById("maplist");
-            const clickedlist = document.getElementById("listlist");
-
-            clickedmain.classList.add('gradient-menubackground');
-            clickedmap.classList.remove('gradient-menubackground');
-            clickedlist.classList.remove('gradient-menubackground');
+//            const clickedmain = document.getElementById("mainlist");
+//            const clickedmap = document.getElementById("maplist");
+//            const clickedlist = document.getElementById("listlist");
+//
+//            clickedmain.classList.add('gradient-menubackground');
+//            clickedmap.classList.remove('gradient-menubackground');
+//            clickedlist.classList.remove('gradient-menubackground');
         })
         .catch(error => console.log("fetch indexContext 에러!"));
+}
+
+function updateMainDate(){
+    fetch("/total/"+localStorage.getItem('region_lv1_name')+"/"
+        +localStorage.getItem('region_lv2_name')+"/"
+        +localStorage.getItem('region_lv3_name')
+        ,{method: "get"})
+        .then(response => response.text())
+        .then(data => {
+            const countElement = document.getElementsByClassName('myAddressCount');
+            if (countElement) {
+                for(var i = 0; i < countElement.length; i++){
+                    countElement[i].innerText = data;
+                }
+            } else {
+                console.log("Element with id 'myAddressCount' not found.");
+            }
+        }
+    ).catch(error => console.log("오늘거 못가져왔네!!"));
+
+    //오늘 통계
+    fetch("/total", {method: "get"})
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            drawChart(data)
+        })
+        .catch(error => console.log(error));
 }
 
 function loadMap() { //main에 지도 페이지 비동기 연결
@@ -83,13 +83,14 @@ function loadMap() { //main에 지도 페이지 비동기 연결
             //loadmapmarker();
         })
         .catch(error => console.log("fetch 에러!"));
-    const clickedmain = document.getElementById("mainlist");
-    const clickedmap = document.getElementById("maplist");
-    const clickedlist = document.getElementById("listlist");
 
-    clickedmap.classList.add('gradient-menubackground');
-    clickedmain.classList.remove('gradient-menubackground');
-    clickedlist.classList.remove('gradient-menubackground');
+//    const clickedmain = document.getElementById("mainlist");
+//    const clickedmap = document.getElementById("maplist");
+//    const clickedlist = document.getElementById("listlist");
+//
+//    clickedmap.classList.add('gradient-menubackground');
+//    clickedmain.classList.remove('gradient-menubackground');
+//    clickedlist.classList.remove('gradient-menubackground');
 }
 
 function loadMsgList() { //main에 통계 페이지 비동기 연결
@@ -106,13 +107,14 @@ function loadMsgList() { //main에 통계 페이지 비동기 연결
             mapMsgListJson(); //초기 리스트 생성
         })
         .catch(error => console.log("fetch 에러!"));
-    const clickedmain = document.getElementById("mainlist");
-    const clickedmap = document.getElementById("maplist");
-    const clickedlist = document.getElementById("listlist");
 
-    clickedlist.classList.add('gradient-menubackground');
-    clickedmain.classList.remove('gradient-menubackground');
-    clickedmap.classList.remove('gradient-menubackground');
+//    const clickedmain = document.getElementById("mainlist");
+//    const clickedmap = document.getElementById("maplist");
+//    const clickedlist = document.getElementById("listlist");
+//
+//    clickedlist.classList.add('gradient-menubackground');
+//    clickedmain.classList.remove('gradient-menubackground');
+//    clickedmap.classList.remove('gradient-menubackground');
 }
 
 // 페이지가 로드될 때 실행되는 함수
@@ -229,15 +231,6 @@ function mapMsgListJson() { //메세지리스트 생성
         });
 }
 
-/*
-function optionAppendChild() {
-    var are2 = document.getElementById('sbLawArea2');
-    var op2 = document.createElement('option');
-    //op2.value = '0';
-    op2.text = '시군구선택';
-    are2.appendChild(op2);
-}
-*/
 function optionAppendChild(value) {
     var are2 = document.getElementById('sbLawArea2');
     var op2 = document.createElement('option');
@@ -245,16 +238,6 @@ function optionAppendChild(value) {
     op2.text = value;
     are2.appendChild(op2);
 }
-
-//function tr_onclickheddin(){
-//    const con = document.getElementById("tr_msglist");
-//    if(con.style.display == 'none'){
-//        con.style.display = 'table-row';
-//    } else{
-//        con.style.display = 'none';
-
-//    }
-//}
 
 function tr_onclickheddin(){ //테이블 상세보기 열 추가
     const rows = document.querySelectorAll('.clickable-row');
@@ -305,104 +288,6 @@ function tr_onclickheddin(){ //테이블 상세보기 열 추가
         });
     });
 }
-
-function loadmapmarker() {
-    kakao.maps.load(function() {
-        var mapContainer = document.getElementById('map');
-        var mapOption = {
-            center: new kakao.maps.LatLng(35.2383, 128.6922),
-            level: 3
-        };
-        var map = new kakao.maps.Map(mapContainer, mapOption);
-
-
-        var clusterer = new kakao.maps.MarkerClusterer({
-                        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-                        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-                        minLevel: 6 // 클러스터 할 최소 지도 레벨
-                    });
-
-            // x,y좌표 데이터 모음
-            var coordinates = [
-              // 위도 ,경도, count(메시지 개수)
-                { "name": "부산", "latitude": 35.1796, "longitude": 129.0756,"count" : 10 },
-                { "name": "울산", "latitude": 35.5384, "longitude": 129.3114,"count" : 20 },
-                { "name": "창원", "latitude": 35.2272, "longitude": 128.6811,"count" : 30 },
-                { "name": "진주", "latitude": 35.1798, "longitude": 128.1076,"count" : 40 },
-                { "name": "통영", "latitude": 34.8543, "longitude": 128.4286,"count" : 50 },
-                { "name": "거제", "latitude": 34.8801, "longitude": 128.6249,"count" : 60 },
-                { "name": "김해", "latitude": 35.2274, "longitude": 128.8714,"count" : 70 },
-                { "name": "양산", "latitude": 35.3381, "longitude": 129.0266,"count" : 80 },
-                { "name": "사천", "latitude": 35.0031, "longitude": 128.2590,"count" : 90 },
-                { "name": "밀양", "latitude": 35.4923, "longitude": 128.7547,"count" : 100 }
-            ];
-
-            // 인자는 x,y좌표로
-            coordinates.forEach(coord => {
-                createMarker(coord);
-                });
-    });
-}
-
-function mapMake(){
-    var geocoder = new kakao.maps.services.Geocoder();
-
-    var infowindow = null;
-    const mapContainer = document.getElementById('map');
-    var mapOption = {
-        center: new kakao.maps.LatLng(35.2383, 128.6922), // 경상남도 중심 좌표
-        level : 8 // 지도의 초기 확대 레벨
-    };
-    // map에 카카오맵 할당
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-
-    var clusterer = new kakao.maps.MarkerClusterer({
-                map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-                averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-                minLevel: 6 // 클러스터 할 최소 지도 레벨
-            });
-
-    // x,y좌표 데이터 모음
-    var coordinates = [
-      // 위도 ,경도, count(메시지 개수)
-        { "name": "부산", "latitude": 35.1796, "longitude": 129.0756,"count" : 10 },
-        { "name": "울산", "latitude": 35.5384, "longitude": 129.3114,"count" : 20 },
-        { "name": "창원", "latitude": 35.2272, "longitude": 128.6811,"count" : 30 },
-        { "name": "진주", "latitude": 35.1798, "longitude": 128.1076,"count" : 40 },
-        { "name": "통영", "latitude": 34.8543, "longitude": 128.4286,"count" : 50 },
-        { "name": "거제", "latitude": 34.8801, "longitude": 128.6249,"count" : 60 },
-        { "name": "김해", "latitude": 35.2274, "longitude": 128.8714,"count" : 70 },
-        { "name": "양산", "latitude": 35.3381, "longitude": 129.0266,"count" : 80 },
-        { "name": "사천", "latitude": 35.0031, "longitude": 128.2590,"count" : 90 },
-        { "name": "밀양", "latitude": 35.4923, "longitude": 128.7547,"count" : 100 }
-    ];
-
-    // 인자는 x,y좌표로
-    coordinates.forEach(coord => {
-        var id;
-        // id 변수
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: new kakao.maps.LatLng(coord.latitude, coord.longitude)
-        });
-        // 이벤트 함수(마우스를 올렸을 때 해당지역정보 표시)
-        kakao.maps.event.addListener(marker, 'mouseover', function() {
-            displayAreaInfo(marker.getPosition(), coord.count,coord.name); // 마커 위치 얻어서 지역명,메시지 수 표시
-        });
-
-        // 클릭했을때 리스트 조회 하는 함수
-        kakao.maps.event.addListener(marker, 'click', function() {
-            // id 조회하는 함수하면됨
-        });
-
-
-        // 클러스터러에 마커들을 추가합니다
-        clusterer.addMarker(marker);
-        });
-}
-
-// 마커 만드는 함수
-
 
 // 지역 정보 표시
 function displayAreaInfo(coords, count, name) {
@@ -470,34 +355,19 @@ function drawChart(jsonData) {
     // JSON 데이터를 파싱하여 지역명과 재난 문자 개수 추출
     const labels = jsonData.map(item => item.name);
     const data = jsonData.map(item => item.count);
+    const region = localStorage.getItem('region_lv1_name');
 
-    // 색상 팔레트 정의
-    const colorPalette = [
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(199, 199, 199, 0.2)',
-        'rgba(83, 102, 255, 0.2)',
-        'rgba(60, 179, 113, 0.2)',
-        'rgba(255, 140, 0, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(199, 199, 199, 0.2)'
-    ];
+   const backgroundColors = labels.map(label =>
+       label === region ? 'rgba(255, 0, 0, 0.2)' : 'rgba(75, 192, 192, 0.2)'
+   );
+   const borderColors = labels.map(label =>
+       label === region ? 'rgba(255, 0, 0, 1)' : 'rgba(75, 192, 192, 0.2)'
+   );
 
-    const borderColorPalette = colorPalette.map(color => color.replace('0.2', '1'));
-
-    // 각 데이터 항목에 대해 색상을 순환하여 적용
-    const backgroundColors = data.map((_, index) => colorPalette[index % colorPalette.length]);
-    const borderColors = data.map((_, index) => borderColorPalette[index % borderColorPalette.length]);
-
+    let chartStatus = Chart.getChart('myChart');
+    if (chartStatus !== undefined) {
+        chartStatus.destroy();
+    }
     // 그래프를 그릴 캔버스 요소 선택
     const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -522,7 +392,7 @@ function drawChart(jsonData) {
                 y: {
                     beginAtZero: true, // y축의 시작을 0으로 설정
                     title: {
-                        display: true,
+                        display: false,
                         text: '메시지 수', // y축 라벨 추가
                         font: {
                             size: 16 // y축 라벨 텍스트 크기 조정
@@ -531,7 +401,7 @@ function drawChart(jsonData) {
                 },
                 x: {
                     title: {
-                        display: true,
+                        display: false,
                         text: '지역', // x축 라벨 추가
                         font: {
                             size: 16 // x축 라벨 텍스트 크기 조정
@@ -557,6 +427,15 @@ function drawChart(jsonData) {
                 },
                 legend: {
                     display: false // 범례 숨기기
+                },
+                title : {
+                    display: true, // 제목 표시 여부
+                    text: '지역별 재난 문자 수', // 제목 텍스트
+                    font: {
+                        size: 18, // 제목 폰트 크기
+                        weight : 'bold'
+                        },
+                    color: '#000000'
                 }
             },
             // 막대 너비 조정
@@ -566,17 +445,18 @@ function drawChart(jsonData) {
     });
 }
 
-const sseUrl = '/events/sse';
+const sseUrl = '/sse/sub';
 let sseSource = null;
 
         function sseConn() {
             sseSource = new EventSource(sseUrl);
 
-            sseSource.onmessage = function(event) {
-                // TODO [javascript] 이벤트 응답시 fetch 수행
-                // TODO [javascript] 포커스 페이지 확인
-                console.log("event 발생");
-            };
+        sseSource.onmessage = function(event) {
+            // TODO [javascript] 이벤트 응답시 fetch 수행
+            // TODO [javascript] 포커스 페이지 확인
+            console.log("event 발생");
+            updateMainDate();
+        };
 
             sseSource.onerror = function(event) {
                 console.error('SSE connection error! Reconnecting...');

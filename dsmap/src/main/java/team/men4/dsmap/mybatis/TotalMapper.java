@@ -3,7 +3,7 @@ package team.men4.dsmap.mybatis;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import team.men4.dsmap.model.entity.Total;
+import team.men4.dsmap.service.model.entity.Total;
 
 import java.util.List;
 

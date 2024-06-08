@@ -3,8 +3,7 @@ package team.men4.dsmap.mybatis;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import team.men4.dsmap.model.entity.Message;
-import team.men4.dsmap.model.entity.RegionWithMessages;
+import team.men4.dsmap.service.model.entity.RegionWithMessages;
 
 import java.time.LocalDateTime;
 import java.util.List;
