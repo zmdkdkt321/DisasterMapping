@@ -571,7 +571,7 @@ function drawChart(jsonData) {
     });
 }
 
-const sseUrl = '/events/sse';
+const sseUrl = '/sse/sub';
 let sseSource = null;
 
         function sseConn() {
@@ -581,7 +581,7 @@ let sseSource = null;
             // TODO [javascript] 이벤트 응답시 fetch 수행
             // TODO [javascript] 포커스 페이지 확인
             console.log("event 발생");
-            updateMainDate()
+            updateMainDate();
         };
 
             sseSource.onerror = function(event) {

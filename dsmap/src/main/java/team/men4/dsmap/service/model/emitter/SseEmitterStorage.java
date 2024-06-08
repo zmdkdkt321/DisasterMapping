@@ -1,4 +1,4 @@
-package team.men4.dsmap.model.emitter;
+package team.men4.dsmap.service.model.emitter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

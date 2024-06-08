@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import team.men4.dsmap.model.emitter.SseEmitterStorage;
+import team.men4.dsmap.service.model.emitter.SseEmitterStorage;
 
 import java.io.IOException;
 

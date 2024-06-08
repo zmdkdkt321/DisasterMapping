@@ -6,7 +6,7 @@
 
 <mapper namespace="team.men4.dsmap.mybatis.TotalMapper">
 
-    <resultMap id="totalResultMap" type="team.men4.dsmap.model.entity.Total">
+    <resultMap id="totalResultMap" type="team.men4.dsmap.service.model.entity.Total">
         <id property="name" column="name"/>
         <result property="count" column="count"/>
     </resultMap>
@@ -22,8 +22,8 @@
         JOIN region r ON r.id = mr.region_id
         WHERE
             r.lv1_name LIKE #{q1}
-<!--        AND-->
-<!--            DATE(date) = CURDATE()-->
+        AND
+            DATE(date) = CURDATE()
         AND (
             (r.lv2_name = 'None' OR r.lv2_name LIKE #{q2})
             AND

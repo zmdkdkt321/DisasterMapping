@@ -1,8 +1,7 @@
-package team.men4.dsmap.model.entity;
+package team.men4.dsmap.service.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;

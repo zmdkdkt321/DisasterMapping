@@ -6,11 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.men4.dsmap.model.dto.RegionDto;
-import team.men4.dsmap.model.dto.TotalDto;
-import team.men4.dsmap.model.entity.Region;
-import team.men4.dsmap.model.entity.Total;
-import team.men4.dsmap.service.SseService;
+import team.men4.dsmap.service.model.dto.RegionDto;
+import team.men4.dsmap.service.model.dto.TotalDto;
 import team.men4.dsmap.service.TotalService;
 
 import java.util.List;
