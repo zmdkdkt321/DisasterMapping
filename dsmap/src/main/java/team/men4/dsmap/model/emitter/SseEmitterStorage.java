@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
+
 @Slf4j
 @Component
 public class SseEmitterStorage {
     private final List<SseEmitter> emitterList = new CopyOnWriteArrayList<>();
+    private String uptTime = "2024-06-08 00:00";
 
     public void addEmitter(SseEmitter sseEmitter) {
         emitterList.add(sseEmitter);
@@ -24,11 +27,16 @@ public class SseEmitterStorage {
     }
 
     public void broadcast(String msg) {
+        uptTime = msg;
         int num =0;
 
         for (SseEmitter emitter : emitterList) {
+
+            SseEmitter.SseEventBuilder sseEventBuilder = event()
+                    .name("event")
+                    .data(msg);
             try {
-                emitter.send(msg);
+                emitter.send(sseEventBuilder);
                 num++;
             } catch (IOException e) {
                 emitter.complete();
@@ -36,4 +44,10 @@ public class SseEmitterStorage {
         }
         log.info(String.format("call SseEmitter(%d)", num));
     }
+
+
+    public String getUptTime(){
+        return uptTime;
+    }
+
 }
