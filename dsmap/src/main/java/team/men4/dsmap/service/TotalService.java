@@ -41,7 +41,7 @@ public class TotalService {
                 extName += str[1];
             }
 
-            log.info(extName);
+//            log.info(extName);
 
             dtoList.add(new TotalDto(extName, t.getCount()));
         }
@@ -55,7 +55,7 @@ public class TotalService {
             List<Integer> list= totalMapper.selectTotalByRegion(region.getLv1_name(), region.getLv2_name(), region.getLv3_name());
 
             if(!list.isEmpty()){
-                log.info(list.toString());
+//                log.info(list.toString());
 
                 for(int n : list){
                     num +=n;
