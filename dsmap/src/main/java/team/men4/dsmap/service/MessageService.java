@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.men4.dsmap.service.model.dto.MessageDto;
-import team.men4.dsmap.service.model.dto.RegionWithMessagesDto;
-import team.men4.dsmap.service.model.entity.Message;
-import team.men4.dsmap.service.model.entity.RegionWithMessages;
+import team.men4.dsmap.model.dto.MessageDto;
+import team.men4.dsmap.model.dto.RegionWithMessagesDto;
+import team.men4.dsmap.model.entity.Message;
+import team.men4.dsmap.model.entity.RegionWithMessages;
 import team.men4.dsmap.mybatis.MessageMapper;
 
 import java.time.LocalDateTime;
