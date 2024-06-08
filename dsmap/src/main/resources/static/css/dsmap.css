@@ -72,10 +72,6 @@ body {
     color: white;
 }
 
-.gradient-menubackground { /*그라데이션 효과 */
-    background: linear-gradient(to right, blue 20%, white 80%);
-}
-
 .menuaction {
     background-color: rgb(0, 0, 255, 0.6);
     color : white;

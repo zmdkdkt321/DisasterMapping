@@ -231,15 +231,6 @@ function mapMsgListJson() { //메세지리스트 생성
         });
 }
 
-/*
-function optionAppendChild() {
-    var are2 = document.getElementById('sbLawArea2');
-    var op2 = document.createElement('option');
-    //op2.value = '0';
-    op2.text = '시군구선택';
-    are2.appendChild(op2);
-}
-*/
 function optionAppendChild(value) {
     var are2 = document.getElementById('sbLawArea2');
     var op2 = document.createElement('option');
@@ -247,16 +238,6 @@ function optionAppendChild(value) {
     op2.text = value;
     are2.appendChild(op2);
 }
-
-//function tr_onclickheddin(){
-//    const con = document.getElementById("tr_msglist");
-//    if(con.style.display == 'none'){
-//        con.style.display = 'table-row';
-//    } else{
-//        con.style.display = 'none';
-
-//    }
-//}
 
 function tr_onclickheddin(){ //테이블 상세보기 열 추가
     const rows = document.querySelectorAll('.clickable-row');
@@ -307,104 +288,6 @@ function tr_onclickheddin(){ //테이블 상세보기 열 추가
         });
     });
 }
-
-function loadmapmarker() {
-    kakao.maps.load(function() {
-        var mapContainer = document.getElementById('map');
-        var mapOption = {
-            center: new kakao.maps.LatLng(35.2383, 128.6922),
-            level: 3
-        };
-        var map = new kakao.maps.Map(mapContainer, mapOption);
-
-
-        var clusterer = new kakao.maps.MarkerClusterer({
-                        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-                        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-                        minLevel: 6 // 클러스터 할 최소 지도 레벨
-                    });
-
-            // x,y좌표 데이터 모음
-            var coordinates = [
-              // 위도 ,경도, count(메시지 개수)
-                { "name": "부산", "latitude": 35.1796, "longitude": 129.0756,"count" : 10 },
-                { "name": "울산", "latitude": 35.5384, "longitude": 129.3114,"count" : 20 },
-                { "name": "창원", "latitude": 35.2272, "longitude": 128.6811,"count" : 30 },
-                { "name": "진주", "latitude": 35.1798, "longitude": 128.1076,"count" : 40 },
-                { "name": "통영", "latitude": 34.8543, "longitude": 128.4286,"count" : 50 },
-                { "name": "거제", "latitude": 34.8801, "longitude": 128.6249,"count" : 60 },
-                { "name": "김해", "latitude": 35.2274, "longitude": 128.8714,"count" : 70 },
-                { "name": "양산", "latitude": 35.3381, "longitude": 129.0266,"count" : 80 },
-                { "name": "사천", "latitude": 35.0031, "longitude": 128.2590,"count" : 90 },
-                { "name": "밀양", "latitude": 35.4923, "longitude": 128.7547,"count" : 100 }
-            ];
-
-            // 인자는 x,y좌표로
-            coordinates.forEach(coord => {
-                createMarker(coord);
-                });
-    });
-}
-
-function mapMake(){
-    var geocoder = new kakao.maps.services.Geocoder();
-
-    var infowindow = null;
-    const mapContainer = document.getElementById('map');
-    var mapOption = {
-        center: new kakao.maps.LatLng(35.2383, 128.6922), // 경상남도 중심 좌표
-        level : 8 // 지도의 초기 확대 레벨
-    };
-    // map에 카카오맵 할당
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-
-    var clusterer = new kakao.maps.MarkerClusterer({
-                map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-                averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-                minLevel: 6 // 클러스터 할 최소 지도 레벨
-            });
-
-    // x,y좌표 데이터 모음
-    var coordinates = [
-      // 위도 ,경도, count(메시지 개수)
-        { "name": "부산", "latitude": 35.1796, "longitude": 129.0756,"count" : 10 },
-        { "name": "울산", "latitude": 35.5384, "longitude": 129.3114,"count" : 20 },
-        { "name": "창원", "latitude": 35.2272, "longitude": 128.6811,"count" : 30 },
-        { "name": "진주", "latitude": 35.1798, "longitude": 128.1076,"count" : 40 },
-        { "name": "통영", "latitude": 34.8543, "longitude": 128.4286,"count" : 50 },
-        { "name": "거제", "latitude": 34.8801, "longitude": 128.6249,"count" : 60 },
-        { "name": "김해", "latitude": 35.2274, "longitude": 128.8714,"count" : 70 },
-        { "name": "양산", "latitude": 35.3381, "longitude": 129.0266,"count" : 80 },
-        { "name": "사천", "latitude": 35.0031, "longitude": 128.2590,"count" : 90 },
-        { "name": "밀양", "latitude": 35.4923, "longitude": 128.7547,"count" : 100 }
-    ];
-
-    // 인자는 x,y좌표로
-    coordinates.forEach(coord => {
-        var id;
-        // id 변수
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: new kakao.maps.LatLng(coord.latitude, coord.longitude)
-        });
-        // 이벤트 함수(마우스를 올렸을 때 해당지역정보 표시)
-        kakao.maps.event.addListener(marker, 'mouseover', function() {
-            displayAreaInfo(marker.getPosition(), coord.count,coord.name); // 마커 위치 얻어서 지역명,메시지 수 표시
-        });
-
-        // 클릭했을때 리스트 조회 하는 함수
-        kakao.maps.event.addListener(marker, 'click', function() {
-            // id 조회하는 함수하면됨
-        });
-
-
-        // 클러스터러에 마커들을 추가합니다
-        clusterer.addMarker(marker);
-        });
-}
-
-// 마커 만드는 함수
-
 
 // 지역 정보 표시
 function displayAreaInfo(coords, count, name) {
