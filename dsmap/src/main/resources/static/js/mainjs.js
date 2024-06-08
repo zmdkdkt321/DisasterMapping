@@ -56,13 +56,13 @@ function loadMain() { //main에 main body 부분 비동기 연결
                 })
                 .catch(error => console.log(error));
 
-            const clickedmain = document.getElementById("mainlist");
-            const clickedmap = document.getElementById("maplist");
-            const clickedlist = document.getElementById("listlist");
-
-            clickedmain.classList.add('gradient-menubackground');
-            clickedmap.classList.remove('gradient-menubackground');
-            clickedlist.classList.remove('gradient-menubackground');
+//            const clickedmain = document.getElementById("mainlist");
+//            const clickedmap = document.getElementById("maplist");
+//            const clickedlist = document.getElementById("listlist");
+//
+//            clickedmain.classList.add('gradient-menubackground');
+//            clickedmap.classList.remove('gradient-menubackground');
+//            clickedlist.classList.remove('gradient-menubackground');
         })
         .catch(error => console.log("fetch indexContext 에러!"));
 }
@@ -83,13 +83,14 @@ function loadMap() { //main에 지도 페이지 비동기 연결
             //loadmapmarker();
         })
         .catch(error => console.log("fetch 에러!"));
-    const clickedmain = document.getElementById("mainlist");
-    const clickedmap = document.getElementById("maplist");
-    const clickedlist = document.getElementById("listlist");
 
-    clickedmap.classList.add('gradient-menubackground');
-    clickedmain.classList.remove('gradient-menubackground');
-    clickedlist.classList.remove('gradient-menubackground');
+//    const clickedmain = document.getElementById("mainlist");
+//    const clickedmap = document.getElementById("maplist");
+//    const clickedlist = document.getElementById("listlist");
+//
+//    clickedmap.classList.add('gradient-menubackground');
+//    clickedmain.classList.remove('gradient-menubackground');
+//    clickedlist.classList.remove('gradient-menubackground');
 }
 
 function loadMsgList() { //main에 통계 페이지 비동기 연결
@@ -106,13 +107,14 @@ function loadMsgList() { //main에 통계 페이지 비동기 연결
             mapMsgListJson(); //초기 리스트 생성
         })
         .catch(error => console.log("fetch 에러!"));
-    const clickedmain = document.getElementById("mainlist");
-    const clickedmap = document.getElementById("maplist");
-    const clickedlist = document.getElementById("listlist");
 
-    clickedlist.classList.add('gradient-menubackground');
-    clickedmain.classList.remove('gradient-menubackground');
-    clickedmap.classList.remove('gradient-menubackground');
+//    const clickedmain = document.getElementById("mainlist");
+//    const clickedmap = document.getElementById("maplist");
+//    const clickedlist = document.getElementById("listlist");
+//
+//    clickedlist.classList.add('gradient-menubackground');
+//    clickedmain.classList.remove('gradient-menubackground');
+//    clickedmap.classList.remove('gradient-menubackground');
 }
 
 // 페이지가 로드될 때 실행되는 함수

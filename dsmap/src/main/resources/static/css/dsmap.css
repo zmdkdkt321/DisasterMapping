@@ -1,3 +1,7 @@
+body {
+    height: 100vh;
+}
+
 .head{
     border: 1px solid blue;
     width: auto;
@@ -35,12 +39,40 @@
     width: 15%;
 }
 
-.p-hvr:hover {
-    background: blue; /* 호버 시 배경색 */
-    /*transform: scale(1.1); */ /* 호버 시 확대 효과 1.1배 확대 */
+.p-hvr {
+    color: green;
+    position: relative;
 }
 
-.gradient-menubackground {
+.p-hvr2 {
+    color: green;
+    position: relative;
+}
+
+.p-hvr::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: blue;
+    top: 0;
+    left: -120%;
+    transition: all 0.4s;
+    z-index: -1;
+}
+
+.p-hvr:hover::before {
+    transform: translateX(120%);
+}
+
+.p-hvr:hover {
+    /*background: blue;*/ /* 호버 시 배경색 */
+    transform: scaleY(1.1); /* 호버 시 세로로 1.1배 확대 */
+    padding-left: 8px;
+    color: white;
+}
+
+.gradient-menubackground { /*그라데이션 효과 */
     background: linear-gradient(to right, blue 20%, white 80%);
 }
 
