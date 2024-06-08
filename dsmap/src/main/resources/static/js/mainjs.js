@@ -522,7 +522,7 @@ function drawChart(jsonData) {
                 y: {
                     beginAtZero: true, // y축의 시작을 0으로 설정
                     title: {
-                        display: true,
+                        display: false,
                         text: '메시지 수', // y축 라벨 추가
                         font: {
                             size: 16 // y축 라벨 텍스트 크기 조정
@@ -531,7 +531,7 @@ function drawChart(jsonData) {
                 },
                 x: {
                     title: {
-                        display: true,
+                        display: false,
                         text: '지역', // x축 라벨 추가
                         font: {
                             size: 16 // x축 라벨 텍스트 크기 조정
