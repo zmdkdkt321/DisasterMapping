@@ -355,32 +355,14 @@ function drawChart(jsonData) {
     // JSON 데이터를 파싱하여 지역명과 재난 문자 개수 추출
     const labels = jsonData.map(item => item.name);
     const data = jsonData.map(item => item.count);
+    const region = localStorage.getItem('region_lv1_name');
 
-    // 색상 팔레트 정의
-    const colorPalette = [
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(199, 199, 199, 0.2)',
-        'rgba(83, 102, 255, 0.2)',
-        'rgba(60, 179, 113, 0.2)',
-        'rgba(255, 140, 0, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(199, 199, 199, 0.2)'
-    ];
-    const borderColorPalette = colorPalette.map(color => color.replace('0.2', '1'));
-
-    // 각 데이터 항목에 대해 색상을 순환하여 적용
-    const backgroundColors = data.map((_, index) => colorPalette[index % colorPalette.length]);
-    const borderColors = data.map((_, index) => borderColorPalette[index % borderColorPalette.length]);
+   const backgroundColors = labels.map(label =>
+       label === region ? 'rgba(255, 0, 0, 0.2)' : 'rgba(75, 192, 192, 0.2)'
+   );
+   const borderColors = labels.map(label =>
+       label === region ? 'rgba(255, 0, 0, 1)' : 'rgba(75, 192, 192, 0.2)'
+   );
 
     let chartStatus = Chart.getChart('myChart');
     if (chartStatus !== undefined) {
@@ -445,6 +427,15 @@ function drawChart(jsonData) {
                 },
                 legend: {
                     display: false // 범례 숨기기
+                },
+                title : {
+                    display: true, // 제목 표시 여부
+                    text: '지역별 재난 문자 수', // 제목 텍스트
+                    font: {
+                        size: 18, // 제목 폰트 크기
+                        weight : 'bold'
+                        },
+                    color: '#000000'
                 }
             },
             // 막대 너비 조정
