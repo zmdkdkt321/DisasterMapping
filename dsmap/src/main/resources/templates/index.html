@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/dsmap.css" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-    <script src="/js/mainjs.js" defer></script>
+    <script type="module" src="/js/mainjs.js" defer></script>
     <title>Document</title>
 </head>
 
@@ -25,10 +25,18 @@
             </div>
         </div>
         <div class="d-flex mx-5 mt-2 d-lg-none">
-            <p class="text-info d-lg-none p-0"><small class="addressName"></small> <span class="fw-bold text-danger myAddressCount"></span> <small>건</small></p>
+            <p class="text-info d-lg-none p-0">
+                <small class="addressName"></small>
+                <span class="fw-bold text-danger myAddressCount"></span> <small>건</small>
+                <a class="ml-auto mr-0 p-1 bg-secondary text-reset" onclick=""><small>새로고침</small></a>
+            </p>
         </div>
         <div class="d-flex mx-5 mt-2 d-none d-lg-block">
-            <p class="text-info d-none d-lg-block p-0"><small>현재 위치</small> : <small class="addressName"></small> <span class="fw-bold text-danger myAddressCount"></span> <small>건</small></p>
+            <p class="text-info d-none d-lg-block m-0">
+                <small>현재 위치</small> : <small class="addressName"></small>
+                <span class="fw-bold text-danger myAddressCount"></span> <small>건</small>
+                <a class="ml-auto mr-0 p-1 bg-secondary text-reset" onclick=""><small>새로고침</small></a>
+            </p>
         </div>
         <!--        <nav class="navber navbar-expand-sm">-->
         <div class="container-fluid w-75 m-0 p-0">
