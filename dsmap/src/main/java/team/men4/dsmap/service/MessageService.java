@@ -1,5 +1,6 @@
 package team.men4.dsmap.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,10 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
+@AllArgsConstructor
 public class MessageService {
     @Autowired
-    MessageMapper messageMapper;
-
+    private final MessageMapper messageMapper;
 
     public List<RegionWithMessagesDto> selectMsgAll() {
         List<RegionWithMessages> list = new ArrayList<>();
