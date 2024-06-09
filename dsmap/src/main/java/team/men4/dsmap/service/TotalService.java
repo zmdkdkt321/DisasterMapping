@@ -17,13 +17,13 @@ import java.util.List;
 @Service
 @Transactional
 public class TotalService {
-
     @Autowired
     TotalMapper totalMapper;
 
     public List<TotalDto> selectTotal() {
         List<TotalDto> dtoList = new ArrayList<>();
         List<Total> list = new ArrayList<>();
+
         try{
             list = totalMapper.selectTotal();
         }catch(Exception e){
@@ -31,37 +31,44 @@ public class TotalService {
         }
 
         for(Total t: list){
-            String[] str = t.getName().split("");
-            String extName = str[0];
-
-            if(str.length == 4){
-                extName += str[2];
-            }else{
-                extName += str[1];
-            }
-
-//            log.info(extName);
-
-            dtoList.add(new TotalDto(extName, t.getCount()));
+            String name = t.getName();
+            String extName = convertName(name);
+            dtoList.add(new TotalDto(t.getName(), extName, t.getCount()));
         }
-
         return  dtoList;
     }
 
+    public String convertName(String name){
+        String[] str = name.split("");
+        String extName = str[0];
+
+        if(str.length == 4){
+            extName += str[2];
+        }else{
+            extName += str[1];
+        }
+        return extName;
+    }
+
+
     public int selectTotalByRegion(RegionDto region) {
-        int num =0;
+        List<Integer>  list = new ArrayList<>();
+
         try{
-            List<Integer> list= totalMapper.selectTotalByRegion(region.getLv1_name(), region.getLv2_name(), region.getLv3_name());
+            list= totalMapper.selectTotalByRegion(region.getLv1_name(), region.getLv2_name(), region.getLv3_name());
 
-            if(!list.isEmpty()){
-//                log.info(list.toString());
+        }catch(Exception e){ e.printStackTrace(); }
 
-                for(int n : list){
-                    num +=n;
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
+        int num = sum(list);
+        return num;
+    }
+
+    public int sum(List<Integer> list){
+        if(list.size() < 1) return 0;
+
+        int num =0;
+        for(int n : list){
+            num +=n;
         }
         return num;
     }

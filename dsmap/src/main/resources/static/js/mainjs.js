@@ -129,9 +129,10 @@ window.onload = function() {
         .then(result => {
             //로컬 저장소에 저장한다음
             console.log(result);
-            localStorage.setItem('region_lv1_name',result.documents[0].address.region_1depth_name);
-            localStorage.setItem('region_lv2_name',result.documents[0].address.region_2depth_name);
-            localStorage.setItem('region_lv3_name',result.documents[0].address.region_3depth_name);
+
+            localStorage.setItem('region_lv1_name',result.documents[0].region_1depth_name);
+            localStorage.setItem('region_lv2_name',result.documents[0].region_2depth_name);
+            localStorage.setItem('region_lv3_name',result.documents[0].region_3depth_name);
             //메인페이지 로드
             loadMain();
         })
@@ -329,7 +330,7 @@ function getLocation() {
 }
 
 function getAddressFromCoords(latitude, longitude) {
-    const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`;
+    const url = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`;
     const headers = {
         'Authorization': `KakaoAK f79bf08e7d9f87c71463ed7a992aa26d`
     };
@@ -353,14 +354,15 @@ function getAddressFromCoords(latitude, longitude) {
 // JSON 데이터를 함수로 받아 그래프를 그리는 함수
 function drawChart(jsonData) {
     // JSON 데이터를 파싱하여 지역명과 재난 문자 개수 추출
+    const full_labels = jsonData.map(item => item.fullName);
     const labels = jsonData.map(item => item.name);
     const data = jsonData.map(item => item.count);
     const region = localStorage.getItem('region_lv1_name');
 
-   const backgroundColors = labels.map(label =>
+   const backgroundColors = full_labels.map(label =>
        label === region ? 'rgba(255, 0, 0, 0.2)' : 'rgba(75, 192, 192, 0.2)'
    );
-   const borderColors = labels.map(label =>
+   const borderColors = full_labels.map(label =>
        label === region ? 'rgba(255, 0, 0, 1)' : 'rgba(75, 192, 192, 0.2)'
    );
 
@@ -404,7 +406,7 @@ function drawChart(jsonData) {
                         display: false,
                         text: '지역', // x축 라벨 추가
                         font: {
-                            size: 16 // x축 라벨 텍스트 크기 조정
+                            size: 8 // x축 라벨 텍스트 크기 조정
                         }
                     },
                     ticks: {
