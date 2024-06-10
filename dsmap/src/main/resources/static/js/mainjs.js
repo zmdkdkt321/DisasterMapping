@@ -17,3 +17,4 @@ window.loadMain = Client.loadMain;
 window.loadMap = Client.loadMap;
 window.loadMsgList = Client.loadMsgList;
 window.updateMainData = Server.updateMainData;
+window.tr_onclickheddin = Client.tr_onclickheddin;
