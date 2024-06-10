@@ -3,7 +3,6 @@ import pymysql
 import json
 import requests
 
-
 def getGPSByLocation(location):
     url = config["kakaoAPI"]["url"]
     url=url+'?query='+location

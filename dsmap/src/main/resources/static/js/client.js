@@ -1,39 +1,60 @@
 import * as Server from '/js/server.js';
-
+import * as Main from '/js/mainjs.js';
 
 export function loadMain() { //main에 main body 부분 비동기 연결
-    const config = {
-        method: "get"
-    };
-    fetch("/indexContext", config)
+    loadMainHTML().then(
+        data => {
+            Server.updateMainData();
+        })
+        .catch(error => {
+            //html 불러오기 실패!
+            console.error(error.message);
+        });
+}
+
+export function loadMainHTML() {
+    return fetch("/indexContext", { method: "get" })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('map').style.display = "none";
+            // map-container라는 id를 가진 div 요소를 선택
+            const container = document.getElementById("content");
+            // 가져온 데이터를 해당 div에 추가
+            container.innerHTML = data;
+            return data; // 데이터를 반환하여 다음 .then()에서 사용할 수 있게 함
+        })
+        .catch(error => {
+            console.log("fetch indexContext 에러!");
+            throw error; // 에러를 다시 던져 다음 .catch()에서 처리할 수 있게 함
+        });
+}
+
+export function loadListHTML() {
+    return fetch("/msgList", { method: "get" })
         .then(response => response.text())
         .then(data => {
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
-
-            //주소 위지 찍는거
-            const addressElement = document.getElementsByClassName('addressName');
-            if (addressElement) {
-                for(var i = 0; i < addressElement.length; i++) {
-                    addressElement[i].innerText = localStorage.getItem('region_lv1_name')+" "+localStorage.getItem('region_lv2_name')+" "+localStorage.getItem('region_lv3_name');
-                }
-            } else {
-                console.log("Element with id 'addressName' not found.");
-            }
-
-            Server.updateMainDate();
-
-//            const clickedmain = document.getElementById("mainlist");
-//            const clickedmap = document.getElementById("maplist");
-//            const clickedlist = document.getElementById("listlist");
-//
-//            clickedmain.classList.add('gradient-menubackground');
-//            clickedmap.classList.remove('gradient-menubackground');
-//            clickedlist.classList.remove('gradient-menubackground');
+            return data; // 데이터를 반환하여 다음 .then()에서 사용할 수 있게 함
         })
-        .catch(error => console.log("fetch indexContext 에러!"));
+        .catch(error => {
+            console.log("fetch indexContext 에러!");
+            throw error; // 에러를 다시 던져 다음 .catch()에서 처리할 수 있게 함
+        });
+}
+
+//주소 위지 찍는거
+export function setAddress(){
+    const addressElement = document.getElementsByClassName('addressName');
+    if (addressElement) {
+        for(var i = 0; i < addressElement.length; i++) {
+            addressElement[i].innerText = localStorage.getItem('region_lv1_name')+" "+localStorage.getItem('region_lv2_name')+" "+localStorage.getItem('region_lv3_name');
+        }
+    } else {
+        console.log("Element with id 'addressName' not found.");
+    }
 }
 
 export function loadMap() { //main에 지도 페이지 비동기 연결
@@ -43,15 +64,16 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
     fetch("/map", config)
         .then(response => response.text())
         .then(data => {
+            console.log(clusterer);
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
 //            mapMsgListJson(); //초기 리스트 생성
 //            mapMake()//카카오맵 생성 및 클러스트, 마커 생성
-            //loadmapmarker();
+            Main.fetchDataAndPlotMarkers();
         })
-        .catch(error => console.log("fetch 에러!"));
+        .catch(error => console.log(error.message));
 
 //    const clickedmain = document.getElementById("mainlist");
 //    const clickedmap = document.getElementById("maplist");
@@ -69,6 +91,7 @@ export function loadMsgList() { //main에 통계 페이지 비동기 연결
     fetch("/msgList", config)
         .then(response => response.text())
         .then(data => {
+            document.getElementById('map').style.display = "none";
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
@@ -353,4 +376,33 @@ export function drawChart(jsonData) {
             categoryPercentage: 0.8 // 카테고리 너비를 80%로 설정
         }
     });
+}
+
+export function locationAuthDenied() {
+    localStorage.removeItem('region_lv1_name')
+    localStorage.removeItem('region_lv2_name')
+    localStorage.removeItem('region_lv3_name')
+    const addressNames = document.getElementsByClassName("addressName");
+    for(let i = 0; i < addressNames.length; i++){
+        addressNames[i].innerText = "권한을 허용해 주세요";
+    }
+    const myAddressCounts = document.getElementsByClassName("myAddressCount");
+    for(let i = 0; i < myAddressCounts.length; i++){
+        myAddressCounts[i].style.visibility = "hidden";
+    }
+    const guns = document.getElementsByClassName("gun");
+    for(let i = 0; i < guns.length; i++){
+        guns[i].style.visibility = "hidden";
+    }
+}
+
+export function locationAuthPermission() {
+    const myAddressCounts = document.getElementsByClassName("myAddressCount");
+    for(let i = 0; i < myAddressCounts.length; i++){
+        myAddressCounts[i].style.visibility = "visible";
+    }
+    const guns = document.getElementsByClassName("gun");
+    for(let i = 0; i < guns.length; i++){
+        guns[i].style.visibility = "visible";
+    }
 }

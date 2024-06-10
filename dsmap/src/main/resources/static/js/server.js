@@ -1,6 +1,40 @@
 import * as Client from '/js/client.js';
 
-export function updateMainDate(){
+export function updateMainData(){
+    getLocation()
+        .then(position => {
+            //그걸로 행정구역 이름 lv1, lv2, lv3 가져오고
+            const { latitude, longitude } = position.coords;
+            return getAddressFromCoords(latitude, longitude);
+        })
+        .then(result => {
+            //권한 허용
+            Client.locationAuthPermission();
+            //로컬 저장소에 저장한다음
+            console.log(result);
+            localStorage.setItem('region_lv1_name',result.documents[0].region_1depth_name);
+            localStorage.setItem('region_lv2_name',result.documents[0].region_2depth_name);
+            localStorage.setItem('region_lv3_name',result.documents[0].region_3depth_name);
+            //클라쪽 문자열 넣고
+            Client.setAddress();
+            //현제 지역 메시지수 가져와서 넣고
+            updateMessageCountByMyLocation();
+            //차트 업데이트
+            updateChart();
+        })
+        .catch(error => {
+            //error code 1 == 권한 거부
+            if(error.code == 1){
+                console.log("크아악 권한 거부!!!");
+                Client.locationAuthDenied();
+                //차트 업데이트
+                updateChart();
+            }
+            console.error(error.message);
+        });
+}
+
+export function updateMessageCountByMyLocation(){
     fetch("/total/"+localStorage.getItem('region_lv1_name')+"/"
         +localStorage.getItem('region_lv2_name')+"/"
         +localStorage.getItem('region_lv3_name')
@@ -17,7 +51,9 @@ export function updateMainDate(){
                 }
             }
         ).catch(error => console.log("오늘거 못가져왔네!!"));
+}
 
+export function updateChart(){
     //오늘 통계
     fetch("/total", {method: "get"})
         .then(response => response.json())
@@ -72,7 +108,7 @@ export function sseConn(sseSource) {
         const { data: uptTime } = e;
         document.getElementById('time').innerHTML = '<small> 안전재난문자 업데이트 시간 : ' + uptTime + '</small>';
         console.log(uptTime);
-        updateMainDate();
+        updateMainData();
     });
 
     sseSource.onerror = function(event) {

@@ -2,6 +2,7 @@ import requests
 import json
 import pymysql
 import time
+import datetime
 
 with open("FlaskServer/config.json", 'r') as f:
     config = json.load(f)
@@ -41,6 +42,15 @@ def getMessageByPage(pageNo):
         else:
             print("에러 발생:", response.status_code)
 
+def postSSE():
+    response = requests.post("http://localhost:8080/sse/pub",data=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
+    if response.status_code == 200:
+        print(response.text)
+    else:
+        print("에러 발생:", response.status_code)
+
+postSSE()
+
 while True:
     pageNo = 1
     while True:
@@ -63,5 +73,7 @@ while True:
             cur.callproc('protest', [message['md101_sn']])
         pageNo+=1
         conn.commit()
+        postSSE()
+
     print("wait")
     time.sleep(60)  # 60초 동안 대기

@@ -9,15 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class ViewController {
 
-    @RequestMapping("/main")
-    public String main2(){
-        return "main.html";
-    }
-    @RequestMapping("/view")
-    public String viewPage(){
-        return "view";
-    }
-
     @RequestMapping("/")
     public String mainPage(){
         log.info("index");
@@ -27,13 +18,13 @@ public class ViewController {
     @RequestMapping("/map")
     public String mapPage(){
         log.info("map");
-        return "map.html";
+        return "mapContext.html";
     }
 
     @RequestMapping("/indexContext")
     public String jsPage(){
         log.info("indexContext");
-        return "indexContext.html";
+        return "mainContext.html";
     }
 
     @RequestMapping("/msgList")

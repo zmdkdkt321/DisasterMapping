@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/dsmap.css" type="text/css" />
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9c209260351fec6bb617697d6dbda1cf&libraries=services,clusterer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script type="module" src="/js/mainjs.js" defer></script>
@@ -27,15 +28,15 @@
         <div class="d-flex mx-5 mt-2 d-lg-none">
             <p class="text-info d-lg-none p-0">
                 <small class="addressName"></small>
-                <span class="fw-bold text-danger myAddressCount"></span> <small>건</small>
-                <a class="ml-auto mr-0 p-1 bg-secondary text-reset" onclick=""><small>새로고침</small></a>
+                <span class="fw-bold text-danger myAddressCount"></span> <small class="gun">건</small>
+                <button class="ml-auto mr-0 p-1 bg-secondary text-reset border-0" onclick="updateMainData()">갱신</button>
             </p>
         </div>
         <div class="d-flex mx-5 mt-2 d-none d-lg-block">
             <p class="text-info d-none d-lg-block m-0">
                 <small>현재 위치</small> : <small class="addressName"></small>
-                <span class="fw-bold text-danger myAddressCount"></span> <small>건</small>
-                <a class="ml-auto mr-0 p-1 bg-secondary text-reset" onclick=""><small>새로고침</small></a>
+                <span class="fw-bold text-danger myAddressCount"></span> <small class="gun">건</small>
+                <button class="ml-auto mr-0 p-1 bg-secondary text-reset border-0" onclick="updateMainData()">갱신</button>
             </p>
         </div>
         <!--        <nav class="navber navbar-expand-sm">-->
@@ -64,8 +65,9 @@
     <div class="col-sm-7 my-auto p-0">
         <section id="section1">
             <div id="content" class="container-fluid m-0 p-0">
-
+                <div id target></div>
             </div>
+            <div id="map" style="width:100%;height:700px;"></div>
         </section>
     </div>
 
