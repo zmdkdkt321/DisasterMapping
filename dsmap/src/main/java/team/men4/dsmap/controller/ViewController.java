@@ -21,9 +21,9 @@ public class ViewController {
         return "mapContext.html";
     }
 
-    @RequestMapping("/indexContext")
+    @RequestMapping("/mainContext")
     public String jsPage(){
-        log.info("indexContext");
+        log.info("mainContext");
         return "mainContext.html";
     }
 

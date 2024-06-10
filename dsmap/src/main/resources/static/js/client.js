@@ -13,7 +13,7 @@ export function loadMain() { //main에 main body 부분 비동기 연결
 }
 
 export function loadMainHTML() {
-    return fetch("/indexContext", { method: "get" })
+    return fetch("/mainContext", { method: "get" })
         .then(response => response.text())
         .then(data => {
             document.getElementById('map').style.display = "none";
@@ -24,7 +24,7 @@ export function loadMainHTML() {
             return data; // 데이터를 반환하여 다음 .then()에서 사용할 수 있게 함
         })
         .catch(error => {
-            console.log("fetch indexContext 에러!");
+            console.log("fetch mainContext 에러!");
             throw error; // 에러를 다시 던져 다음 .catch()에서 처리할 수 있게 함
         });
 }
@@ -378,7 +378,7 @@ export function drawChart(jsonData) {
     });
 }
 
-export function locationAuthDenied() {
+export function headerHide() {
     localStorage.removeItem('region_lv1_name')
     localStorage.removeItem('region_lv2_name')
     localStorage.removeItem('region_lv3_name')
@@ -396,7 +396,7 @@ export function locationAuthDenied() {
     }
 }
 
-export function locationAuthPermission() {
+export function headerShow() {
     const myAddressCounts = document.getElementsByClassName("myAddressCount");
     for(let i = 0; i < myAddressCounts.length; i++){
         myAddressCounts[i].style.visibility = "visible";

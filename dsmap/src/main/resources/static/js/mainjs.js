@@ -23,6 +23,7 @@ var clusterer = new kakao.maps.MarkerClusterer({
     averageCenter: true,
     minLevel: 6
 });
+map.setDraggable(true);
 
 export function fetchDataAndPlotMarkers() {
 // 데이터 불러오는 부부
