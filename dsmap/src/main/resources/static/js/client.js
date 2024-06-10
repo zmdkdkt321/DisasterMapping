@@ -1,5 +1,5 @@
 import * as Server from '/js/server.js';
-
+import * as Main from '/js/mainjs.js';
 
 export function loadMain() { //main에 main body 부분 비동기 연결
     loadMainHTML().then(
@@ -16,22 +16,7 @@ export function loadMainHTML() {
     return fetch("/indexContext", { method: "get" })
         .then(response => response.text())
         .then(data => {
-            // map-container라는 id를 가진 div 요소를 선택
-            const container = document.getElementById("content");
-            // 가져온 데이터를 해당 div에 추가
-            container.innerHTML = data;
-            return data; // 데이터를 반환하여 다음 .then()에서 사용할 수 있게 함
-        })
-        .catch(error => {
-            console.log("fetch indexContext 에러!");
-            throw error; // 에러를 다시 던져 다음 .catch()에서 처리할 수 있게 함
-        });
-}
-
-export function loadMapHTML() {
-    return fetch("/map", { method: "get" })
-        .then(response => response.text())
-        .then(data => {
+            document.getElementById('map').style.display = "none";
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
@@ -79,25 +64,16 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
     fetch("/map", config)
         .then(response => response.text())
         .then(data => {
+            console.log(clusterer);
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
 //            mapMsgListJson(); //초기 리스트 생성
 //            mapMake()//카카오맵 생성 및 클러스트, 마커 생성
-            var infowindow = null;
-            var clusterer = new kakao.maps.MarkerClusterer({
-                map: new kakao.maps.Map(document.getElementById('map'),
-                     {
-                         center: new kakao.maps.LatLng(35.2383, 128.6922), // 경상남도 중심 좌표
-                         level: 8 // 지도의 초기 확대 레벨
-                     }),
-                averageCenter: true,
-                minLevel: 6
-            });
-            Server.fetchDataAndPlotMarkers(clusterer,infowindow);
+            Main.fetchDataAndPlotMarkers();
         })
-        .catch(error => console.log("fetch 에러!"));
+        .catch(error => console.log(error.message));
 
 //    const clickedmain = document.getElementById("mainlist");
 //    const clickedmap = document.getElementById("maplist");
@@ -115,6 +91,7 @@ export function loadMsgList() { //main에 통계 페이지 비동기 연결
     fetch("/msgList", config)
         .then(response => response.text())
         .then(data => {
+            document.getElementById('map').style.display = "none";
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
