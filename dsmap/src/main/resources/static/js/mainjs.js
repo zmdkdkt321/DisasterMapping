@@ -48,6 +48,14 @@ export function fetchDataAndPlotMarkers() {
           var x = localStorage.getItem('x');
           var y = localStorage.getItem('y');
 
+          var imageSrc = 'http://localhost:8080/green', // 마커이미지의 주소입니다
+              imageSize = new kakao.maps.Size(28, 32), // 마커이미지의 크기입니다
+              imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+          // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+
           if (x !== null && y !== null) {
                var mp  = new kakao.maps.LatLng(x, y);
 
@@ -63,7 +71,8 @@ export function fetchDataAndPlotMarkers() {
                 var markerPosition = new kakao.maps.LatLng(parseFloat(item.x), parseFloat(item.y));
                 var marker = new kakao.maps.Marker({
                     map: map,
-                    position: markerPosition
+                    position: markerPosition,
+                    image: markerImage
                 });
                 clusterer.addMarker(marker);
 
