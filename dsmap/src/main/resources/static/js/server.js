@@ -5,6 +5,10 @@ export function updateMainData(){
         .then(position => {
             //그걸로 행정구역 이름 lv1, lv2, lv3 가져오고
             const { latitude, longitude } = position.coords;
+            console.log(position.coords.accuracy);
+            localStorage.setItem('x', latitude);
+            localStorage.setItem('y', longitude);
+
             return getAddressFromXY(latitude, longitude);
         })
         .then(result => {

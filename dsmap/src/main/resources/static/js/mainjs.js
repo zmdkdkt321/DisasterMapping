@@ -15,9 +15,11 @@ window.addEventListener('beforeunload', function (e) {
 var infowindow = null;
 var map = new kakao.maps.Map(document.getElementById('map'),
  {
-     center: new kakao.maps.LatLng(35.2383, 128.6922), // 경상남도 중심 좌표
-     level: 8 // 지도의 초기 확대 레벨
+     center: new kakao.maps.LatLng(36.3504, 127.3845),
+     level: 13 // 지도의 초기 확대 레벨
  });
+
+
 var clusterer = new kakao.maps.MarkerClusterer({
     map: map,
     averageCenter: true,
@@ -41,6 +43,20 @@ export function fetchDataAndPlotMarkers() {
             } else {
                 dataArray = [data];
             }
+
+
+          var x = localStorage.getItem('x');
+          var y = localStorage.getItem('y');
+
+          if (x !== null && y !== null) {
+               var mp  = new kakao.maps.LatLng(x, y);
+
+               var m = new kakao.maps.Marker({
+                   position: mp,
+                   map: map
+                   });
+          }
+
 
             // JSON 데이터를 받아와서 마커를 생성하고 클러스터에 추가
             dataArray.forEach(item => {
