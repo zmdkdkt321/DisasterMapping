@@ -50,4 +50,8 @@ public class SseEmitterStorage {
         return uptTime;
     }
 
+    public synchronized  void setUptTime(String uptTime){
+        this.uptTime = uptTime;
+    }
+
 }
