@@ -22,11 +22,11 @@ public class MessageController {
         return "ok";
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<RegionWithMessages> select(){
         return messageService.selectMsg();
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<RegionWithMessagesDto> selectAll(){return messageService.selectMsgAll();}
 }
