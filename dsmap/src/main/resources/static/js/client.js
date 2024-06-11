@@ -10,6 +10,7 @@ export function loadMain() { //main에 main body 부분 비동기 연결
             //html 불러오기 실패!
             console.error(error.message);
         });
+
 }
 
 export function loadMainHTML() {
@@ -157,13 +158,12 @@ export function mapMsgListJson() { //메세지리스트 생성
                 msgs.forEach(cellData => {
                     const tr = document.createElement('tr');
                     tr.id = cellData.id;
-//                    tr.classList.add("overflow-hidden");
-//                    tr.classList.add("clickable-row");
 //                    tr.className.add(cellData.id);
+                    tr.classList.add("clickable-row");
                     tr.onclick = function() {
-                        tr_onclickheddin();
-                    };
-                    //const td = document.createElement('td');
+                        tr_onclickheddin(this);
+                    }
+
                     const addrtd = document.createElement('td');
                     const contenttd = document.createElement('td');
                     const datetd = document.createElement('td');
@@ -208,13 +208,14 @@ export function optionAppendChild(value) {
     are2.appendChild(op2);
 }
 
-export function tr_onclickheddin(){ //테이블 상세보기 열 추가
-    const rows = document.querySelectorAll('.clickable-row');
+export function tr_onclickheddin(trObj){ //테이블 상세보기 열 추가
+
     // 이벤트가 발생한 요소
-    const clickedTd = event.target;
+//    const clickedTd = event.target;
 
     // 요소의 id를 가져옴
-    const tdId = clickedTd.id;
+//    const tdId = clickedTd.id;
+    const rows = document.querySelectorAll('.clickable-row');
     rows.forEach(row => {
         row.addEventListener('click', function() {
             // 새로운 tr 요소가 이미 추가된 경우 삭제
@@ -230,23 +231,21 @@ export function tr_onclickheddin(){ //테이블 상세보기 열 추가
 //                            let msgs = rowData.messages;
 //                            msgs.forEach(cellData => {
 //                            const id = cellData.id;
-//                            if(id == tdId ){
+//                            if(id == trObj ){
 //                                const addr = rowData.name;
 //                                const content = rowData.content;
 //                                const date = rowData.date;
-//                                // 새로운 tr 요소 추가
-                const newRowHTML = `
-                                    <tr class="new-row">
-
-                                          <td>주소</td>
-                                          <td>일자</td>
-                                          <td>시간</td>
-                                    </tr>
-                                    <tr class="new-row">
-
-                                          <td colspan='3'>내용</td>
-                                    </tr>
-                                `;
+                                // 새로운 tr 요소 추가
+                                const newRowHTML = `
+                                                    <tr class="new-row">
+                                                          <td>주소</td>
+                                                          <td>일자</td>
+                                                          <td>시간</td>
+                                                    </tr>
+                                                    <tr class="new-row">
+                                                          <td colspan='3'>내용</td>
+                                                    </tr>
+                                                `;
                 this.insertAdjacentHTML('afterend', newRowHTML);
             }
 
