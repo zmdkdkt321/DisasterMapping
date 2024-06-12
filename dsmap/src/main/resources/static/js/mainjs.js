@@ -15,17 +15,12 @@ window.addEventListener('beforeunload', function (e) {
     Server.closeSSE(sseSource);
 });
 
-
-
-
 export function initMap(){
-
     map = new kakao.maps.Map(document.getElementById('map'),
      {
          center: new kakao.maps.LatLng(36.3504, 127.3845),
          level: 13 // 지도의 초기 확대 레벨
      });
-
     clusterer = new kakao.maps.MarkerClusterer({
         map: map,
         averageCenter: true,
@@ -155,6 +150,7 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
             // 가져온 데이터를 해당 div에 추가
     container.innerHTML = "";
     document.getElementById('map').style.display = "block";
+    initMap();
     fetchDataAndPlotMarkers();
 }
 
