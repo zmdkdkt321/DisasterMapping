@@ -15,9 +15,6 @@ window.addEventListener('beforeunload', function (e) {
     Server.closeSSE(sseSource);
 });
 
-
-
-
 export function initMap(){
 
     map = new kakao.maps.Map(document.getElementById('map'),

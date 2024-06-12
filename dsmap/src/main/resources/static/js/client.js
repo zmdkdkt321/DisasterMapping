@@ -2,6 +2,7 @@ import * as Server from '/js/server.js';
 import * as Main from '/js/mainjs.js';
 
 export function loadMain() { //main에 main body 부분 비동기 연결
+    document.getElementById('map').style.display = "none";
     loadMainHTML().then(
         data => {
             Server.updateMainData();
@@ -17,7 +18,6 @@ export function loadMainHTML() {
     return fetch("/mainContext", { method: "get" })
         .then(response => response.text())
         .then(data => {
-            document.getElementById('map').style.display = "none";
             // map-container라는 id를 가진 div 요소를 선택
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
