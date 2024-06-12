@@ -2,6 +2,22 @@ body {
     height: 100vh;
 }
 
+.summery{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background: rgb(0.1);
+}
+
+.menu {
+    position: fixed;
+    top: 40%;
+    bottom: auto;
+    left: 10px;
+    white: 100%;
+    z-index: 1;
+}
+
 .p-hvr {
     color: green;
     position: relative;

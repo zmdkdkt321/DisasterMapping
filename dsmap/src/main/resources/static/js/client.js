@@ -11,8 +11,7 @@ export function loadMain() { //main에 main body 부분 비동기 연결
             //html 불러오기 실패!
             console.error(error.message);
         });
-
-}
+``}
 
 export function loadMainHTML() {
     return fetch("/mainContext", { method: "get" })
@@ -70,8 +69,7 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
-//            mapMsgListJson(); //초기 리스트 생성
-//            mapMake()//카카오맵 생성 및 클러스트, 마커 생성
+
             Main.fetchDataAndPlotMarkers();
         })
         .catch(error => console.log(error.message));
@@ -97,7 +95,7 @@ export function loadMsgList() { //main에 통계 페이지 비동기 연결
             const container = document.getElementById("content");
             // 가져온 데이터를 해당 div에 추가
             container.innerHTML = data;
-            mapMsgListJson(); //초기 리스트 생성
+            msgList(); //초기 리스트 생성
         })
         .catch(error => console.log("fetch 에러!"));
 
@@ -148,7 +146,7 @@ export function fetch_region() { //검색에서 시군구 select option 검색
         .catch(error => console.log("fetch 에러!"));
 }
 
-export function mapMsgListJson() { //메세지리스트 생성
+export function msgList() { //메세지리스트 생성
     fetch("json/dummy.json")
         .then(response => response.json())
         .then(data => {
@@ -158,12 +156,13 @@ export function mapMsgListJson() { //메세지리스트 생성
                 msgs.forEach(cellData => {
                     const tr = document.createElement('tr');
                     tr.id = cellData.id;
-//                    tr.className.add(cellData.id);
+//                    tr.classList.add("overflow-hidden");
                     tr.classList.add("clickable-row");
+//                    tr.className.add(cellData.id);
                     tr.onclick = function() {
                         tr_onclickheddin(this);
-                    }
-
+                    };
+                    //const td = document.createElement('td');
                     const addrtd = document.createElement('td');
                     const contenttd = document.createElement('td');
                     const datetd = document.createElement('td');
@@ -184,6 +183,8 @@ export function mapMsgListJson() { //메세지리스트 생성
                     datetd.style.whiteSpace = "nowrap";
 
                     addrtd.textContent = rowData.name;
+                    const addrtr = addrtd.textContent.replace(/\s+/g, '-');
+                    tr.classList.add(addrtr);
                     contenttd.textContent = cellData.content;
                     datetd.textContent = cellData.date;
 //                    td.textContent = cellData.content;
@@ -209,50 +210,74 @@ export function optionAppendChild(value) {
 }
 
 export function tr_onclickheddin(trObj){ //테이블 상세보기 열 추가
-
-    // 이벤트가 발생한 요소
-//    const clickedTd = event.target;
-
-    // 요소의 id를 가져옴
-//    const tdId = clickedTd.id;
     const rows = document.querySelectorAll('.clickable-row');
-    rows.forEach(row => {
-        row.addEventListener('click', function() {
-            // 새로운 tr 요소가 이미 추가된 경우 삭제
-            if (this.nextElementSibling && this.nextElementSibling.classList.contains('new-row')) {
-                this.nextElementSibling.remove();
-                this.nextElementSibling.remove();
-            } else {
-//                fetch("json/dummy.json")
-//                    .then(response => response.json())
-//                    .then(data => {
-//                        const tbody = document.getElementById('mapList');
-//                        data.forEach(rowData => {
-//                            let msgs = rowData.messages;
-//                            msgs.forEach(cellData => {
-//                            const id = cellData.id;
-//                            if(id == trObj ){
-//                                const addr = rowData.name;
-//                                const content = rowData.content;
-//                                const date = rowData.date;
-                                // 새로운 tr 요소 추가
-                                const newRowHTML = `
-                                                    <tr class="new-row">
-                                                          <td>주소</td>
-                                                          <td>일자</td>
-                                                          <td>시간</td>
-                                                    </tr>
-                                                    <tr class="new-row">
-                                                          <td colspan='3'>내용</td>
-                                                    </tr>
-                                                `;
-                this.insertAdjacentHTML('afterend', newRowHTML);
-            }
 
-//                        });
-//                    });
-//                });
-//            }
+    rows.forEach(row => {
+        row.addEventListener('click', function(event) {
+            // 클릭된 요소가 <tr> 요소인지 확인
+            let clickedElement = event.target;
+
+            if (this.nextElementSibling && this.nextElementSibling.classList.contains('new-row')) {
+                                            this.nextElementSibling.remove();
+                                            this.nextElementSibling.remove();
+
+            } else {
+            // 클릭된 요소가 <tr>가 아닐 경우 가장 가까운 <tr>을 찾음
+                while (clickedElement && clickedElement.tagName !== 'TR') {
+                    clickedElement = clickedElement.parentElement;
+                }
+                if (clickedElement && clickedElement.tagName === 'TR') {
+                    const trId = clickedElement.id; // 클릭된 <tr>의 ID 가져오기
+
+                    const trClassName = clickedElement.className; // 클릭된 <tr>의 클래스 이름 가져오기
+
+                    // 나중에 하이픈을 다시 공백 문자로 변환
+                    //const originalText = trClassName.replace(/-/g, ' ');
+
+                    fetch("json/dummy.json")
+                        .then(response => response.json())
+                        .then(data => {
+                            const tbody = document.getElementById('mapList');
+                            data.forEach(rowData => {
+                                let msgs = rowData.messages;
+                                msgs.forEach(cellData => {
+                                const id = cellData.id;
+                                const addr = rowData.name;
+                                const content = cellData.content;
+                                const date = cellData.date;
+                                const addrtd = document.createElement('td');
+                                addrtd.textContent = rowData.name;
+                                const addrtr = addrtd.textContent.replace(/\s+/g, '-');
+                                const elements = document.getElementsByClassName(addrtr);
+                                let num;
+                                for(let i=0; i<elements.length; i++) {
+                                    if(elements[i].id == id){
+                                        const newRowHTML = `
+                                            <tr class="new-row">
+                                                  <td>${addr}</td>
+                                                  <td>${trId}</td>
+                                                  <td>${date}</td>
+                                            </tr>
+                                            <tr class="new-row">
+                                                  <td colspan='3'>${content}</td>
+                                            </tr>
+                                        `;
+                                        elements[num].insertAdjacentHTML('afterend', newRowHTML);
+                                        break;
+                                    }
+                                }
+//                                if(id == trId){
+                                    // 새로운 tr 요소 추가
+                                    //여기//
+//                                }
+
+                                });
+                            });
+                        });
+                    }
+            }
+            // 새로운 tr 요소가 이미 추가된 경우 삭제
+
         });
     });
 }
