@@ -102,8 +102,15 @@ export function fetchDataAndPlotMarkers() {
                 clusterer.addMarker(marker);
 
                 // 마커에 이벤트 리스너 등록
-                kakao.maps.event.addListener(marker, 'click', function() {
+                /*kakao.maps.event.addListener(marker, 'click', function() {
                     // 클릭 시 처리할 내용
+                });
+                */
+
+                // 마커에서 손떼면 지워짐
+                kakao.maps.event.addListener(marker, 'mouseout', function() {
+                    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+                    infowindow.close();
                 });
 
                 // 마우스 호버 이벤트
@@ -121,12 +128,11 @@ export function fetchDataAndPlotMarkers() {
 // 지역 정보 표시 함수
 export function displayAreaInfo(coords, messages) {
     var messageContent = '';
-    messageContent += '<div>지역 명 : ' + messages.name + '</div>';
-    messageContent += '<div>메시지 수 : ' + messages.message_num + '</div>'; // 변경: 메시지 수로 표시
-
+    messageContent += '<div class = "customInfoWindow">지역 명 : ' + messages.name + '<br>' +  '메시지 수 : ' + messages.message_num + '</div>';
     if (infowindow) infowindow.close();
 
     infowindow = new kakao.maps.InfoWindow({
+
         position: coords,
         content: messageContent,
         removable: true,
