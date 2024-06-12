@@ -1,4 +1,5 @@
 import * as Client from '/js/client.js';
+import * as Main from '/js/mainjs.js';
 
 export function updateMainData(){
     getLocation()
@@ -115,7 +116,14 @@ export function sseConn(sseSource) {
         const { data: uptTime } = e;
         document.getElementById('time').innerHTML = '<small> 안전재난문자 업데이트 시간 : ' + uptTime + '</small>';
         console.log(uptTime);
-        updateMainData();
+
+        const myElement = document.getElementById("type");
+        const showType = myElement.getAttribute("showType");
+        if(showType == 'main'){
+            updateMainData();
+        }else if(showType == 'map'){
+            Main.fetchDataAndPlotMarkers();
+        }
     });
 
     sseSource.onerror = function(event) {

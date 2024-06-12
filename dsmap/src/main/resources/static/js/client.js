@@ -1,9 +1,10 @@
 import * as Server from '/js/server.js';
-import * as Main from '/js/mainjs.js';
 
 export function loadMain() { //main에 main body 부분 비동기 연결
     loadMainHTML().then(
         data => {
+        const myElement = document.getElementById("type");
+            myElement.setAttribute("showType", "main");
             Server.updateMainData();
         })
         .catch(error => {
@@ -72,7 +73,7 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
             container.innerHTML = data;
 //            mapMsgListJson(); //초기 리스트 생성
 //            mapMake()//카카오맵 생성 및 클러스트, 마커 생성
-            Main.fetchDataAndPlotMarkers();
+
         })
         .catch(error => console.log(error.message));
 

@@ -139,7 +139,8 @@ export function displayAreaInfo(coords, messages) {
 export function loadMap() { //main에 지도 페이지 비동기 연결
 //            mapMsgListJson(); //초기 리스트 생성
 //            mapMake()//카카오맵 생성 및 클러스트, 마커 생성
-
+    const myElement = document.getElementById("type");
+    myElement.setAttribute("showType", "map");
     clusterer.clear();
     myList.forEach(function(obj) {
         obj.setMap(null);
