@@ -10,7 +10,6 @@ var infowindow = null;
 var map = null;
 var clusterer = null;
 
-initMap();
 window.addEventListener('beforeunload', function (e) {
     Server.closeSSE(sseSource);
 });
@@ -19,24 +18,26 @@ window.addEventListener('beforeunload', function (e) {
 
 
 export function initMap(){
-
-    map = new kakao.maps.Map(document.getElementById('map'),
-     {
-         center: new kakao.maps.LatLng(36.3504, 127.3845),
-         level: 13 // 지도의 초기 확대 레벨
-     });
-
-    clusterer = new kakao.maps.MarkerClusterer({
-        map: map,
-        averageCenter: true,
-        minLevel: 6
-    });
-    map.setDraggable(true);
+console.log("initMap");
+   if(map==null){
+       map = new kakao.maps.Map(document.getElementById('map'),
+       {
+           center: new kakao.maps.LatLng(36.3504, 127.3845),
+           level: 13 // 지도의 초기 확대 레벨
+       });
+      clusterer = new kakao.maps.MarkerClusterer({
+          map: map,
+          averageCenter: true,
+          minLevel: 6
+      });
+      map.setDraggable(true);
+   }
 }
 
 let myList = [];
 
 export function fetchDataAndPlotMarkers() {
+console.log("fetch daat");
 // 데이터 불러오는 부부
     fetch("/msg")
         .then(response => {
@@ -52,8 +53,10 @@ export function fetchDataAndPlotMarkers() {
             } else {
                 dataArray = [data];
             }
-
-            console.log(dataArray);
+            clusterer.clear();
+            myList.forEach(function(obj) {
+                obj.setMap(null);
+            });
 
           var x = localStorage.getItem('x');
           var y = localStorage.getItem('y');
@@ -115,9 +118,6 @@ export function fetchDataAndPlotMarkers() {
                 kakao.maps.event.addListener(marker, 'mouseout', function() {
                      infowindow.close();
                });
-
-
-
             });
         })
         .catch(error => {
@@ -143,19 +143,18 @@ export function displayAreaInfo(coords, messages) {
 }
 
 export function loadMap() { //main에 지도 페이지 비동기 연결
+ console.log("loadmap");
 //            mapMsgListJson(); //초기 리스트 생성
 //            mapMake()//카카오맵 생성 및 클러스트, 마커 생성
+    const container = document.getElementById("content");
+    container.innerHTML = "";
+
+    document.getElementById('map').style.display = "block";
+
+    initMap();
+
     const myElement = document.getElementById("type");
     myElement.setAttribute("showType", "map");
-    clusterer.clear();
-    myList.forEach(function(obj) {
-        obj.setMap(null);
-    });
-
-    const container = document.getElementById("content");
-            // 가져온 데이터를 해당 div에 추가
-    container.innerHTML = "";
-    document.getElementById('map').style.display = "block";
     fetchDataAndPlotMarkers();
 }
 

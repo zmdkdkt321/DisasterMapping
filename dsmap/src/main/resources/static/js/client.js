@@ -3,8 +3,11 @@ import * as Main from '/js/mainjs.js';
 
 export function loadMain() { //main에 main body 부분 비동기 연결
     document.getElementById('map').style.display = "none";
+
     loadMainHTML().then(
         data => {
+            const myElement = document.getElementById("type");
+            myElement.setAttribute("showType", "main");
             Server.updateMainData();
         })
         .catch(error => {
