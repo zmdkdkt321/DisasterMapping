@@ -59,7 +59,7 @@ body {
  }
 
 .customInfoWindow{
-            width: 240px; /* 원하는 너비로 설정 */
+            width: 290px; /* 원하는 너비로 설정 */
             height: auto; /* 원하는 높이로 설정 */
             box-sizing: border-box;
             background-color: white;

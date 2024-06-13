@@ -102,15 +102,22 @@ export function fetchDataAndPlotMarkers() {
                 clusterer.addMarker(marker);
 
                 // 마커에 이벤트 리스너 등록
-                kakao.maps.event.addListener(marker, 'click', function() {
+              /*  kakao.maps.event.addListener(marker, 'click', function() {
                     // 클릭 시 처리할 내용
-                });
+                });*/
 
                 // 마우스 호버 이벤트
                 // TODO [javascript] 해당 하는 폴리건 표시
                 kakao.maps.event.addListener(marker, 'mouseover', function() {
                     displayAreaInfo(markerPosition, item, infowindow);
                 });
+
+                kakao.maps.event.addListener(marker, 'mouseout', function() {
+                     infowindow.close();
+               });
+
+
+
             });
         })
         .catch(error => {
@@ -121,8 +128,7 @@ export function fetchDataAndPlotMarkers() {
 // 지역 정보 표시 함수
 export function displayAreaInfo(coords, messages) {
     var messageContent = '';
-    messageContent += '<div>지역 명 : ' + messages.name + '</div>';
-    messageContent += '<div>메시지 수 : ' + messages.message_num + '</div>'; // 변경: 메시지 수로 표시
+    messageContent += '<div class = "customInfoWindow"> 지역 명 : ' + messages.name + '<br> 메시지 수 : ' + messages.message_num  + '</div>';
 
     if (infowindow) infowindow.close();
 
