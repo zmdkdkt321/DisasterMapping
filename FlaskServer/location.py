@@ -34,9 +34,9 @@ f = open('FlaskServer/location.csv','r')
 rdr = csv.reader(f)
 for line in rdr:
     if(line[7] == '해당 시도 전체'):
-        print(line)
         x,y = getGPSByLocation(line[1])
-        cur.execute("INSERT IGNORE INTO REGION VALUES("+line[0]+",'"+line[1]+"','None','None',"+x+","+y+")")
+        print("INSERT IGNORE INTO REGION VALUES("+line[0]+",'"+line[1]+"','None','None','"+line[4]+"',"+x+","+y+")")
+        cur.execute("INSERT IGNORE INTO REGION VALUES("+line[0]+",'"+line[1]+"','None','None','"+line[4]+"',"+x+","+y+")")
 
 f = open('FlaskServer/location.csv','r')
 rdr = csv.reader(f)
@@ -46,7 +46,7 @@ for line in rdr:
         print(line)
         print(line)
         x,y = getGPSByLocation(line[1] + " " + line[2])
-        cur.execute("INSERT IGNORE INTO REGION VALUES("+line[0]+",'"+line[1]+"','"+line[2]+"','None',"+x+","+y+")")
+        cur.execute("INSERT IGNORE INTO REGION VALUES("+line[0]+",'"+line[1]+"','"+line[2]+"','None','"+line[4]+"',"+x+","+y+")")
 
 f = open('FlaskServer/location.csv','r')
 rdr = csv.reader(f)
@@ -54,7 +54,7 @@ for line in rdr:
     if(line[7] != '해당 시군구 전체' and line[7] != '해당 시도 전체' and line[7] != '법정동(읍면동)'):
         print(line)
         x,y = getGPSByLocation(line[1] + " " + line[2] + " " + line[3])
-        cur.execute("INSERT IGNORE INTO REGION VALUES("+line[0]+",'"+line[1]+"','"+line[2]+"','"+line[3]+"',"+x+","+y+")")
+        cur.execute("INSERT IGNORE INTO REGION VALUES("+line[0]+",'"+line[1]+"','"+line[2]+"','"+line[3]+"','"+line[4]+"',"+x+","+y+")")
  
 f.close()
 

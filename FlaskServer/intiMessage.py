@@ -65,7 +65,7 @@ while True:
 
     print(pageCount)
 
-    if(pageNo == 20): break
+    if(pageNo == 10): break
     pageNo+=1
     
 print(pageNo)

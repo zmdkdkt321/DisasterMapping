@@ -125,15 +125,23 @@ export function sbLawArea1_st() {
 }
 
 export function sbLawArea1_onchange() {
-    //disasterSms_searchinfo.set("sbLawArea2", "");
-    sbLawArea2.options.length=0;
-    var text = "시군구선택";
-    if(sbLawAea1.value == "A00") {
-        optionAppendChild(text);
-    } else{
-        optionAppendChild(text);
-        fetch_region();
-    }
+    fetch("json/locationJson.json")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const sbLawArea1 = document.getElementById('sbLawArea1');
+                const selectElement = document.getElementById('sbLawArea2');
+                selectElement.innerHTML = '';
+                console.log(data[sbLawArea1.value]);
+                console.log(Object.keys(data[sbLawArea1.value]));
+                for(let lv2_location of Object.keys(data[sbLawArea1.value])){
+                    let option = document.createElement('option');
+                    option.value = lv2_location;
+                    option.text = lv2_location;
+                    selectElement.appendChild(option);
+                }
+            })
+            .catch(error => console.log(error.message));
 }
 
 export function fetch_region() { //검색에서 시군구 select option 검색
@@ -437,3 +445,4 @@ export function headerShow() {
         guns[i].style.visibility = "visible";
     }
 }
+
