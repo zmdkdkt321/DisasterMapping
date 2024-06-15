@@ -165,3 +165,6 @@ window.loadMsgList = Client.loadMsgList;
 window.updateMainData = Server.updateMainData;
 window.tr_onclickheddin = Client.tr_onclickheddin;
 window.sbLawArea1_onchange = Client.sbLawArea1_onchange;
+window.sbLawArea2_onchange = Client.sbLawArea2_onchange;
+window.changeStartDate = Client.changeStartDate;
+window.changeEndDate = Client.changeEndDate;
