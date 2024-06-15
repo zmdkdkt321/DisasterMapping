@@ -8,6 +8,7 @@
 
     <resultMap id="regionWithMessages" type="team.men4.dsmap.model.entity.RegionWithMessages">
         <result property="id" column="region_id"/>
+        <result property="code" column="code"/>
         <result property="lv1Name" column="lv1_name"/>
         <result property="lv2Name" column="lv2_name"/>
         <result property="lv3Name" column="lv3_name"/>
@@ -24,14 +25,14 @@
 
     <select id="selectMsgAll" resultMap="regionWithMessages">
         <![CDATA[
-            SELECT m.id as msg_id, m.content, m.date, r.id as region_id, lv1_name, lv2_name, lv3_name, loc_x, loc_y
+            SELECT m.id as msg_id, m.content, m.date, r.id as region_id, code, lv1_name, lv2_name, lv3_name, loc_x, loc_y
             FROM message m
             JOIN message_region mr ON m.id = mr.msg_id
             JOIN region r ON r.id = mr.region_id
             where
-	            date > "2024-02-22 00:00:00"
+	            date > "2024-06-13 00:00:00"
             AND
-	            date <"2024-02-22 11:00:00"
+	            date <"2024-06-15 11:00:00"
         ]]>
     </select>
 

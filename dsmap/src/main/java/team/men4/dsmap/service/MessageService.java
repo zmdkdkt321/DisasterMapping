@@ -64,9 +64,15 @@ public class MessageService {
                 messages.add(messageDto);
             }
 
+            String numberString = Long.toString(entity.getCode()); // 숫자를 문자열로 변환
+            String shortenedNumberString = numberString.substring(0, 5); // 원하는 부분만 잘라냄
+            long shortenedNumber = Long.parseLong(shortenedNumberString);
+
+
             RegionWithMessagesDto dto = new RegionWithMessagesDto(
                     entity.getId(),
                     name,
+                    shortenedNumber,
                     entity.getX(),
                     entity.getY(),
                     entity.getMessages().size(),
