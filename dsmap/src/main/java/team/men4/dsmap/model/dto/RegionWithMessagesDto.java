@@ -12,6 +12,7 @@ import java.util.List;
 public class RegionWithMessagesDto {
     private int id;
     private String name;
+    private long code;
     private double x;
     private double y;
 

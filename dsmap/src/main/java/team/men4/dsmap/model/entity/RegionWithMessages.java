@@ -11,6 +11,7 @@ import java.util.List;
 @ToString
 public class RegionWithMessages {
     private int id;
+    private long code;
     private String lv1Name;
     private String lv2Name;
     private String lv3Name;
