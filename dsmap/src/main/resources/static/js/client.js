@@ -87,20 +87,21 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
 }
 
 export function loadMsgList() { //main에 통계 페이지 비동기 연결
+    document.getElementById('map').style.display = "none";
     const config = {
         method: "get"
     };
-    fetch("/msgList", config)
-        .then(response => response.text())
+    loadListHTML()
         .then(data => {
-            document.getElementById('map').style.display = "none";
-            // map-container라는 id를 가진 div 요소를 선택
-            const container = document.getElementById("content");
-            // 가져온 데이터를 해당 div에 추가
-            container.innerHTML = data;
-            msgList(); //초기 리스트 생성
+            //오늘 날짜 등록
+            var today = new Date();
+            console.log(today.toISOString().slice(0, 10));
+            setEndDate(today.toISOString().slice(0, 10));
+            today.setDate(today.getDate() - 7);
+            console.log(today.toISOString().slice(0, 10));
+            setStartDate(today.toISOString().slice(0, 10));
         })
-        .catch(error => console.log("fetch 에러!"));
+        .catch(error => console.log(error.message));
 
 //    const clickedmain = document.getElementById("mainlist");
 //    const clickedmap = document.getElementById("maplist");
@@ -111,37 +112,78 @@ export function loadMsgList() { //main에 통계 페이지 비동기 연결
 //    clickedmap.classList.remove('gradient-menubackground');
 }
 
-export function sbLawArea1_st() {
-    //disasterSms_searchinfo.set("sbLawArea2", "");
-    sbLawArea1.options.length=0;
-    var region = ['전국', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '세종특별자치시', '경기도', '강원특별자치도', '충청북도', '충청남도', '전북특별자치도', '전라남도', '경상북도', '경상남도', '제주특별자치도'];
-    for(var i=0; i<region.length; i++){
-        var are1 = document.getElementById('sbLawArea1');
-        var op1 = document.createElement('option');
-        op1.value = region(i);
-        op1.text = region(i);
-        are1.appendChild(op2);
-    }
-}
-
 export function sbLawArea1_onchange() {
-    fetch("json/locationJson.json")
+    const sbLawArea1 = document.getElementById('sbLawArea1');
+    const sbLawArea2 = document.getElementById('sbLawArea2');
+    const sbLawArea3 = document.getElementById('sbLawArea3');
+    if(sbLawArea1.value == "전국"){
+        sbLawArea2.innerHTML = '<option value>시군구선택</option>';
+        sbLawArea3.innerHTML = '<option value>읍면동선택</option>';
+        sbLawArea2.disabled = true;
+        sbLawArea3.disabled = true;
+    }else{
+        sbLawArea2.disabled = false;
+        sbLawArea3.disabled = false;
+        fetch("json/locationJson.json")
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                const sbLawArea1 = document.getElementById('sbLawArea1');
-                const selectElement = document.getElementById('sbLawArea2');
-                selectElement.innerHTML = '';
+                sbLawArea2.innerHTML = '';
                 console.log(data[sbLawArea1.value]);
                 console.log(Object.keys(data[sbLawArea1.value]));
                 for(let lv2_location of Object.keys(data[sbLawArea1.value])){
                     let option = document.createElement('option');
                     option.value = lv2_location;
                     option.text = lv2_location;
-                    selectElement.appendChild(option);
+                    sbLawArea2.appendChild(option);
                 }
+                sbLawArea2_onchange();
             })
             .catch(error => console.log(error.message));
+    }
+}
+
+export function sbLawArea2_onchange() {
+    const sbLawArea1 = document.getElementById('sbLawArea1');
+    const sbLawArea2 = document.getElementById('sbLawArea2');
+    const sbLawArea3 = document.getElementById('sbLawArea3');
+    fetch("json/locationJson.json")
+        .then(response => response.json())
+        .then(data => {
+            sbLawArea3.innerHTML = '';
+            for(let lv3_location of data[sbLawArea1.value][sbLawArea2.value]){
+                let option = document.createElement('option');
+                option.value = lv3_location;
+                option.text = lv3_location;
+                sbLawArea3.appendChild(option);
+            }
+        })
+        .catch(error => console.log(error.message));
+}
+
+export function changeStartDate(){
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    endDate.min = startDate.value;
+}
+export function changeEndDate(){
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    startDate.max = endDate.value;
+}
+
+export function setStartDate(newDate){
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    startDate.value = newDate;
+    endDate.min = newDate;
+}
+
+export function setEndDate(newDate){
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    startDate.max = newDate;
+    endDate.value = newDate;
 }
 
 export function fetch_region() { //검색에서 시군구 select option 검색
