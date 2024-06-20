@@ -52,7 +52,7 @@ public class MessageService {
             if(!entity.getLv3Name().equals("None")){
                 name += " "+entity.getLv3Name();
             }
-            log.info("{} {} {} {} ",entity.getId(), name, entity.getX(), entity.getY());
+//            log.info("{} {} {} {} ",entity.getId(), name, entity.getX(), entity.getY());
 
             List<MessageDto> messages = new ArrayList<>();
 
@@ -85,13 +85,13 @@ public class MessageService {
     }
 
 
-    public List<RegionWithMessages> selectMsg() {
+    public List<RegionWithMessages> selectMsg(String lv1_name, String lv2_name, String lv3_name) {
         List<RegionWithMessages> list = new ArrayList<>();
         try{
             list = messageMapper.selectMsg(
                     LocalDateTime.of(2024, 1, 1 ,0, 0,0),
                     LocalDateTime.of(2024,5,26,23,50),
-                    "부산광역시",null, null
+                    lv1_name, lv2_name, lv3_name
             );
         }catch (Exception e){
             e.printStackTrace();
