@@ -259,3 +259,6 @@ window.sbLawArea1_onchange = Client.sbLawArea1_onchange;
 window.sbLawArea2_onchange = Client.sbLawArea2_onchange;
 window.changeStartDate = Client.changeStartDate;
 window.changeEndDate = Client.changeEndDate;
+window.msgList  = Client.msgList;
+window.nextPage  = Client.nextPage;
+window.beforePage  = Client.beforePage;
