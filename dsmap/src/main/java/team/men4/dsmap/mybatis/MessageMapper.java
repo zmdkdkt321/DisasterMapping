@@ -13,17 +13,9 @@ import java.util.List;
 @Mapper
 public interface MessageMapper {
 
-    public List<RegionWithMessages> selectMsg(
-            @Param("d1") LocalDateTime d1,
-            @Param("d2") LocalDateTime d2,
-            @Param("q1") String q1,
-            @Param("q2") String q2,
-            @Param("q3") String q3
-    );
-
     public List<RegionWithMessage> selectPage(
-            @Param("d1") LocalDateTime d1,
-            @Param("d2") LocalDateTime d2,
+            @Param("s") String s,
+            @Param("e") String e,
             @Param("q1") String q1,
             @Param("q2") String q2,
             @Param("q3") String q3,
@@ -31,13 +23,13 @@ public interface MessageMapper {
     );
 
     public Integer selectNum(
-            @Param("d1") LocalDateTime d1,
-            @Param("d2") LocalDateTime d2,
+            @Param("s") String s,
+            @Param("e") String e,
             @Param("q1") String q1,
             @Param("q2") String q2,
             @Param("q3") String q3
     );
 
 
-    public List<RegionWithMessages> selectMsgAll();
+    public List<RegionWithMessages> selectMsgAll(@Param("s") String s, @Param("e") String e);
 }

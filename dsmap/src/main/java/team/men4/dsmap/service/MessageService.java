@@ -14,7 +14,7 @@ import team.men4.dsmap.model.entity.RegionWithMessage;
 import team.men4.dsmap.model.entity.RegionWithMessages;
 import team.men4.dsmap.mybatis.MessageMapper;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,19 @@ public class MessageService {
 
     public List<RegionWithMessagesDto> selectMsgAll() {
         List<RegionWithMessages> list = new ArrayList<>();
+
+
+        LocalDate currentDate = LocalDate.now();
+        LocalDate nextDate = currentDate.plusDays(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 날짜를 문자열로 변환합니다
+        String start = currentDate.format(formatter);
+        String end = nextDate.format(formatter);
+        log.info("{} {}", start, end);
         try{
-            list = messageMapper.selectMsgAll();
+            list = messageMapper.selectMsgAll(start, end);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -90,16 +101,25 @@ public class MessageService {
 
 
     public MessageListDto selectPage(int offset, String lv1_name, String lv2_name, String lv3_name, String start, String end) {
+
         List<RegionWithMessage> list = new ArrayList<>();
         MessageListDto messageListDto = new MessageListDto();
         int num = 0;
 
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        LocalDateTime s = LocalDateTime.parse(start, formatter);
-        LocalDateTime d = LocalDateTime.parse(end, formatter);
+
+        if(start.equals(end)){
+
+            LocalDate currentDate = LocalDate.parse(start);
+            LocalDate nextDate = currentDate.plusDays(1);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            // 날짜를 문자열로 변환합니다
+            end = nextDate.format(formatter);
+        }
 
         try{
-            list = messageMapper.selectPage(s, d,
+            list = messageMapper.selectPage(start, end,
                     lv1_name, lv2_name, lv3_name,
                     offset
             );
@@ -129,7 +149,7 @@ public class MessageService {
             messageDtoList.add(message);
         }
 
-        num = selectNum(s, d, lv1_name, lv2_name, lv3_name);
+        num = selectNum(start, end, lv1_name, lv2_name, lv3_name);
 
         messageListDto.setMessages(messageDtoList);
         messageListDto.setOffset(offset);
@@ -139,7 +159,7 @@ public class MessageService {
     }
 
 
-    public Integer selectNum(LocalDateTime s, LocalDateTime d, String lv1_name, String lv2_name, String lv3_name) {
+    public Integer selectNum(String s, String d, String lv1_name, String lv2_name, String lv3_name) {
         Integer integer = messageMapper.selectNum(
                 s, d, lv1_name, lv2_name, lv3_name);
         return integer;
