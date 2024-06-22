@@ -199,114 +199,59 @@ export function fetch_region() { //검색에서 시군구 select option 검색
         .catch(error => console.log("fetch 에러!"));
 }
 
-//구버전
-export function msgList(page=0) { //메세지리스트 생성
-    const sbLawArea1 = document.getElementById('sbLawArea1');
-    const sbLawArea2 = document.getElementById('sbLawArea2');
-    const sbLawArea3 = document.getElementById('sbLawArea3');
-    const startDate = document.getElementById('startDate');
-    const endDate = document.getElementById('endDate');
-
-    const params = {
-        start_date: startDate.value + "T00:00:00",
-        end_date: endDate.value + "T00:00:00"
-    };
-    const url = `msg/${page}/${sbLawArea1.value}/${sbLawArea1.value}/${sbLawArea1.value}?${new URLSearchParams(params).toString()}`
-    fetch(url)
+export function msgList() { //메세지리스트 생성
+    fetch("json/dummy.json")
         .then(response => response.json())
         .then(data => {
             const tbody = document.getElementById('mapList');
-            tbody.innerHTML = "";
-            console.log(data);
-            let index = 0;
-            data.messages.forEach(message => {
-                const tr = document.createElement('tr');
-                tr.classList.add("clickable-row");
+            data.forEach(rowData => {
+                let msgs = rowData.messages;
+                msgs.forEach(cellData => {
+                    const tr = document.createElement('tr');
+                    tr.id = cellData.id;
+//                    tr.classList.add("overflow-hidden");
+                    tr.classList.add("clickable-row");
+//                    tr.className.add(cellData.id);
+                    tr.onclick = function() {
+                        tr_onclickheddin(this);
+                    };
+                    //const td = document.createElement('td');
+                    const addrtd = document.createElement('td');
+                    const contenttd = document.createElement('td');
+                    const datetd = document.createElement('td');
+//                    const addrdiv = document.createElement('div');
+//                    const contentdiv = document.createElement('div');
+//                    const datediv = document.createElement('div');
 
-                //const td = document.createElement('td');
-                const addrtd = createTD();
-                const contenttd = createTD();
-                const datetd= createTD();
+//                    addrdiv.classList.add("overflow-y-hidden");
+//                    contentdiv.classList.add("overflow-y-hidden");
+//                    datediv.classList.add("overflow-y-hidden");
+//                    datetd.classList.add("overflow-y-hidden");
 
-                addrtd.textContent = message.name;
-                contenttd.textContent = message.content.substr(0, 25)+"...";
-                datetd.textContent = message.date;
+                    addrtd.style.overflow = "hidden";
+                    addrtd.style.whiteSpace = "nowrap";
+                    contenttd.style.overflow = "hidden";
+                    contenttd.style.whiteSpace = "nowrap";
+                    datetd.style.overflow = "hidden";
+                    datetd.style.whiteSpace = "nowrap";
 
-                tr.appendChild(addrtd);
-                tr.appendChild(contenttd);
-                tr.appendChild(datetd);
-
-                const insidetr = document.createElement('tr');
-                insidetr.id = "tr"+index;
-                insidetr.style.display = "none";
-                const insideTd = document.createElement('td');
-                insideTd.classList.add("insideTd");
-                insideTd.colSpan = 3;
-                insideTd.textContent = message.content;
-                insidetr.appendChild(insideTd);
-                tr.child = "tr"+index;
-                tr.onclick = function(){foldInsideMessage(tr.child)};
-
-                tbody.appendChild(tr);
-                tbody.appendChild(insidetr);
-
-                index++;
+                    addrtd.textContent = rowData.name;
+                    const addrtr = addrtd.textContent.replace(/\s+/g, '-');
+                    tr.classList.add(addrtr);
+                    contenttd.textContent = cellData.content;
+                    datetd.textContent = cellData.date;
+//                    td.textContent = cellData.content;
+//                    tr.appendChild(td);
+//                    addrtd.appendChild(addrdiv);
+//                    contenttd.appendChild(contentdiv);
+//                    datetd.appendChild(datediv);
+                    tr.appendChild(addrtd);
+                    tr.appendChild(contenttd);
+                    tr.appendChild(datetd);
+                    tbody.appendChild(tr);
+                });
             });
-
-            const buttonContainer = document.getElementById('buttonContainer');
-            buttonContainer.endPage = Math.floor((data.size-1)/10) + 1;
-            buttonContainer.startPage = Math.floor((data.offset)/10)*10+1;
-            buttonContainer.offset = data.offset+1;
-            createButtons(buttonContainer.startPage,
-                buttonContainer.endPage > buttonContainer.startPage+9?
-                    buttonContainer.startPage+9 : buttonContainer.endPage);
         });
-}
-
-function createTD(){
-    let td = document.createElement('td');
-    td.style.overflow = "hidden";
-    td.style.whiteSpace = "nowrap";
-    return td;
-}
-
-function foldInsideMessage(childID){
-    console.log(childID);
-    const insideMessage = document.getElementById(childID);
-    insideMessage.style.display = insideMessage.style.display==="none"?"":"none";
-}
-
-function createButtons(startIndex, endIndex){
-    console.log("start", startIndex);
-    console.log("end", endIndex);
-    const beforePageButton = document.getElementById('beforePage');
-    const nextPageButton = document.getElementById('nextPage');
-    const buttonContainer = document.getElementById('buttonContainer');
-    buttonContainer.innerHTML = "";
-    beforePageButton.disabled = (startIndex===1);
-    nextPageButton.disabled = (buttonContainer.endPage===endIndex);
-
-    for (let i = startIndex; i <= endIndex; i++) {
-        const button = document.createElement('button');
-        button.textContent = i;
-        button.className = "btn btn-outline-primary";
-        if(i === buttonContainer.offset) button.style.color = "purple"
-        buttonContainer.appendChild(button);
-    }
-}
-
-export function beforePage(){
-    const buttonContainer = document.getElementById('buttonContainer');
-    createButtons(buttonContainer.startPage-10, buttonContainer.startPage-1);
-    buttonContainer.startPage = buttonContainer.startPage-10;
-}
-
-export function nextPage(){
-    const buttonContainer = document.getElementById('buttonContainer');
-    createButtons(buttonContainer.startPage+10,
-        buttonContainer.endPage > buttonContainer.startPage+19?
-            buttonContainer.startPage+19 : buttonContainer.endPage);
-    buttonContainer.startPage = buttonContainer.startPage+10;
 }
 
 export function optionAppendChild(value) {
