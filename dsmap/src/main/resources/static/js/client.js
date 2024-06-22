@@ -3,6 +3,9 @@ import * as Main from '/js/mainjs.js';
 
 export function loadMain() { //main에 main body 부분 비동기 연결
     document.getElementById('map').style.display = "none";
+    Main.noneMapmMsg();
+    markerLvAlarmNone();
+
 
     loadMainHTML().then(
         data => {
@@ -76,14 +79,6 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
             Main.fetchDataAndPlotMarkers();
         })
         .catch(error => console.log(error.message));
-
-//    const clickedmain = document.getElementById("mainlist");
-//    const clickedmap = document.getElementById("maplist");
-//    const clickedlist = document.getElementById("listlist");
-//
-//    clickedmap.classList.add('gradient-menubackground');
-//    clickedmain.classList.remove('gradient-menubackground');
-//    clickedlist.classList.remove('gradient-menubackground');
 }
 
 export function loadMsgList() { //main에 통계 페이지 비동기 연결
@@ -102,14 +97,8 @@ export function loadMsgList() { //main에 통계 페이지 비동기 연결
             setStartDate(today.toISOString().slice(0, 10));
         })
         .catch(error => console.log(error.message));
-
-//    const clickedmain = document.getElementById("mainlist");
-//    const clickedmap = document.getElementById("maplist");
-//    const clickedlist = document.getElementById("listlist");
-//
-//    clickedlist.classList.add('gradient-menubackground');
-//    clickedmain.classList.remove('gradient-menubackground');
-//    clickedmap.classList.remove('gradient-menubackground');
+    Main.noneMapmMsg();
+    markerLvAlarmNone();
 }
 
 export function sbLawArea1_onchange() {
@@ -184,6 +173,24 @@ export function setEndDate(newDate){
     const endDate = document.getElementById('endDate');
     startDate.max = newDate;
     endDate.value = newDate;
+}
+
+export function markerLvAlarmNone() {
+    const elements = document.getElementsByClassName("alarm");
+    Array.from(elements).forEach(element => {
+            element.style.display = "none";
+            console.log("알림 none");
+    });
+    console.log("알림 none 완료");
+}
+
+export function markerLvAlarmBlock() {
+    const elements = document.getElementsByClassName("alarm");
+    Array.from(elements).forEach(element => {
+            element.style.display = "block";
+            console.log("알림 block");
+    });
+    console.log("알림 block 완료");
 }
 
 export function fetch_region() { //검색에서 시군구 select option 검색

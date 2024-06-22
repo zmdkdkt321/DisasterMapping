@@ -12,10 +12,17 @@ input.btnreloadimg {
     background-repeat: no-repeat;
     background-size: contain;
     border: 0px;
-    width: 100%;
-    height: 50%;
+    width: 20px;
+    height: 20px;
 }
 
+.top-alarm{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    background: rgb(0.1);
+    z-index: 5;
+}
 
 .summery{
     position: fixed;
@@ -30,6 +37,7 @@ input.btnreloadimg {
     top: 40%;
     bottom: auto;
     left: 10px;
+    width: 32%;
     white: 100%;
     z-index: 1;
 }

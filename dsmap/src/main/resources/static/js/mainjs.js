@@ -45,6 +45,7 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
 
     initMap();
     noneMapmMsg();
+    Client.markerLvAlarmBlock();
     const myElement = document.getElementById("type");
     myElement.setAttribute("showType", "map");
     fetchDataAndPlotMarkers();
