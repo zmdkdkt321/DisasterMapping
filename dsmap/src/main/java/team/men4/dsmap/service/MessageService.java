@@ -106,6 +106,7 @@ public class MessageService {
         MessageListDto messageListDto = new MessageListDto();
         int num = 0;
 
+        offset *= 10;
 
         if(start.equals(end)){
 
@@ -165,4 +166,4 @@ public class MessageService {
         return integer;
     }
 
-    }
+}
