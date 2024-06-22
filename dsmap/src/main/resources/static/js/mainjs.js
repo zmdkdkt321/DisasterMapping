@@ -121,7 +121,7 @@ export function fetchDataAndPlotMarkers() {
                 });
 
                 kakao.maps.event.addListener(marker, 'mouseout', function() {
-                     infowindow.close();
+                     infowindow.setMap(null)
                 });
 
                 kakao.maps.event.addListener(marker, 'click', function() {
@@ -226,18 +226,18 @@ export function mapMsg(regionName) {
 // 지역 정보 표시 함수
 export function displayAreaInfo(coords, messages) {
     var messageContent = '';
-    messageContent += '<div class = "customInfoWindow">' + messages.name + '<br> 메시지 수 : ' + messages.message_num  + '</div>';
+    messageContent += '<div class = "customInfoWindow">' + messages.name + '</div>';
 
-    if (infowindow) infowindow.close();
+    if (infowindow) infowindow.setMap(null);
 
-    infowindow = new kakao.maps.InfoWindow({
+    infowindow =  new kakao.maps.CustomOverlay({
         position: coords,
         content: messageContent,
         removable: true,
         zIndex: 3,
         disableAutoPan: true
     });
-    infowindow.open(map);
+    infowindow.setMap(map);
 }
 
 function displayArea(area) {
