@@ -2,11 +2,27 @@ body {
     height: 100vh;
 }
 
+td {
+    text-align : center;
+}
+
+input.btnreloadimg {
+    background: white;
+    background-image: url("http://localhost:8080/img/reload");
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 0px;
+    width: 100%;
+    height: 50%;
+}
+
+
 .summery{
     position: fixed;
     bottom: 0px;
-    left: 0px;
+    right: 0px;
     background: rgb(0.1);
+    z-index: 5;
 }
 
 .menu {

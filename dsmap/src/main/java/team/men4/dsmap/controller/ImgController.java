@@ -63,4 +63,21 @@ public class ImgController {
             throw new IOException("이미지를 찾을 수 없습니다.");
         }
     }
+
+    @GetMapping(
+            value = "/reload",
+            produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public @ResponseBody byte[] getreload() throws IOException {
+        InputStream in = getClass().getResourceAsStream(
+                "/static/img/reload.png");
+        if (in != null) {
+            byte[] bytes = in.readAllBytes();
+            in.close();
+            return bytes;
+        } else {
+            // 파일을 찾을 수 없는 경우 처리
+            throw new IOException("이미지를 찾을 수 없습니다.");
+        }
+    }
 }
