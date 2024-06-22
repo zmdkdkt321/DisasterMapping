@@ -3,6 +3,7 @@ package team.men4.dsmap.mybatis;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import team.men4.dsmap.model.entity.RegionWithMessage;
 import team.men4.dsmap.model.entity.RegionWithMessages;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,24 @@ public interface MessageMapper {
             @Param("q2") String q2,
             @Param("q3") String q3
     );
+
+    public List<RegionWithMessage> selectPage(
+            @Param("d1") LocalDateTime d1,
+            @Param("d2") LocalDateTime d2,
+            @Param("q1") String q1,
+            @Param("q2") String q2,
+            @Param("q3") String q3,
+            @Param("offset") int offset
+    );
+
+    public Integer selectNum(
+            @Param("d1") LocalDateTime d1,
+            @Param("d2") LocalDateTime d2,
+            @Param("q1") String q1,
+            @Param("q2") String q2,
+            @Param("q3") String q3
+    );
+
 
     public List<RegionWithMessages> selectMsgAll();
 }
