@@ -56,19 +56,27 @@
                 date > #{s}
             AND
                 date < #{e}
-            AND
         ]]>
-        <trim prefixOverrides="AND">
-            <if test="q1 != 'None'">
-                AND lv1_name LIKE #{q1}
+
+            <if test="q1 != '전국'">
+                <if test="q1 != 'None'">
+                    <trim prefix="AND">
+                    lv1_name LIKE #{q1}
+                    </trim>
+                </if>
+
+                <if test="q2 != 'None'">
+                    <trim prefix="AND">
+                    (lv2_name = 'None' OR lv2_name LIKE #{q2})
+                    </trim>
+                </if>
+
+                <if test="q3 != 'None'">
+                    <trim prefix="AND">
+                    (lv3_name = 'None' OR lv3_name LIKE #{q3})
+                    </trim>
+                </if>
             </if>
-            <if test="q2 != 'None'">
-                AND (lv2_name LIKE "None" OR lv2_name LIKE #{q2})
-            </if>
-            <if test="q3 != 'None'">
-                AND (lv3_name LIKE "None" OR lv3_name LIKE #{q3})
-            </if>
-        </trim>
         ORDER BY m.date DESC
         LIMIT 10 OFFSET #{offset};
     </select>
@@ -80,18 +88,29 @@
             JOIN message_region mr ON m.id = mr.msg_id
             JOIN region r ON r.id = mr.region_id
             WHERE
+                 date > #{s}
+            AND
+                date < #{e}
         ]]>
-        <trim prefixOverrides="AND">
+        <if test="q1 != '전국'">
             <if test="q1 != 'None'">
-                AND lv1_name LIKE #{q1}
+                <trim prefix="AND">
+                    lv1_name LIKE #{q1}
+                </trim>
             </if>
+
             <if test="q2 != 'None'">
-                AND (lv2_name LIKE "None" OR lv2_name LIKE #{q2})
+                <trim prefix="AND">
+                    (lv2_name = 'None' OR lv2_name LIKE #{q2})
+                </trim>
             </if>
+
             <if test="q3 != 'None'">
-                AND (lv3_name LIKE "None" OR lv3_name LIKE #{q3})
+                <trim prefix="AND">
+                    (lv3_name = 'None' OR lv3_name LIKE #{q3})
+                </trim>
             </if>
-        </trim>
+        </if>
 
     </select>
 
