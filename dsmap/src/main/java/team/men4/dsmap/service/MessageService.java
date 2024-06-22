@@ -89,28 +89,6 @@ public class MessageService {
     }
 
 
-    public List<RegionWithMessages> selectMsg(String lv1_name, String lv2_name, String lv3_name) {
-        List<RegionWithMessages> list = new ArrayList<>();
-        try{
-            list = messageMapper.selectMsg(
-                    LocalDateTime.of(2024, 1, 1 ,0, 0,0),
-                    LocalDateTime.of(2024,5,26,23,50),
-                    lv1_name, lv2_name, lv3_name
-            );
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        int num =0;
-        for(RegionWithMessages  m : list){
-            num += m.getMessages().size();
-        }
-        log.info("lv1 tuple: {}", num);
-
-        return list;
-    }
-
-
     public MessageListDto selectPage(int offset, String lv1_name, String lv2_name, String lv3_name, String start, String end) {
         List<RegionWithMessage> list = new ArrayList<>();
         MessageListDto messageListDto = new MessageListDto();

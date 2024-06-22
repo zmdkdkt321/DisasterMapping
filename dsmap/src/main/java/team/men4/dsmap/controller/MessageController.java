@@ -23,21 +23,13 @@ public class MessageController {
         return "ok";
     }
 
-    @GetMapping("/{lv1_name}/{lv2_name}/{lv3_name}")
-    public List<RegionWithMessages> select(
-            @PathVariable String lv1_name,
-            @PathVariable String lv2_name,
-            @PathVariable String lv3_name
-    ){
-        return messageService.selectMsg(lv1_name, lv2_name, lv3_name);
-    }
 
-    @GetMapping("/{offset}/{lv1_name}/{lv2_name}/{lv3_name}")
+    @GetMapping("/{lv1_name}/{lv2_name}/{lv3_name}")
     public MessageListDto selectPage(
-            @PathVariable int offset,
             @PathVariable String lv1_name,
             @PathVariable String lv2_name,
             @PathVariable String lv3_name,
+            @RequestParam(value="offset", defaultValue = "0") int offset,
             @RequestParam("start_date") String start,
             @RequestParam("end_date") String end
     ){
