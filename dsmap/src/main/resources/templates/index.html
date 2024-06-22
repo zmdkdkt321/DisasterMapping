@@ -15,20 +15,9 @@
 </head>
 
 <body>
-
-<!--<style>-->
-<!--    .col-sm-5{-->
-<!--        position: fixed;-->
-<!--        top: 50%; /* 화면의 상단에 고정 */-->
-<!--        left: 0; /* 화면의 왼쪽에 고정 */-->
-<!--        width: 100%;-->
-<!--        z-index: 1000;-->
-<!--        }-->
-<!--</style>-->
-
 <div class="container-fluid row m-0 p-0 h-100">
 
-    <div class="col-sm-4" style="margin-top: auto; margin-bottom: auto">
+    <div class="col-sm-4 mx-0 p-1 mt-auto mb-2" style="height: 35%">
         <div class="menu">
             <div class="container-fluid m-0 p-0" id="top_head">
                 <div class="d-flex mx-5">
@@ -76,10 +65,30 @@
             </div>
             <!--</nav>-->
         </div>
+        <div class="p-0 mb-2 ml-0" style="display:none; overflow:auto; height: 100%; border: 1px solid black;" id="mapmsg">
+            <table class="table table-bordered table-sm align-middle m-0 p-0" style="table-layout:fixed" id="mapmsgtable">
+                <thead class="border-top-primary">
+                <colgroup>
+                    <col width="80%">
+                    <col width="20%">
+                </colgroup>
+                <tr>
+                    <th class="border-x" scope="col-5">
+                        <span>재난문자</span>
+                    </th>
+                    <th style="width:20px" scope="col-4">
+                        <span>등록일</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="table-hover" id="mapmsglist">
+                </tbody>
+            </table>
 
+        </div>
 
     </div>
-    <div class="col-sm-8 my-auto p-0">
+    <div class="col-sm-8 my-auto mx-0 p-0">
         <section id="section1">
             <div id="content" class="container-fluid m-0 p-0">
                 <div id target></div>
@@ -89,6 +98,7 @@
     </div>
 
 </div>
+
 
 <div class="summery m-0 p-0 pl-1 pb-1 align-content-center">
     <p class="m-0 p-0"><small>지도 API : 카카오 맵</small></p>

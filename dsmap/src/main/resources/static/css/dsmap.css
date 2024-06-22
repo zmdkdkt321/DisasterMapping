@@ -2,11 +2,16 @@ body {
     height: 100vh;
 }
 
+td {
+    text-align : center;
+}
+
 .summery{
     position: fixed;
     bottom: 0px;
-    left: 0px;
+    right: 0px;
     background: rgb(0.1);
+    z-index: 5;
 }
 
 .menu {
