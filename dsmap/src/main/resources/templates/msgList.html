@@ -42,7 +42,7 @@
                     </ul>
                 </div>
                 <div class="mt-auto ms-auto me-0 mb-0" style="width: 10;">
-                    <a class="bg-info text-reset m-1 p-1" onclick="#">검색</a>
+                    <a class="bg-info text-reset m-1 p-1" onclick="msgList()">검색</a>
                 </div>
             </div>
             <div class="container-fluid m-0 mt-1 p-0">
@@ -52,12 +52,12 @@
             </div>
             <div class="container-fluid mt-2 p-0">
                 <div class="table-responsive-lg m-0 p-0">
-                    <table class="table table-bordered table-sm align-middle" style="table-layout:fixed">
+                    <table class="table table-sm align-middle" style="table-layout:fixed">
                         <thead class="border-top-primary">
                         <colgroup>
                             <col width="50px" >
                             <col width="200px">
-                            <col width="40px">
+                            <col width="50px">
                         </colgroup>
                         <tr class="clickable-row">
                             <th scope="col-3">
@@ -75,6 +75,11 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <button id="beforePage" class="btn btn-primary btn-sm" disabled='disabled' onclick="beforePage()" style="border"><</button>
+                <div class="d-flex justify-content-center align-items-center" id="buttonContainer"></div>
+                <button id="nextPage" class="btn btn-primary btn-sm" disabled='disabled' onclick="nextPage()">></button>
             </div>
         </div>
     </div>

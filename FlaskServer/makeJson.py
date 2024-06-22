@@ -12,15 +12,15 @@ f = open('FlaskServer/location.csv','r')
 rdr = csv.reader(f)
 for line in rdr:
     if(line[7] == '해당 시도 전체'):
-        locationJson[line[1]] = {}
+        locationJson[line[1]] = {"전체":["전체"]}
         
 f = open('FlaskServer/location.csv','r')
 rdr = csv.reader(f)
 for line in rdr:
     if(line[7] =='해당 시군구 전체'):
-        locationJson[line[1]][line[2]] = []
+        locationJson[line[1]][line[2]] = ["전체"]
 
-locationJson['세종특별자치시']['세종특별자치시'] = []
+locationJson['세종특별자치시']['세종특별자치시'] = ["전체"]
 
 f = open('FlaskServer/location.csv','r')
 rdr = csv.reader(f)

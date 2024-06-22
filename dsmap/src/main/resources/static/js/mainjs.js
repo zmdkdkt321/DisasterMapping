@@ -44,7 +44,7 @@ export function loadMap() { //main에 지도 페이지 비동기 연결
     document.getElementById('map').style.display = "block";
 
     initMap();
-
+    noneMapmMsg();
     const myElement = document.getElementById("type");
     myElement.setAttribute("showType", "map");
     fetchDataAndPlotMarkers();
@@ -121,12 +121,17 @@ export function fetchDataAndPlotMarkers() {
                 });
 
                 kakao.maps.event.addListener(marker, 'mouseout', function() {
-                     infowindow.close();
+                     infowindow.setMap(null)
                 });
 
                 kakao.maps.event.addListener(marker, 'click', function() {
                     map.setLevel(10);
                     map.panTo(markerPosition);
+
+
+                    //여기 마커 클릭 이벤트
+                    deleteMapMsg();
+                    mapMsg(item.name);
 
                     var code = item.code;
                     var name = item.name;
@@ -145,21 +150,94 @@ export function fetchDataAndPlotMarkers() {
         });
 }
 
+export function deleteMapMsg() {
+    const table = document.getElementById('mapmsgtable');
+
+    while (table.rows.length > 0) {
+        table.deleteRow(0);
+    }
+
+}
+
+export function noneMapmMsg() {
+    const table = document.getElementById('mapmsgtable');
+    while (table.rows.length > 0) {
+    table.deleteRow(0);
+    }
+
+    const mapmsg = document.getElementById('mapmsg');
+    mapmsg.style.display = "none";
+
+}
+
+export function mapMsg(regionName) {
+    fetch("/msg")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                let dataArray;
+                if (Array.isArray(data)) {
+                    dataArray = data;
+                } else {
+                    dataArray = [data];
+                }
+                const mapmsg = document.getElementById('mapmsg');
+                mapmsg.style.display = "block";
+                dataArray.forEach(item => {
+                    if(item.name == regionName) {
+                        const messageContent = item.messages;
+                        messageContent.forEach(msg => {
+                            const tbody = document.getElementById('mapmsglist');
+                            const tr = document.createElement('tr');
+
+                            tr.id = msg.id;
+                            tr.classList.add("clickable-row");
+
+                            const contenttd = document.createElement('td');
+                            const datetd = document.createElement('td');
+
+                            contenttd.style.overflow = "hidden";
+                            contenttd.style.whiteSpace = "nowrap";
+                            contenttd.style.textOverflow = "ellipsis";
+                            datetd.style.overflow = "hidden";
+                            datetd.style.whiteSpace = "nowrap";
+                            contenttd.style.textOverflow = "ellipsis";
+
+                            contenttd.textContent = msg.message;
+                            datetd.textContent = msg.date;
+                            console.log(msg);
+
+                            tr.appendChild(contenttd);
+                            tr.appendChild(datetd);
+                            tbody.appendChild(tr);
+
+                        });
+                    }
+
+                });
+            });
+
+}
+
 // 지역 정보 표시 함수
 export function displayAreaInfo(coords, messages) {
     var messageContent = '';
-    messageContent += '<div class = "customInfoWindow">' + messages.name + '<br> 메시지 수 : ' + messages.message_num  + '</div>';
+    messageContent += '<div class = "customInfoWindow">' + messages.name + '</div>';
 
-    if (infowindow) infowindow.close();
+    if (infowindow) infowindow.setMap(null);
 
-    infowindow = new kakao.maps.InfoWindow({
+    infowindow =  new kakao.maps.CustomOverlay({
         position: coords,
         content: messageContent,
         removable: true,
         zIndex: 3,
         disableAutoPan: true
     });
-    infowindow.open(map);
+    infowindow.setMap(map);
 }
 
 function displayArea(area) {
@@ -256,6 +334,10 @@ window.loadMsgList = Client.loadMsgList;
 window.updateMainData = Server.updateMainData;
 window.tr_onclickheddin = Client.tr_onclickheddin;
 window.sbLawArea1_onchange = Client.sbLawArea1_onchange;
+window.sbLawArea1_onchange = Client.sbLawArea1_onchange;
 window.sbLawArea2_onchange = Client.sbLawArea2_onchange;
 window.changeStartDate = Client.changeStartDate;
 window.changeEndDate = Client.changeEndDate;
+window.msgList  = Client.msgList;
+window.nextPage  = Client.nextPage;
+window.beforePage  = Client.beforePage;
