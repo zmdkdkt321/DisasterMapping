@@ -128,7 +128,6 @@ export function fetchDataAndPlotMarkers() {
                     map.setLevel(10);
                     map.panTo(markerPosition);
 
-
                     //여기 마커 클릭 이벤트
                     deleteMapMsg();
                     mapMsg(item.name);
