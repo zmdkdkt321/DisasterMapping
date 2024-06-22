@@ -125,17 +125,17 @@ export function fetchDataAndPlotMarkers() {
                 });
 
                 kakao.maps.event.addListener(marker, 'click', function() {
-//                    map.setCenter(markerPosition);
-//                    map.setLevel(10);
+                    map.setLevel(10);
+                    map.panTo(markerPosition);
 
                     var code = item.code;
                     var name = item.name;
-                    console.log(code, name);
+                    console.log(name,  code);
 
-                    if(code/1000 < 1){
-                        readRLGPolygon(code);
-                    }else{
+                    if(code % 1000 != 0){
                         readBLGPolygon(code);
+                    }else{
+                        readRLGPolygon(code);
                     }
                 });
             });
@@ -148,7 +148,7 @@ export function fetchDataAndPlotMarkers() {
 // 지역 정보 표시 함수
 export function displayAreaInfo(coords, messages) {
     var messageContent = '';
-    messageContent += '<div class = "customInfoWindow"> 지역 명 : ' + messages.name + '<br> 메시지 수 : ' + messages.message_num  + '</div>';
+    messageContent += '<div class = "customInfoWindow">' + messages.name + '<br> 메시지 수 : ' + messages.message_num  + '</div>';
 
     if (infowindow) infowindow.close();
 
@@ -168,7 +168,7 @@ function displayArea(area) {
         path: area.path,
         strokeWeight: 1,
         strokeColor: '#FFF',
-        strokeOpacity: 1,
+        strokeOpacity: 0,
         fillColor: '#298A08',
         fillOpacity: 0.4
       });
