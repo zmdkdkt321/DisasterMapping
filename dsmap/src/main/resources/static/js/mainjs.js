@@ -254,7 +254,7 @@ function tr_onclickmapmsg() {
                 } else {
                     const newRowHTML = `
                         <tr class="new-row" style="border: 1px solid black; border-collapse: collapse;">
-                              <td colspan='3'>${content}</td>
+                              <td colspan='3' class="table-secondary">${content}</td>
                         </tr>
                     `;
                     this.insertAdjacentHTML('afterend', newRowHTML);
