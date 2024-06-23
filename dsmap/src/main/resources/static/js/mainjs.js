@@ -126,7 +126,6 @@ export function fetchDataAndPlotMarkers() {
                 });
 
                 kakao.maps.event.addListener(marker, 'click', function() {
-                    map.setLevel(10);
                     map.panTo(markerPosition);
 
                     //여기 마커 클릭 이벤트
