@@ -20,8 +20,12 @@ input.btnreloadimg {
     position: fixed;
     top: 0px;
     right: 0px;
-    background: rgb(0.1);
+    background: rgb(220, 220, 220, 0.7);
     z-index: 5;
+}
+
+.font-bold {
+    font-weight:bold;
 }
 
 .summery{
