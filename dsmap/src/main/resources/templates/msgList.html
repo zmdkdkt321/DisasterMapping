@@ -26,11 +26,11 @@
                                 <option value="경상남도">경상남도</option>
                                 <option value="제주특별자치도">제주특별자치도</option>
                             </select>
-                            <select id="sbLawArea2" title="시군구선택" onchange="sbLawArea2_onchange()" disabled>
-                                <option value>시군구선택</option>
+                            <select id="sbLawArea2" title="시군구선택" onchange="sbLawArea2_onchange()">
+                                <option value="전국">시군구선택</option>
                             </select>
-                            <select id="sbLawArea3" title="읍면동선택" disabled>
-                                <option value>읍면동선택</option>
+                            <select id="sbLawArea3" title="읍면동선택">
+                                <option value="전국">읍면동선택</option>
                             </select>
                         </li>
                         <li>
@@ -47,7 +47,7 @@
             </div>
             <div class="container-fluid m-0 mt-1 p-0">
                 <span>전체</span>
-                <span class="text-info">0</span>
+                <span id="messageCount" class="text-info">0</span>
                 <span>건</span>
             </div>
             <div class="container-fluid mt-2 p-0">
@@ -71,7 +71,7 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody class="table-hover" id="mapList">
+                        <tbody class="table-hover" id="mapList" style="overflow:auto;">
                         </tbody>
                     </table>
                 </div>

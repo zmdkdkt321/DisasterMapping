@@ -105,11 +105,17 @@ export function sbLawArea1_onchange() {
     const sbLawArea1 = document.getElementById('sbLawArea1');
     const sbLawArea2 = document.getElementById('sbLawArea2');
     const sbLawArea3 = document.getElementById('sbLawArea3');
-    if(sbLawArea1.value == "전국"){
-        sbLawArea2.innerHTML = '<option value>시군구선택</option>';
-        sbLawArea3.innerHTML = '<option value>읍면동선택</option>';
-        sbLawArea2.disabled = true;
-        sbLawArea3.disabled = true;
+    if(sbLawArea1.value === "전국"){
+        sbLawArea2.innerHTML = '';
+        sbLawArea3.innerHTML = '';
+        let option = document.createElement('option');
+        option.value = "전국";
+        option.text = "시군구 선택";
+        sbLawArea2.appendChild(option);
+        let option2 = document.createElement('option');
+        option2.value = "전국";
+        option2.text = "읍면동 선택";
+        sbLawArea3.appendChild(option2);
     }else{
         sbLawArea2.disabled = false;
         sbLawArea3.disabled = false;
@@ -214,16 +220,29 @@ export function msgList(page=0) { //메세지리스트 생성
     const endDate = document.getElementById('endDate');
 
     const params = {
+        offset : page,
         start_date: startDate.value + "T00:00:00",
         end_date: endDate.value + "T00:00:00"
     };
-    const url = `msg/${page}/${sbLawArea1.value}/${sbLawArea2.value}/${sbLawArea3.value}?${new URLSearchParams(params).toString()}`
+    const url = `msg/${sbLawArea1.value}/${sbLawArea2.value}/${sbLawArea3.value}?${new URLSearchParams(params).toString()}`
     fetch(url)
         .then(response => response.json())
         .then(data => {
             const tbody = document.getElementById('mapList');
             tbody.innerHTML = "";
             let index = 0;
+
+            const messageCount = document.getElementById("messageCount");
+            messageCount.innerText = data.size;
+
+            const buttonContainer = document.getElementById('buttonContainer');
+            buttonContainer.endPage = Math.floor((data.size-1)/10) + 1;
+            buttonContainer.startPage = Math.floor(data.offset/100)*10+1;
+            buttonContainer.clickNum = page+1;
+            createButtons(buttonContainer.startPage,
+                buttonContainer.endPage > buttonContainer.startPage+9?
+                    buttonContainer.startPage+9 : buttonContainer.endPage);
+
             data.messages.forEach(message => {
                 const tr = document.createElement('tr');
                 tr.classList.add("clickable-row");
@@ -257,13 +276,6 @@ export function msgList(page=0) { //메세지리스트 생성
 
                 index++;
                 });
-                const buttonContainer = document.getElementById('buttonContainer');
-                buttonContainer.endPage = Math.floor((data.size-1)/10) + 1;
-                buttonContainer.startPage = Math.floor((data.offset)/10)*10+1;
-                buttonContainer.offset = data.offset+1;
-                createButtons(buttonContainer.startPage,
-                    buttonContainer.endPage > buttonContainer.startPage+9?
-                        buttonContainer.startPage+9 : buttonContainer.endPage);
             });
 }
 
@@ -294,7 +306,11 @@ function createButtons(startIndex, endIndex){
         const button = document.createElement('button');
         button.textContent = i;
         button.className = "btn btn-outline-primary";
-        if(i === buttonContainer.offset) button.style.color = "purple"
+        button.addEventListener('click',()=>{
+            buttonContainer.clickNum = Number(button.textContent);
+            msgList(Number(button.textContent)-1);
+        });
+        if(i === buttonContainer.clickNum) button.style.color = "purple"
         buttonContainer.appendChild(button);
     }
 }
