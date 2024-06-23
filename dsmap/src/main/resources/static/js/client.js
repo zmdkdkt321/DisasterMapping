@@ -221,8 +221,8 @@ export function msgList(page=0) { //메세지리스트 생성
 
     const params = {
         offset : page,
-        start_date: startDate.value + "T00:00:00",
-        end_date: endDate.value + "T00:00:00"
+        start_date: startDate.value,
+        end_date: endDate.value
     };
     const url = `msg/${sbLawArea1.value}/${sbLawArea2.value}/${sbLawArea3.value}?${new URLSearchParams(params).toString()}`
     fetch(url)
@@ -242,41 +242,44 @@ export function msgList(page=0) { //메세지리스트 생성
             createButtons(buttonContainer.startPage,
                 buttonContainer.endPage > buttonContainer.startPage+9?
                     buttonContainer.startPage+9 : buttonContainer.endPage);
+            if(data.messages !== null) {
+                data.messages.forEach(message => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add("clickable-row");
 
-            data.messages.forEach(message => {
-                const tr = document.createElement('tr');
-                tr.classList.add("clickable-row");
+                    //const td = document.createElement('td');
+                    const addrtd = createTD();
+                    const contenttd = createTD();
+                    const datetd = createTD();
 
-                //const td = document.createElement('td');
-                const addrtd = createTD();
-                const contenttd = createTD();
-                const datetd= createTD();
+                    addrtd.textContent = message.name;
+                    contenttd.textContent = message.content.substr(0, 25) + "...";
+                    datetd.textContent = message.date;
 
-                addrtd.textContent = message.name;
-                contenttd.textContent = message.content.substr(0, 25)+"...";
-                datetd.textContent = message.date;
+                    tr.appendChild(addrtd);
+                    tr.appendChild(contenttd);
+                    tr.appendChild(datetd);
 
-                tr.appendChild(addrtd);
-                tr.appendChild(contenttd);
-                tr.appendChild(datetd);
+                    const insidetr = document.createElement('tr');
+                    insidetr.id = "tr" + index;
+                    insidetr.style.display = "none";
+                    const insideTd = document.createElement('td');
+                    insideTd.classList.add("insideTd");
+                    insideTd.colSpan = 3;
+                    insideTd.textContent = message.content;
+                    insidetr.appendChild(insideTd);
+                    tr.child = "tr" + index;
+                    tr.onclick = function () {
+                        foldInsideMessage(tr.child)
+                    };
 
-                const insidetr = document.createElement('tr');
-                insidetr.id = "tr"+index;
-                insidetr.style.display = "none";
-                const insideTd = document.createElement('td');
-                insideTd.classList.add("insideTd");
-                insideTd.colSpan = 3;
-                insideTd.textContent = message.content;
-                insidetr.appendChild(insideTd);
-                tr.child = "tr"+index;
-                tr.onclick = function(){foldInsideMessage(tr.child)};
+                    tbody.appendChild(tr);
+                    tbody.appendChild(insidetr);
 
-                tbody.appendChild(tr);
-                tbody.appendChild(insidetr);
-
-                index++;
+                    index++;
                 });
-            });
+            }   
+        });
 }
 
 function createTD(){
