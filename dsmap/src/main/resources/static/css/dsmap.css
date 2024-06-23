@@ -102,3 +102,28 @@ input.btnreloadimg {
 .curserPointer {
     cursor: pointer;
 }
+
+.animated-title {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 20px 0;
+    overflow: hidden; /* overflow-x에서 overflow로 변경하여 스크롤바를 숨김 */
+}
+.animated-title .track {
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 6s linear infinite;
+}
+@keyframes marquee {
+    from { transform: translateX(20%); } /* 애니메이션 시작 지점을 100%로 변경 */
+    to { transform: translateX(-80%); } /* 애니메이션 끝 지점을 -100%로 변경 */
+}
+@media (hover: hover) and (min-width: 700px) {
+    .animated-title .content {
+        -webkit-transform: translateY(calc(100% - 2rem));
+        transform: translateY(calc(100% - 2rem));
+    }
+}

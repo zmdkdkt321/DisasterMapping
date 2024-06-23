@@ -246,13 +246,23 @@ export function msgList(page=0) { //메세지리스트 생성
                 data.messages.forEach(message => {
                     const tr = document.createElement('tr');
                     tr.classList.add("clickable-row");
+                    const divTitle = document.createElement('div');
+                    const divTrack = document.createElement('div');
+                    const divContent = document.createElement('div');
+                    divTitle.classList.add("animated-title");
+                    divTrack.classList.add("track");
+                    divContent.classList.add("content");
 
                     //const td = document.createElement('td');
                     const addrtd = createTD();
                     const contenttd = createTD();
                     const datetd = createTD();
 
-                    addrtd.textContent = message.name;
+                    addrtd.appendChild(divTitle);
+                    divTitle.appendChild(divTrack);
+                    divTrack.appendChild(divContent);
+
+                    divContent.textContent = message.name;
                     contenttd.textContent = message.content.substr(0, 25) + "...";
                     datetd.textContent = message.date;
 
