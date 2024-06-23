@@ -90,3 +90,6 @@ input.btnreloadimg {
             border: 1px solid black;
 }
 
+.curserPointer {
+    cursor: pointer;
+}

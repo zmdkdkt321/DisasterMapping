@@ -196,6 +196,11 @@ export function mapMsg(regionName) {
 
                             tr.id = msg.id;
                             tr.classList.add("clickable-row");
+                            tr.classList.add("curserPointer");
+
+                            tr.onclick = function(){
+                                tr_onclickmapmsg()
+                            };
 
                             const contenttd = document.createElement('td');
                             const datetd = document.createElement('td');
@@ -222,6 +227,44 @@ export function mapMsg(regionName) {
             });
 
 }
+
+function tr_onclickmapmsg() {
+    const rows = document.querySelectorAll('.clickable-row');
+
+    rows.forEach(row => {
+        row.addEventListener('click', function(event) {
+            let clickedElement = event.target;
+
+            // 클릭된 요소가 <tr>가 아닐 경우 가장 가까운 <tr>을 찾음
+            while (clickedElement && clickedElement.tagName !== 'TR') {
+                clickedElement = clickedElement.parentElement;
+            }
+
+            if (clickedElement && clickedElement.tagName === 'TR') {
+                const trId = clickedElement.id; // 클릭된 <tr>의 ID 가져오기
+
+                // <tr> 하위의 모든 <td> 요소 가져오기
+                const tdElements = clickedElement.querySelectorAll('td');
+
+
+                const content = tdElements[0].textContent;
+                const date = tdElements[1].textContent;
+
+                if (this.nextElementSibling && this.nextElementSibling.classList.contains('new-row')) {
+                    this.nextElementSibling.remove();
+                } else {
+                    const newRowHTML = `
+                        <tr class="new-row" style="border: 1px solid black; border-collapse: collapse;">
+                              <td colspan='3'>${content}</td>
+                        </tr>
+                    `;
+                    this.insertAdjacentHTML('afterend', newRowHTML);
+                }
+            }
+        });
+    });
+}
+
 
 // 지역 정보 표시 함수
 export function displayAreaInfo(coords, messages) {
@@ -333,7 +376,7 @@ window.loadMap = loadMap;
 window.loadMsgList = Client.loadMsgList;
 window.updateMainData = Server.updateMainData;
 window.tr_onclickheddin = Client.tr_onclickheddin;
-window.sbLawArea1_onchange = Client.sbLawArea1_onchange;
+//window.sbLawArea1_onchange = Client.sbLawArea1_onchange;
 window.sbLawArea1_onchange = Client.sbLawArea1_onchange;
 window.sbLawArea2_onchange = Client.sbLawArea2_onchange;
 window.changeStartDate = Client.changeStartDate;
