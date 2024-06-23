@@ -265,6 +265,7 @@ export function msgList(page=0) { //메세지리스트 생성
                     insidetr.style.display = "none";
                     const insideTd = document.createElement('td');
                     insideTd.classList.add("insideTd");
+                    insideTd.classList.add("table-secondary");
                     insideTd.colSpan = 3;
                     insideTd.textContent = message.content;
                     insidetr.appendChild(insideTd);
@@ -278,7 +279,7 @@ export function msgList(page=0) { //메세지리스트 생성
 
                     index++;
                 });
-            }   
+            }
         });
 }
 
